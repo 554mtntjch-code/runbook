@@ -5729,6 +5729,7 @@ function weekTag(w, sep){
   }
   if(w>1 && KM[w-1]===KM[w-2]) return s+"持平周";
   if(w>1 && KM[w-1] < KM[w-2]) return s+"回落周";   /* 比上周低、但不属于计划的 ×0.8/×0.67/×0.5 */
+  if(w===5) return s+"阶段切换"; /* 2026-10-13:D3，复跑期→基础期跨阶段重启非恢复性回升 */
   if(w>1 && w<48 && curRED()[w-1] && KM[w-1] >= KM[w-2]*0.8) return s+"恢复性回升"; /* 2026-10-04:减量后回升非加量；W48最后一周排除 */
   return s+"加量周";
 }
@@ -6493,7 +6494,7 @@ function buildTrack(){
   }
   // 当前周标记（v16.11 P2:用 planWeek() 实时计算，不再用加载时快照 CURWK）
   var _pw=planWeek(), _cw=(_pw.days>=0&&_pw.w<=48)?_pw.w:(_pw.days<0?0:49);
-  var mi=_cw>0&&_cw<=48?_cw-1:0, aa0=-90+mi*(360/N);
+  var mi=_cw>0&&_cw<=48?_cw-1:(_cw===49?47:0), aa0=-90+mi*(360/N); /* 2026-10-13:D2，跑完48周时标记停在第48周 */
   var km0=KM[mi], off0=((54-km0)/54)*58+10;
   var pm=pt(RX-off0,(RY-off0*0.575),aa0);
   var curLine='<line x1="'+pm[0].toFixed(1)+'" y1="'+pm[1].toFixed(1)+'" x2="'+pt(RX-80,RY-46,aa0)[0].toFixed(1)+'" y2="'+pt(RX-80,RY-46,aa0)[1].toFixed(1)+'" stroke="var(--ac)" stroke-width="1" stroke-dasharray="3 3" opacity=".6"/>'+
@@ -6921,7 +6922,7 @@ function buildHeat(){
   cap.innerHTML='<span><i style="background:color-mix(in srgb, var(--ac) 12%, transparent)"></i>少</span>'+
     '<span><i style="background:color-mix(in srgb, var(--ac) 55%, transparent)"></i>中</span>'+
     '<span><i style="background:color-mix(in srgb, var(--ac) 92%, transparent)"></i>多（单日峰值 '+dmax+'km）</span>'+
-    '<span style="margin-left:auto">深色列＝峰值周 · 空白＝休息</span>';
+    '<span style="margin-left:auto">深色格＝当天量大 · 空白＝休息</span>'; /* 2026-10-13:D4，色维度是当天公里数 */
   /* v16.14:容器级汇总信息（单日峰值 + 总周数），替代 336 格逐个播报 */
   box.setAttribute("aria-label","全年训练热力周历：48 周 × 7 天，颜色深浅代表当天公里数，单日峰值 "+dmax+"km，深色列为峰值周，空白为休息日");
 }
@@ -7483,6 +7484,7 @@ function v18renderFab(){
 }
 function v18openModal(tab){
   try{ window._v18pendingAna=null; }catch(e){} /* 2026-10-05:打开时清空 */
+  try{ window._v18cfSave=null; }catch(e){} /* 2026-10-13:B1，新开模态框清空旧表单值（只保留同次打开内切标签的恢复） */
   var m = document.getElementById('v18modal');
   if(!m){
     m = document.createElement('div');
@@ -8157,6 +8159,7 @@ function v18saveCheckin(){
   try{ if(typeof render==='function'){ var _sy=window.scrollY; render(cur); window.scrollTo({top:_sy,behavior:"auto"}); } }catch(e){ try{ console.debug("[v18saveCheckin]", e&&e.message||e); }catch(_e){} } /* 2026-10-04 P2-9:刷新TODAY */
   err.style.display = 'block'; err.style.color = 'var(--ac,#2bd9be)';
   err.textContent = '✓ 已保存 '+date+' '+rec.km+'km';
+  try{ window._v18cfSave=null; }catch(e){} /* 2026-10-13:B1，保存成功清空，下次打开不回填旧值 */
 }
 function v18renderHist(){
   var el = document.getElementById('v18hist');
