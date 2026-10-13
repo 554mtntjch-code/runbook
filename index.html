@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  四年中长跑成长计划手册 · v18.0 (2026-10-04)
+  四年中长跑成长计划手册 · v18.1 (2026-10-13)
   ═══════════════════════════════════════════
   架构速览（单文件）：
   - <head> 内联 <style> ×4：v16 主样式 / v13 分道线 / v14 动效 / 打印
@@ -52,12 +52,13 @@ out+='</ol><p class="ptoc-note">注：页码为章节顺序号，实际分页以
 });
 pa.innerHTML=out;document.body.appendChild(pa);};
 window.addEventListener("beforeprint",window.__buildPrintAll);
+window.addEventListener("afterprint",function(){ var pa=document.getElementById("printall"); if(pa) pa.remove(); }); /* 2026-10-13:P1-5，打印后拆除，下次重建日期最新 */
 /* v16.14:删 requestIdleCallback 分支，只保留 beforeprint（从不打印的用户不浪费 23 章 DOM 构建） */
 /* 兜底：主脚本若因运行时错误未执行，5s 后显示 #printall 静态全文，避免空白页 */
 window.addEventListener("load",function(){setTimeout(function(){if(!window.__APP_OK){document.documentElement.classList.remove("js");window.__buildPrintAll();var pa=document.getElementById("printall");if(pa)pa.style.display="block";var st=document.getElementById("stage");if(st)st.style.display="none";}},5000);   /* v18.1 fix B6 */});</script>
 <noscript><style>#stage{display:none!important}
 </style><p style="padding:40px 20px;text-align:center">本手册需要启用 JavaScript 才能交互阅读。请在浏览器设置中启用后刷新。</p></noscript>
-<title>四年中长跑成长计划手册 · v18.0 成年礼典藏版</title>
+<title>四年中长跑成长计划手册 · v18.1 成年礼典藏版</title>
 <meta name="description" content="重庆文理学院 1500m/800m 四年成长计划。25 圈逐章阅读：48 周跑量交互曲线、五档配速跑道条、全年训练热力周历、配速/周跑量/等级线三个查询器。">
 <style>
 input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]),select,textarea{font-size:16px!important} /* 2026-10-04:防iOS缩放 */
@@ -250,7 +251,7 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- 顶栏 ---------- */
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--top);z-index:900;display:flex;align-items:center;gap:var(--sp-4);
-  padding:0 var(--gut);background:color-mix(in srgb,var(--bg) 74%,transparent);
+  padding-top:0;padding-bottom:0;padding-left:max(var(--gut),env(safe-area-inset-left));padding-right:max(var(--gut),env(safe-area-inset-right));background:color-mix(in srgb,var(--bg) 74%,transparent); /* 2026-10-13:safe-area并入主样式 */
   backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);
   border-bottom:1px solid transparent;transition:border-color .4s}
 .topbar.stuck{border-bottom-color:var(--line)}
@@ -280,7 +281,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:1080px){.sbtn kbd{display:none}}
 
 /* ---------- 布局 ---------- */
-.app{display:grid;grid-template-columns:1fr;max-width:1340px;margin:0 auto;padding:0 var(--gut)}
+.app{display:grid;grid-template-columns:1fr;max-width:1340px;margin:0 auto;padding-top:0;padding-bottom:0;padding-left:max(var(--gut),env(safe-area-inset-left));padding-right:max(var(--gut),env(safe-area-inset-right))} /* 2026-10-13:safe-area并入主样式，L64的.app部分原被此覆盖 */
 @media(min-width:1000px){.app{grid-template-columns:var(--rail) minmax(0,1fr);gap:clamp(22px,3.6vw,52px)}}
 .rail{display:none}
 @media(min-width:1000px){
@@ -481,23 +482,23 @@ a{color:inherit;text-decoration:none}
 .chbody{padding-top:var(--sp-6);max-width:880px}
 
 /* ════════════════ 正文排版 ════════════════ */
-.chbody h2,.chbody h3,.chbody h4{scroll-margin-top:calc(var(--top) + 24px)}
-.chbody h2{font-family:var(--display);font-size:clamp(var(--fs-8),2.8vw,2rem);line-height:1.2;letter-spacing:-.01em;
+.chbody h2,.chbody h3,.chbody h4,#printall h4{scroll-margin-top:calc(var(--top) + 24px)}
+.chbody h2,#printall h2{font-family:var(--display);font-size:clamp(var(--fs-8),2.8vw,2rem);line-height:1.2;letter-spacing:-.01em;
   font-weight:700;color:var(--title);margin:clamp(40px,6vw,72px) 0 var(--sp-4);padding-top:clamp(22px,3.4vw,34px);
   border-top:1px solid var(--line);text-wrap:balance}
-.chbody h3{font-size:clamp(var(--fs-6),1.9vw,var(--fs-7));line-height:1.35;letter-spacing:-.01em;font-weight:600;
+.chbody h3,#printall h3{font-size:clamp(var(--fs-6),1.9vw,var(--fs-7));line-height:1.35;letter-spacing:-.01em;font-weight:600;
   color:var(--ink);margin:clamp(28px,4vw,44px) 0 var(--sp-3);padding-left:14px;position:relative}
-.chbody h3::before{content:"";position:absolute;left:0;top:.42em;width:4px;height:.85em;border-radius:2px;
+.chbody h3::before,#printall h3::before{content:"";position:absolute;left:0;top:.42em;width:4px;height:.85em;border-radius:2px;
   background:var(--ac);opacity:.6}
-.chbody h4{font-size:var(--fs-5);font-weight:600;margin:22px 0 var(--sp-2);letter-spacing:-.01em;color:var(--ink)}
-.chbody p{margin:0 0 15px;color:var(--ink2);max-width:78ch}
-.chbody ul,.chbody ol{margin:0 0 15px;padding-left:22px;color:var(--ink2);max-width:78ch}
-.chbody li{margin:6px 0}
-.chbody li::marker{color:var(--ink4)}
-.chbody strong,.chbody b{color:var(--ink);font-weight:600}
-.chbody code{font-family:var(--mono);font-size:.86em;background:var(--paper2);border:1px solid var(--line);
+.chbody h4,#printall h4{font-size:var(--fs-5);font-weight:600;margin:22px 0 var(--sp-2);letter-spacing:-.01em;color:var(--ink)}
+.chbody p,#printall p{margin:0 0 15px;color:var(--ink2);max-width:78ch}
+.chbody ul,#printall ul,.chbody ol,#printall ol{margin:0 0 15px;padding-left:22px;color:var(--ink2);max-width:78ch}
+.chbody li,#printall li{margin:6px 0}
+.chbody li::marker,#printall li::marker{color:var(--ink4)}
+.chbody strong,#printall strong,.chbody b,#printall b{color:var(--ink);font-weight:600}
+.chbody code,#printall code{font-family:var(--mono);font-size:.86em;background:var(--paper2);border:1px solid var(--line);
   border-radius:var(--r-1);padding:1px 6px;color:var(--ink2);white-space:nowrap;letter-spacing:-.02em}
-.chbody hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+.chbody hr,#printall hr{border:0;border-top:1px solid var(--line);margin:34px 0}
 /* v16.12:删 .wrap 死代码 */
 .need{color:var(--ac)!important;font-weight:600}
 .hl{color:var(--ink)!important;font-weight:600}
@@ -531,6 +532,8 @@ a{color:inherit;text-decoration:none}
 /* ════════════════ card ════════════════ */
 .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-4);padding:18px 20px;margin:14px 0;
   box-shadow:var(--sh1);transition:transform .55s var(--ease),border-color .45s,box-shadow .55s var(--ease)}
+.card.tight{padding:12px 15px;margin:10px 0} /* 2026-10-13:紧凑版卡片，补P1-6缺失的样式 */
+.card.tight h4{margin-bottom:4px}
 .card:hover{transform:translateY(-1px);border-color:var(--border-default)}   /* v16:hover 轻微化 */
 .card h4{margin-top:0!important}
 .card p,.card li{font-size:var(--fs-4)}
@@ -1008,8 +1011,8 @@ body::before{
 
 /* ── 2. 排版精修：等宽数字、更准的行高与字距 ── */
 .chbody{font-variant-numeric:tabular-nums;text-rendering:optimizeLegibility}
-.chbody p{line-height:1.78;letter-spacing:.004em;margin-bottom:1.06em;max-width:73ch}
-.chbody li{line-height:1.72}
+.chbody p,#printall p{line-height:1.78;letter-spacing:.004em;margin-bottom:1.06em;max-width:73ch}
+.chbody li,#printall li{line-height:1.72}
 /* 导语段：章节首段放大半号，杂志的 entry 感 */
 /* v16.13:删 .dsec .dbody 死规则（整块删除） */
 /* 中文标题：更紧的字距、更实的字重 */
@@ -1071,8 +1074,8 @@ body::before{
     border-color:rgba(238,241,244,.075);
   }
 }
-.chbody h2{border-top-color:rgba(23,25,29,.07)}
-@media (prefers-color-scheme: dark){ .chbody h2{border-top-color:rgba(238,241,244,.07)} }
+.chbody h2,#printall h2{border-top-color:rgba(23,25,29,.07)}
+@media (prefers-color-scheme: dark){ .chbody h2,#printall h2{border-top-color:rgba(238,241,244,.07)} }
 
 /* ── 9. 不对称：正文略微偏左，右侧留出版心外呼吸 ── */
 @media (min-width:1100px){
@@ -1149,16 +1152,16 @@ body::before{
 
 /* ── B. 引用块：杂志式 pull-quote（此前是浏览器默认样式，只有缩进） ── */
 /* v16:引用块极简——左侧线 + 小引号，无卡片 */
-.chbody blockquote{position:relative;margin:28px 0;padding:6px 0 6px 26px;color:var(--ink2);
+.chbody blockquote,#printall blockquote{position:relative;margin:28px 0;padding:6px 0 6px 26px;color:var(--ink2);
   border-left:2px solid var(--ac)}
-.chbody blockquote::before{content:"\201C";position:absolute;left:2px;top:-12px;
+.chbody blockquote::before,#printall blockquote::before{content:"\201C";position:absolute;left:2px;top:-12px;
   font-family:var(--display);font-size:2rem;line-height:1;color:var(--ink4)}
-.chbody blockquote p{margin:0 0 10px;color:var(--ink2)}
-.chbody blockquote p:last-child{margin-bottom:0}
-.chbody blockquote strong{color:var(--ink)}
+.chbody blockquote p,#printall blockquote p{margin:0 0 10px;color:var(--ink2)}
+.chbody blockquote p:last-child,#printall blockquote p:last-child{margin-bottom:0}
+.chbody blockquote strong,#printall blockquote strong{color:var(--ink)}
 
 /* ── C. 首字下沉：每章正文首个实质段落（JS 加 .dropcap 类） ── */
-.chbody p.dropcap::first-letter{font-family:var(--display);font-weight:700;font-size:3.3em;
+.chbody p.dropcap::first-letter,#printall p.dropcap::first-letter{font-family:var(--display);font-weight:700;font-size:3.3em;
   float:left;line-height:.84;padding:8px 12px 0 0;color:var(--title)}
 
 /* ── D. 48 周柱状图：入场生长（backwards 填充，播完即回归自然样式） ── */
@@ -1173,7 +1176,7 @@ body::before{
   .chbody blockquote,#printall blockquote{border:1px solid #ddd;border-left:3px solid #999;
     background:#fff;box-shadow:none;padding:14px 18px;color:#000}
   .chbody blockquote::before,#printall blockquote::before{display:none}
-  .chbody p.dropcap::first-letter{font-size:3em;padding:4px 8px 0 0}
+  .chbody p.dropcap::first-letter,#printall p.dropcap::first-letter{font-size:3em;padding:4px 8px 0 0}
 }
 /* V18: 工具功能样式 —— 打卡/计算器/PB/书签/导出 */
 /* V18: 打卡浮动按钮 */
@@ -1281,7 +1284,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 <div class="prog" aria-hidden="true"><i id="progBar"></i><span class="pdash" id="progDash"></span></div>
 
 <header class="topbar" id="topbar">
-  <div class="brand"><i></i>四年成长计划手册 <em>v18.0 · 25 圈</em></div>
+  <div class="brand"><i></i>四年成长计划手册 <em>v18.1 · 25 圈</em></div>
   <div class="crumb"><b id="crumbN">封面</b><span id="crumbT">四年中长跑成长计划</span></div>
   <button class="sbtn" id="sBtn" aria-label="搜索章节">搜索<kbd>Ctrl K</kbd></button>
   <button class="tbtn" id="tBtn" aria-label="切换主题（6种）" title="切换主题">🌓</button>
@@ -1321,9 +1324,9 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 
 <!-- v16.13:删冗余的 display:none 包裹层（template 本身不渲染） -->
 <template data-ch="00" data-title="你的档案与一句话结论"><div class="callout danger">
-  <span class="lbl">✅ 已确认：体育课普拉提 · 校运会预计 11 月下旬（以 10 月竞赛规程为准）</span>
+  <span class="lbl">✅ 已确认：体育课普拉提 · 校运会推迟至下学期（50 周年校庆，具体以竞赛规程为准）</span>
   <p><strong>体育课：</strong>大学体育 1-034「普拉提」，周一 1-2 节（08:10–09:50）＋ 周二 7-8 节（16:20–18:00）。零冲击、无跳跃，练核心稳定性和髋踝柔韧——<strong>对你是正收益，不是风险</strong>。</p>
-  <p><strong>校田径运动会：预计 11 月下旬</strong>（红河 A 区田径场）。<strong class="need">具体日期不是固定的</strong>——2025 年是 11 月 26–28 日，2024 年是 11 月 6 日开幕，差了 20 天。<strong>以体育学院 10 月上旬发的《竞赛规程》为准。</strong><br>甲组设 800M / 1500M，每人限报 2 个单项，前八名按 10/8/7/5/5/5/5/5 分计入体育成绩。<strong>这是你人生第一场正式比赛</strong>——但那时你只练了 7–8 周，<strong>它的定位是"摸底"，不是"达标"</strong>。</p>
+  <p><strong>校田径运动会：推迟至下学期</strong>（红河 A 区田径场）。<strong class="need">原定 11 月下旬，因 50 周年校庆推迟</strong>——2025 年是 11 月 26–28 日，2024 年是 11 月 6 日开幕，差了 20 天。<strong>以下学期的《竞赛规程》为准。</strong><br>甲组设 800M / 1500M，每人限报 2 个单项，前八名按 10/8/7/5/5/5/5/5 分计入体育成绩。<strong>这是你人生第一场正式比赛</strong>——<strong>它的定位是"摸底"，不是"达标"</strong>。</p>
   <p class="opt">校历上 4 月 15–16 日那场"学生运动会"你说不设田径项目，<strong>那就不是比赛机会，按不设处理</strong>。你春季的真正目标是 <strong>5 月的重庆市大学生田径比赛</strong>（第 14 节）。</p>
 </div>
 
@@ -1432,11 +1435,11 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <li><strong>没有教练、也没有校队可进。</strong>学校确实有田径队（教练魏修东等），但那是<strong>体育专业组（丙/丁组）</strong>，普通本科生进不去；学校的「<strong>大学生奔跑协会</strong>」是徒步 + 公益型社团，<strong>不提供中长跑训练</strong>。<strong>意味着训练强度判断、比赛报名、等级申报全部要你自己推</strong>——但这有解，见第 02 节（含"不好意思去问"的破局方案）。</li>
   <li><strong>确定的短板是有氧；速度耐力待验证。</strong>把高二同期三个成绩摊开看：<strong>800m 2:15（VDOT 62，实测）→ 1500m 5:00（VDOT 54.5，估计值、非正式比赛）→ 5km 20:00（VDOT 50，实测）</strong>——距离越长越弱，<strong>这就是典型的"有氧引擎不够大"，这一条基本确定。</strong><span class="opt">（800m 的 VDOT 因无氧贡献偏乐观，"速度比有氧强约 12.5 个 VDOT 点（62.3−49.8）"只作粗略提示，不宜当成精确的短板定量。这三个数是停训前的高二成绩；当前实测为 5km 21:00 / VDOT 47，能力结构判断用高二数据、配速表用当前数据，见本节开头。）</span><br><span class="opt">（曾按"400m 57–58 秒"推出"速度耐力也空"，但那个 400m 是估算值、不是计时成绩，已降级为待验证——验证方法见本节开头。）</span>好消息是：<strong>有氧是三种能力里最好练的一块。</strong></li>
 </ul></template>
-<template data-ch="01" data-title="等级标准与目标拆解"><p>下面这张表是<strong>国家体育总局《运动员技术等级标准》</strong>（<strong>体竞字〔2024〕121号</strong>，2025 年 1 月 1 日起施行）里男子径赛的原始数据（电计）。<strong>本表已逐行核对体育总局官网发布的 PDF 原文（2026.10.01 复核），表内成绩与现行标准一致；若官网发布新版，以官网 PDF 为准。</strong></p>
+<template data-ch="01" data-title="等级标准与目标拆解"><p>下面这张表是<strong>国家体育总局《运动员技术等级标准》</strong>（<strong>体竞字〔2026〕84号</strong>，2026 年 8 月 19 日印发，田径项目自印发之日起施行）里男子径赛的原始数据（电计）。<strong>本表已逐行核对体育总局官网发布的 PDF 原文，表内成绩与现行标准一致；原〔2024〕121号田径部分已同时废止。若官网发布新版，以官网 PDF 为准。</strong></p>
 
 <div class="callout danger">
   <span class="lbl">⚠️ 这一栏数据特别容易错，注意核对</span>
-  <p><strong>网上和 AI 生成的材料里，800m 二级最常见的错误值是 2:03.00、三级是 2:12.40——那是 2021 版旧标准（体竞字〔2021〕131号），已于 2025 年 1 月 1 日废止。</strong>正确值是 <strong>二级 2:02.11、三级 2:09.53</strong>。</p>
+  <p><strong>网上流传的 800m 2:03.00 / 2:12.40、1500m 4:15.00 / 4:34.10，是已废止的 2024 版标准（体竞字〔2024〕121号，2025.1.1–2026.8.18 在役）数值。</strong>现行标准（体竞字〔2026〕84号，2026.8.19 起施行）正确值是 <strong>800m 二级 2:02.11、三级 2:09.53；1500m 二级 4:13.86、三级 4:28.69</strong>。</p>
   <p><span class="opt">（2026.10.01 复核：这组错误值至今仍在大量网页和部分地方材料里流传，1500m 二级也常被误写成 4:15.00、三级 4:40.00。<strong>本次已直接比对体育总局官网新版标准 PDF 原件，确认表 01-1 的 7 行 33 个数值逐字准确</strong>（3000 米国际级、健将两格为"—"）。若今后再看到不同数字，一律以官网 PDF 为准，不要以网页转载或二手汇总为准。）</span></p>
   <p>这个差别不小：都以你当前的 1500m 5:00 为基线——按错误的三级线 4:40.00 算，你「只差 20.00 秒」；按正确的三级线 4:28.69 算，你实际差 <strong>31.31 秒</strong>，两者相差 <strong>11.31 秒</strong>。二级线同理：错误值 4:15.00 算差 45.00 秒，正确值 4:13.86 算差 <strong>46.14 秒</strong>，相差 1.14 秒。<strong>光是标准用错，三级的目标差距就被低估了 11 秒以上，足以让第一年的目标定错。</strong></p>
   <p>另一个高发错误：<strong>10000 米那一行经常被整体错位一列</strong>（把"国际级运动健将"的 28:19.00 当成健将线）。正确的 10000 米健将线是 29:45.00。</p>
@@ -1444,7 +1447,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 
 <div class="tblwrap">
 <table>
-<caption>表 01-1 · 1500m / 800m 运动员技术等级标准（体竞字〔2024〕121号，2025.1.1 起施行）</caption>
+<caption>表 01-1 · 1500m / 800m 运动员技术等级标准（体竞字〔2026〕84号，2026.8.19 起施行）</caption>
 <thead><tr><th scope="col">项目</th><th class="c" scope="col">国际级<br>运动健将</th><th class="c" scope="col">运动健将</th><th class="c" scope="col">一级运动员</th><th class="c" scope="col">二级运动员</th><th class="c" scope="col">三级运动员</th></tr></thead>
 <tbody>
 <tr><td><strong>800 米</strong></td><td class="c">1:46.30</td><td class="c">1:51.00</td><td class="c">1:54.50</td><td class="c" style="color:var(--red2);font-weight:700">2:02.11</td><td class="c">2:09.53</td></tr>
@@ -1457,7 +1460,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 </tbody>
 </table>
 </div>
-<p style="font-size:12.5px;color:var(--txt3)">数据来源：体育总局《运动员技术等级标准》（<strong>体竞字〔2024〕121号</strong>）官网 PDF 原文，2025 年 1 月 1 日起施行。全部为电计/感应计时成绩。<span class="opt">若体育总局发布新版标准，一律以官网 PDF 为准。</span></p>
+<p style="font-size:12.5px;color:var(--txt3)">数据来源：体育总局《运动员技术等级标准》（<strong>体竞字〔2026〕84号</strong>）官网 PDF 原文，2026 年 8 月 19 日印发，田径项目自印发之日起施行。全部为电计/感应计时成绩。<span class="opt">原〔2024〕121号田径部分已同时废止；若体育总局发布新版标准，一律以官网 PDF 为准。</span></p>
 
 <h3>你的目标拆解：每一步要跑多快</h3>
 <div class="tblwrap">
@@ -1485,8 +1488,8 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <caption>表 01-3 · 各阶段 1500m 预测（VDOT 等价法）与距等级线的差距</caption>
   <thead><tr><th class="c" scope="col">时间</th><th class="c" scope="col">预期 1500m</th><th class="c" scope="col">VDOT</th><th class="c" scope="col">距三级 4:28.69</th><th class="c" scope="col">距二级 4:13.86</th></tr></thead>
   <tbody>
-  <tr><td class="c">现在（2026.9）</td><td class="c">5:10–5:20*</td><td class="c">47</td><td class="c">−73 s</td><td class="c">−88 s</td></tr>
-  <tr><td class="c">2026.11 校运会</td><td class="c">5:25–5:40</td><td class="c">49–51</td><td class="c">−56 ~ −71 s</td><td class="c">−71 ~ −86 s</td></tr>
+  <tr><td class="c">现在（2026.9）</td><td class="c">5:10–5:20*</td><td class="c">47</td><td class="c">−41 ~ −51 s</td><td class="c">−56 ~ −66 s</td></tr>
+  <tr><td class="c">下学期校运会<br><span class="opt">日期待定</span></td><td class="c">待定</td><td class="c">—</td><td class="c">—</td><td class="c">—</td></tr>
   <tr><td class="c"><strong>2027.3–4<br>市赛报名前</strong></td><td class="c"><strong>4:58–5:08</strong></td><td class="c">53–55</td><td class="c">−29 ~ −40 s</td><td class="c"><strong class="need">−44 ~ −54 s</strong></td></tr>
   <tr><td class="c">2027.5 市赛</td><td class="c">4:50–5:00</td><td class="c">54–56</td><td class="c">−21 ~ −31 s</td><td class="c">−36 ~ −46 s</td></tr>
   <tr><td class="c">2027.8 大一末</td><td class="c">4:43–4:51</td><td class="c">55–58</td><td class="c">−14 ~ −22 s</td><td class="c">−29 ~ −37 s</td></tr>
@@ -1569,14 +1572,14 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <caption>表 02-1 · 四条参赛通道（真正能走通的只有主线 5 月市赛）</caption>
   <thead><tr><th scope="col">参赛通道</th><th class="c" scope="col">主办</th><th class="c" scope="col">普通生可行性</th><th class="c" scope="col">能不能达级</th><th scope="col">你要做什么</th></tr></thead>
   <tbody>
-  <tr><td><strong>校田径运动会</strong><br><span class="opt">11 月下旬</span></td><td class="c">本校</td><td class="c"><span class="pill p-green">无门槛</span></td><td class="c"><span class="pill p-red">不能达级</span></td><td>当 11 月的全真摸底赛，熟悉检录与起跑</td></tr>
+  <tr><td><strong>校田径运动会</strong><br><span class="opt">下学期（推迟）</span></td><td class="c">本校</td><td class="c"><span class="pill p-green">无门槛</span></td><td class="c"><span class="pill p-red">不能达级</span></td><td>当全真摸底赛，熟悉检录与起跑</td></tr>
   <tr><td><strong>重庆市大学生田径比赛</strong><br><span class="opt">5 月上旬 · 甲组</span></td><td class="c">市教委</td><td class="c"><span class="pill p-green">自费通道已确认</span><br><span class="opt">学校不主动组队，但可自费参赛</span></td><td class="c"><span class="pill p-amber">待确认</span><br><span class="opt">见下方「核对要点」</span></td><td><strong>主线战场。</strong>老师已回复：学校没有甲组组队计划，<strong>但今年已有学生自费参赛的先例</strong>——保持联系，成绩到位后再提报名</td></tr>
   <tr><td><strong>重庆市田径精英赛</strong><br><span class="opt">12 月 · 彭水</span></td><td class="c">市体育局</td><td class="c"><span class="pill p-green">可个人报名</span></td><td class="c"><span class="pill p-amber">待确认</span><br><span class="opt">2025年为非达等级赛事</span></td><td><strong>备用通道。</strong>关注市田协报名通知，达级资格以后届规程+名录为准</td></tr>
   <tr><td><strong>全国大学生田径锦标赛</strong></td><td class="c">中国学体联</td><td class="c"><span class="pill p-red">极难</span><br><span class="opt">须在校队</span></td><td class="c"><span class="pill p-green">可评二/一/健将</span></td><td>大二成绩突破后，再谈入队资格</td></tr>
   </tbody>
   </table>
   </div>
-  <p style="font-size:12.5px;color:var(--txt3)"><strong>一句话结论：</strong>11 月校运会 = 摸底（不达级）；5 月市赛 = 主线（走"自费参赛"，<strong>达级资格待确认</strong>，见下方「核对要点」）；市精英赛 = 备用（可个人报名；<strong>2025 年为非达等级赛事</strong>，达级资格以后届规程+名录为准）。<strong>渠道已经问出来了——见下面那张"已确认"卡片。</strong></p>
+  <p style="font-size:12.5px;color:var(--txt3)"><strong>一句话结论：</strong>下学期校运会（推迟，日期待定）= 摸底（不达级）；5 月市赛 = 主线（走"自费参赛"，<strong>达级资格待确认</strong>，见下方「核对要点」）；市精英赛 = 备用（可个人报名；<strong>2025 年为非达等级赛事</strong>，达级资格以后届规程+名录为准）。<strong>渠道已经问出来了——见下面那张"已确认"卡片。</strong></p>
 </div>
 
 <div class="callout danger">
@@ -1588,14 +1591,14 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   → <strong class="need">这是本次沟通最有价值的一条。</strong>它和本节后面写的"市大运会规程：以学校为单位统一组队，每校限 1 队，个人不能直接报名"并不矛盾——<strong>正确的理解是：个人不能自己报，但老师可以以学校名义帮你报，费用你自己出。</strong>那位同学走的就是这条路。<strong>所以路径 = 学生主动找到老师 + 表示愿意自费 → 老师帮你报名。</strong></p>
   <p><strong>③ 甲组的水平门槛："基本上二级"</strong>（老师原话："甲组成绩还是蛮高的，基本上二级，还是需要的"）。<br>
   → <strong>这是"竞争力描述"，不是"报名门槛"。</strong>等级认定只看<strong>成绩是否达标</strong>，不看名次——哪怕你在甲组跑最后一名，只要跑进 4:28.69 就是三级。<br>
-  → <strong>但要把预期摆正：</strong>按第 05 节的曲线，你 11 月校运会约 5:25–5:40（表 01-3 保守档），到 2027 年 5 月约 4:50–5:00。<strong>大一那次市赛，大概率拿不到三级。</strong>所以大一参赛的真实目的是：<strong>① 把报名关系走通；② 拿到一次真实的分段数据；③ 看清差距</strong>——不是拿证。真正拿证最可能在大二 5 月。</p>
+  → <strong>但要把预期摆正：</strong>按第 05 节的曲线，你到 2027 年 5 月约 4:50–5:00（表 01-3 保守档）。下学期校运会（推迟，日期待定）当摸底：按当时水平用第 14 章摸底表定预期。<strong>大一那次市赛，大概率拿不到三级。</strong>所以大一参赛的真实目的是：<strong>① 把报名关系走通；② 拿到一次真实的分段数据；③ 看清差距</strong>——不是拿证。真正拿证最可能在大二 5 月。</p>
   <p><strong>④ 老师同意你以后请教训练问题</strong>（原话："可以"）。<br>
   → <strong class="need">这是你这次沟通最大的收获——你从"没有教练"变成了"有一个愿意答疑的老师"。</strong>请务必珍惜，使用规则见本节末尾。</p>
 </div>
 
 <div class="callout danger">
   <span class="lbl">这一节比训练计划更重要</span>
-  <p><strong>成绩达标 ≠ 拿到等级证。</strong>2025 新规对"在什么比赛里达标"卡得很死。练得再好，比赛选错，成绩就是一张白纸。</p>
+  <p><strong>成绩达标 ≠ 拿到等级证。</strong>2026 新规（体竞字〔2026〕84号）对"在什么比赛里达标"卡得很死。练得再好，比赛选错，成绩就是一张白纸。</p>
 </div>
 
 <h3>新规原文怎么说的</h3>
@@ -1789,11 +1792,11 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <p><strong>问的意义是"知道路在哪"，不是"现在就上路"。</strong>今天问，明年 3 月才用得上。你现在唯一要做的就是 10.05 开始跑。</p>
 </div>
 
-<h3>校运会日期：2025 年是 11 月 26–28 日，2026 年待定</h3>
+<h3>校运会日期：2025 年是 11 月 26–28 日，2026 年因 50 周年校庆推迟至下学期</h3>
 <p><strong>学校官网和校庆网都确认：重庆文理学院第二十五届田径运动会于 2025 年 11 月 26—28 日在红河 A 区田径场举行。</strong>2026–2027 学年是第二十六届。</p>
   <p><strong class="need">⚠️ 但要更正一处：这一届的日期不能直接照搬去年。</strong>2024 年是 <strong>11 月 6 日</strong>开幕，2025 年是 <strong>11 月 26–28 日</strong>——<strong>差了 20 天，说明日期每年是变的——去年的 11 月 26–28 日不能直接照搬。</strong></p>
   <p><strong>所以你要盯的不是"问日期"，而是两件事：</strong><br>
-  <strong>① 日期</strong>——体育学院 <strong>10 月上旬</strong>发《竞赛规程》，里面写死了日期；<br>
+  <strong>① 日期</strong>——体育学院一般在<strong>赛前 2–3 周</strong>发《竞赛规程》（推迟后预计在下学期赛前），里面写死了日期；<br>
   <strong>② 报名截止时间</strong>——校运会报名一般<strong>提前 1–2 周截止</strong>，而且要经班级 / 学院统一报。<strong class="need">错过截止就没法补报。</strong></p>
 <p class="opt">（校历"重要日程"里另有一条"4 月 15–16 日学生运动会"，<strong>那是另一个活动，不是田径运动会</strong>，别混。）</p>
 
@@ -1823,15 +1826,15 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <span class="lbl">最终依据只有一个：竞赛规程</span>
   <p><strong>学校办运动会前 2–3 周会发《竞赛规程》</strong>，里面有确定的时间、项目设置、报名方式。<strong class="need">这是唯一不会错的信息源——群里的说法、学长的说法、甚至校历都可能不准。</strong></p>
   <p><strong>在哪能看到：</strong>① <strong>班级群 / 辅导员通知</strong>（最直接）；② 体育学院官网 <code>ty.cqwu.edu.cn</code>；③ 校学生会体育部；④ 奔跑协会微信群。</p>
-  <p><strong>什么时候能看到：</strong>11 月那场 → 规程在 <strong>10 月底 – 11 月初</strong>发；4 月那场 → <strong>3 月底 – 4 月初</strong>发。</p>
-  <p><strong>所以你现在要做的很简单：10 月底开始盯班级群。</strong>如果到 11 月中旬还没有任何通知，就说明秋季这场没有——你的第一场比赛就是明年 4–5 月。</p>
+  <p><strong>什么时候能看到：</strong>校运会（已确认推迟至下学期）→ 规程预计<strong>下学期赛前 2–3 周</strong>发；4 月那场 → <strong>3 月底 – 4 月初</strong>发。</p>
+  <p><strong>所以你现在要做的很简单：不用盯了。</strong>校运会已确认推迟至下学期（50 周年校庆），下学期赛前 2–3 周开始盯班级群，规程出来按本章"核对要点"逐项核对。</p>
 </div>
 
 <div class="callout good">
   <span class="lbl">无论哪场，你的训练一个字都不用改</span>
   <p><strong>10 月到 11 月，你的任务都是"把有氧堆起来"</strong>——这件事和有没有比赛无关。</p>
-  <p>· <strong>如果 11 月有比赛</strong> → 当摸底赛：不专门减量，赛前 3 天跑量降到 80%（＝×0.8，与减量周同口径；<strong>摸底赛不按正式赛周的 ×0.5 处理</strong>），赛后休息 1–2 天。<br>
-  · <strong>如果 11 月没比赛</strong> → 更好。你能一路不受打扰地堆到 12 月底，春季那场（或 5 月市赛）的准备会充分得多。</p>
+  <p>· <strong>下学期校运会（已确认推迟）</strong> → 当摸底赛：不专门减量，赛前 3 天跑量降到 80%（＝×0.8，与减量周同口径；<strong>摸底赛不按正式赛周的 ×0.5 处理</strong>），赛后休息 1–2 天。<br>
+  · <strong>11–12 月无比赛</strong> → 更好。你能一路不受打扰地堆到 12 月底，下学期校运会和 5 月市赛的准备会充分得多。</p>
   <p><strong>两种情况下的训练内容完全一样。所以这个问题不影响你 10.05 开跑。</strong></p>
 </div>
 
@@ -1904,9 +1907,9 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <p><strong>① 频率：一个月最多 1–2 次。</strong>不要一周问一次。他带的是专业队，不是你的私人教练。</p>
   <p><strong>② 形式：永远"汇报 + 一个问题"，不要空问。</strong><br>
   ❌ 差：「老师，我最近该怎么练？」（没法答）<br>
-  ✅ 好：「老师，我 10 月这 4 周的恢复跑跑完了，每周 12→18km，左脚没有不适。想问一下：11 月校运会前一周，我需不需要专门减量？」</p>
+  ✅ 好：「老师，我 10 月这 4 周的恢复跑跑完了，每周 12→18km，左脚没有不适。想问一下：下学期校运会前一周，我需不需要专门减量？」</p>
   <p><strong>③ 问题要"一句话能答完"。</strong>不要一次抛三个问题，不要发长段。他回一个字也算回，别追问。</p>
-  <p><strong>④ 现在不要主动求"带训"。</strong>先用 3–4 个月证明"你自己能坚持练"——到 11 月校运会跑出一个具体成绩，再自然地提一句"能不能跟着队里练"。<strong>现在提，大概率被客气地拒掉；11 月带着成绩提，性质完全不同。</strong></p>
+  <p><strong>④ 现在不要主动求"带训"。</strong>先用 3–4 个月证明"你自己能坚持练"——到下学期校运会跑出一个具体成绩，再自然地提一句"能不能跟着队里练"。<strong>现在提，大概率被客气地拒掉；带着成绩提，性质完全不同。</strong></p>
 </div>
 
 <div class="callout good">
@@ -1915,7 +1918,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   所以结构是——<strong>自我介绍 ＋ 你在练什么 ＋ 一句"以后"，但不提问。</strong></p>
   <p class="quote-box"><span class="need">【复制前先填这两处：<code>XXX</code> = 你的姓名，<code>XX 学院</code> = 你所在的学院名。填完再发，别把占位符发出去。】</span><br><br>
   老师您好，我是刚才在抖音跟您联系的那个学生——2026 级 XXX（XX 学院 · 数学与应用数学），主项 1500m/800m。<br><br>
-  简单说下我的情况：高二跑过 800m 2:15、1500m 5:00，中间停训一年，现在 5km 大概 21 分。我已经开始恢复训练了，打算先把 10 月这 4 周的低量适应期跑完，11 月校运会报 1500m 和 800m 当摸底。<br><br>
+  简单说下我的情况：高二跑过 800m 2:15、1500m 5:00，中间停训一年，现在 5km 大概 21 分。我已经开始恢复训练了，打算先把 10 月这 4 周的低量适应期跑完，下学期校运会报 1500m 和 800m 当摸底。<br><br>
   明年 5 月市赛的事，等 11 月跑完我再跟您请教怎么准备。以后训练上遇到自己解决不了的问题，可能也会麻烦您；平时不会打扰。谢谢老师！</p>
   <p><strong>为什么这么写（每一句都有用）：</strong><br>
   ① <strong>第一句必须说"我是刚才抖音联系您的那个"</strong>——他微信里人很多，不说明来源，他不知道你是谁；<br>
@@ -1959,8 +1962,8 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <p><strong>✅ 好的说法（几乎不可能被拒）：</strong></p>
   <p class="quote-box">老师，我知道自己现在实力差得远，离二级还早。但我想问一下：<strong>大一能不能先跟着去一次市赛，把报名流程和比赛流程走通？</strong>我主要是想感受一次正式比赛、拿一次真实的分段数据，这样大二真正要出成绩的时候，不会因为流程问题手忙脚乱。<strong>您看这样可行吗？或者您觉得我该先练到什么程度再考虑？</strong></p>
   <p><strong>为什么这段话有效：</strong>① 一开口就承认差距，不装；② 把目的从"要名次"换成"走流程"，老师没有任何理由拒绝；③ 最后一句把决定权交给他——<strong>这不是"我要"，这是"请您判断"。</strong></p>
-  <p><strong>什么时候问：11 月校运会跑完之后。</strong>那时你有一个真实成绩、证明了自己在认真练，而且距市赛还有 5 个月，正好够准备。<strong>现在别问——市赛是明年 5 月的事，太早。</strong></p>
-  <p><strong>如果他说"你先练练再说"：</strong>这不是拒绝，是正常答复。<strong>照做，但记住回一句："好的，那我明年 11 月校运会跑完再来找您。"</strong>——给他一个明确的下次联系点，比"好的谢谢"有用得多。</p>
+  <p><strong>什么时候问：下学期校运会跑完之后</strong>（原定 11 月，因 50 周年校庆推迟）。那时你有一个真实成绩、证明了自己在认真练；校运会跑完后距 5 月市赛还有一段时间，正好够做针对性准备。<strong>现在别问——市赛是明年 5 月的事，太早。</strong></p>
+  <p><strong>如果他说"你先练练再说"：</strong>这不是拒绝，是正常答复。<strong>照做，但记住回一句："好的，那我下学期校运会跑完再来找您。"</strong>——给他一个明确的下次联系点，比"好的谢谢"有用得多。</p>
 </div>
 
 <div class="callout danger">
@@ -1968,7 +1971,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <p><strong>把这件事分清楚，你以后就不会再纠结：</strong></p>
   <p><strong>① 问渠道、问流程、问信息 —— 和你的水平无关。</strong>任何在校生都有权利问"比赛怎么报名"。<strong>这部分你永远够格。</strong><br>
   <strong>② 求带训、求指导、求进队 —— 和你的水平有关。</strong>这部分才需要拿成绩说话。</p>
-  <p><strong>你现在要的全部是第①类。</strong>等 11 月校运会跑出一个成绩，再开始碰第②类。<strong>顺序别搞反——先要信息，再要资源。</strong></p>
+  <p><strong>你现在要的全部是第①类。</strong>等下学期校运会跑出一个成绩，再开始碰第②类。<strong>顺序别搞反——先要信息，再要资源。</strong></p>
 </div>
 
 <div class="callout good">
@@ -1990,19 +1993,19 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <p><strong class="need">所以你现在什么都不要做。</strong>特别是：<strong>不要回复那个"嗯"</strong>、不要发表情包、不要追问"您觉得我的计划行吗"、不要道歉说"打扰您了"。</p>
   <p><strong>你要做的只有三件：</strong><br>
   ① <strong>把微信备注改好</strong>——"魏教练（体育学院·田径）"，别让他躺在陌生人列表里；<br>
-  ② <strong>把这次对话封存</strong>——下次开口是 <strong>11 月校运会跑完之后</strong>；<br>
+  ② <strong>把这次对话封存</strong>——下次开口是<strong>下学期校运会跑完之后</strong>；<br>
   ③ <strong>把训练跑好</strong>——这是唯一能让下次对话有分量的事。</p>
   <p style="color:var(--txt3)"><strong>下次注意一个小事：</strong>加好友时的验证消息最好写清"我是谁 + 从哪来"（比如"文理学院 26 级学生，抖音上跟您联系过"）。这次你写的是"我想意气风发"，本身没有信息量——他之所以知道你是谁，是因为他看过抖音那条消息。<strong>换个场景（比如加别的老师），没写清楚很可能就不通过了。</strong></p>
 </div>
 
 <div class="callout danger">
   <span class="lbl">⚠️ 注意：你刚刚在老师面前立下了第一个承诺</span>
-  <p>你的消息里写了"<strong>11 月校运会报 1500m 和 800m 当摸底</strong>"。这句话说出口，就变成了一个承诺：</p>
-  <p><strong>· 11 月必须去跑；<br>· 跑完必须汇报；<br>· 如果没跑成（受伤、没报上名），要主动说明。</strong></p>
-  <p><strong class="need">所以"10 月上旬盯《竞赛规程》"这件事的优先级提高了</strong>——校运会报名要经班级 / 学院统一报，<strong>错过截止就没法补</strong>。<br>
-  你如果报了名却没去跑，或者跑完了没吭声，这次建立的关系就断了。<strong>反过来，只要 11 月按时汇报，你在他那里就从"一个问路的新生"变成"一个说话算数的学生"。</strong></p>
-  <p><strong>11 月的汇报长这样（到时候直接抄）：</strong></p>
-  <p class="quote-box">魏教练您好，跟您汇报一下：11 月校运会我 1500m 跑了 X:XX、800m 跑了 X:XX，跑完左脚没有不适。10 月这 4 周的适应期我一周没落跑完了。<br><br>
+  <p>你的消息里写了"<strong>11 月校运会报 1500m 和 800m 当摸底</strong>"（9.22 发出的原话）。这句话说出口，就变成了一个承诺——但校运会已推迟至下学期，所以承诺要主动更新：</p>
+  <p><strong>· 主动跟教练说明一次：校运会因 50 周年校庆推迟到下学期，你下学期再跑；<br>· 下次联系点改为下学期校运会跑完，或冬训中期（约 1 月）主动汇报一次冬训情况；<br>· 如果到时没跑成（受伤、没报上名），一样要主动说明。</strong></p>
+  <p><strong class="need">别等 11 月——11 月已经没有这场比赛了。</strong>校运会报名要经班级 / 学院统一报，<strong>下学期规程出来再盯，错过截止就没法补</strong>。<br>
+  你如果报了名却没去跑，或者跑完了没吭声，这次建立的关系就断了。<strong>反过来，只要下学期按时汇报，你在他那里就从"一个问路的新生"变成"一个说话算数的学生"。</strong></p>
+  <p><strong>下学期的汇报长这样（到时候直接抄）：</strong></p>
+  <p class="quote-box">魏教练您好，跟您汇报一下：下学期校运会我 1500m 跑了 X:XX、800m 跑了 X:XX，跑完左脚没有不适。<br><br>
   想问您一个问题：<strong>明年 5 月市赛，如果想争取一个参赛名额，我大概什么时候要跟您报备？需要提前准备什么（体检、报名表、盖章之类）？</strong>我想早点把时间留出来，别耽误事。</p>
   <p style="color:var(--txt3)"><strong class="need">⚠️ 不要问他"冬训周跑量该加到多少"。</strong>看过魏教练的履历就知道，这个问题他要换掉（他的公开战绩集中在短跑 200m、4×100m 接力和铅球，没有中长跑；见下面那张履历卡）。<strong>周跑量安排属于中长跑专项，不是他的主攻方向，问了他可能也只能给个大概。</strong>而"报名什么时候截止、要准备什么"——<strong>他每年带队参加市赛，这是他的主场，一定能答得准。</strong></p>
 </div>
@@ -2322,7 +2325,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <p><strong>测试电池（按重要性排序）：</strong><br>
   ① <strong>5km 计时</strong>——有氧端锚点，直接决定速查表 D 换到哪一行（最常用，优先做）；<br>
   ② <strong>1500m 或 1000m 计时</strong>——速度耐力锚点；<br>
-  ③ <strong>400m 全力</strong>——速度天花板。<strong>这条现在按"待验证"处理</strong>（见第 00 节）：等你 11 月校运会或体测拿到真实电计数据后再用，不要拿手表估算值去推配速。</p>
+  ③ <strong>400m 全力</strong>——速度天花板。<strong>这条现在按"待验证"处理</strong>（见第 00 节）：等你下学期校运会或体测拿到真实电计数据后再用，不要拿手表估算值去推配速。</p>
   <p><strong>规则：</strong>测试周本身就是一次"减量周"——周跑量降到 70%，只保留这次测试当质量课。<strong>连续两次测试都停滞（进步 &lt;2%），说明计划该调了，不是该加量。</strong>把每次测试成绩记进训练日志，换表时直接对照速查表 D 找对应行。</p>
 </div></template>
 <template data-ch="05" data-title="大一整年周期路线图（2026.10–2027.9）"><p>假设你 10 月初军训结束、正式开始。整年分六个阶段。记住一句话：<strong>秋冬堆量，春天上强度，赛前减量，夏天保底。</strong></p>
@@ -2349,13 +2352,13 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   </div>
 
   <div class="it g">
-    <div class="h">↳ 插播：第二十六届校田径运动会 <span class="pill p-amber">预计 11 月下旬</span></div>
+    <div class="h">↳ 插播：第二十六届校田径运动会 <span class="pill p-amber">推迟至下学期</span></div>
     <div class="b">
       <strong>这场设 800M 和 1500M——你能参加。</strong>（4 月 15–16 日那场"学生运动会"不设田径项目，跳过，不是比赛机会。）<br>
-      <strong>怎么处理：不专门为它减量，当成一次"以赛代练"的摸底测验。</strong>赛前 3 天把跑量降到 <strong>80%</strong>（＝×0.8；摸底赛不按正式赛周的 ×0.5 处理），训练照常；赛后休息 1–2 天，回到基础期。<strong>这时候你才练了一个半月，成绩一定不好看——但比赛经验是练不出来的。</strong><br>
-      <strong class="need">先把预期钉死，免得到时候自己吓自己：1500m 预估 5:25–5:40，800m 预估 2:22–2:30。</strong>这就是复训 6 周该有的成绩，<strong>跑出这个区间 = 完全正常、按计划进行</strong>；跑不进也不代表训练错了。这一场的目的只有三个：① 熟悉检录、起跑、钉鞋和场地流程；② 拿到一次真实的分段数据（尤其 800m 前 400m 通过时间，用它验证"速度耐力"那条待验证项）；③ 让体育学院的人看见你在跑。<strong>不是为了拿成绩，更不是为了拿证——校运会不能达级。</strong>真正的成绩在 2027 年 5 月，真正可能拿证在大二。<br>
+      <strong>怎么处理：不专门为它减量，当成一次"以赛代练"的摸底测验。</strong>赛前 3 天把跑量降到 <strong>80%</strong>（＝×0.8；摸底赛不按正式赛周的 ×0.5 处理），训练照常；赛后休息 1–2 天，回到竞赛期节奏。<strong>成绩按当时水平用第 14 章摸底表定——但比赛经验是练不出来的。</strong><br>
+      <strong class="need">预期按当时水平定：推迟到下学期后，你已是竞赛期水平，不再用"复训 6 周"的 5:25–5:40。用第 14 章摸底表，按赛前最近一次实测/体测成绩找对应预期；跑出该区间 = 完全正常、按计划进行</strong>；跑不进也不代表训练错了。这一场的目的只有三个：① 熟悉检录、起跑、钉鞋和场地流程；② 拿到一次真实的分段数据（尤其 800m 前 400m 通过时间，用它验证"速度耐力"那条待验证项）；③ 让体育学院的人看见你在跑。<strong>不是为了拿成绩，更不是为了拿证——校运会不能达级。</strong>真正的成绩在 2027 年 5 月，真正可能拿证在大二。<br>
       <span class="opt">顺带两条：<strong>① 甲组设 800M 和 1500M</strong>，你两个都能报（每人限报 2 个单项）；<strong>② 甲组前八名按 10、8、7、5、5、5、5、5 分计入本学期体育成绩</strong>——对你这种 1500m 主项的人，这几乎是白送的分。<br>
-      <strong>日期每年不固定</strong>（2024 年是 11 月 6 日开幕、2025 年是 11 月 26–28 日），<strong>以体育学院 10 月发的竞赛规程为准</strong>。</span>
+      <strong>日期每年不固定</strong>（2024 年是 11 月 6 日开幕、2025 年是 11 月 26–28 日），<strong>以下学期体育学院发的竞赛规程为准</strong>。</span>
     </div>
   </div>
 
@@ -2388,7 +2391,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
       目标：出成绩、拿等级。<br>
       内容：减量 30–40%，保持强度（短而快），加入比赛配速专项课。<br>
       <strong>关键比赛：5 月上旬 重庆市大学生田径比赛</strong>（全年主战场，<strong>拿等级就靠这一场</strong>）。报 1500m + 800m，主目标冲三级（4:28.69 / 2:09.53），二级是超额目标。<span class="opt">（完整比赛日历见第 14 节表 14-2，此处不重复。）</span><br>
-      <span class="opt"><strong>赛程全貌：</strong>你这一学年有两场校运会，但<strong>只有一场设田径</strong>——<strong>11 月下旬的校田径运动会</strong>（已在阶段 1 标出，性质是摸底，不是达标）；4 月 15–16 日那场"学生运动会"<strong>不设田径项目</strong>，不是比赛机会。<strong>所以春季这 7 周只服务 5 月这一场市赛。</strong></span>
+      <span class="opt"><strong>赛程全貌（2026-10-13 更新）：</strong>校田径运动会因 50 周年校庆<strong>推迟至下学期</strong>（日期待定，性质仍是摸底，不是达标）；4 月 15–16 日那场"学生运动会"<strong>不设田径项目</strong>，不是比赛机会。<strong>所以春季现在有两场：校运会（摸底）＋ 5 月市赛（主线，拿等级就靠它）。</strong>若校运会在市赛之前，就当全真热身；若时间撞车，无条件保市赛——校运会不达级，市赛才达级。</span>
     </div>
   </div>
 
@@ -2618,7 +2621,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <strong>③ 高强度课后不要立刻洗澡躺下：</strong>先拉伸 + 放松走，让心率降到 100 以下再洗，否则 23:30 也睡不着。<br>
   <strong>④ 入睡困难对策：</strong>如果周三夜训质量课（间歇/节奏）连续 3 天导致入睡困难，把最重的课挪到周六上午，夜间只排轻松有氧。</p>
   <p><strong>社团跑不能替代课表：</strong>大学生奔跑协会（建议加入——免费陪练＋校内比赛信息）的活动是社交和健康跑，<strong>不能算作当天质量课</strong>。社团跑了 5km，质量课照做，社团量只当有氧的一部分。同时仍要主动去<strong>体育学院/公共体育部问一句</strong>：有没有中长跑训练队、能不能跟训、有没有老师愿意带——学校没正式田径队不等于没老师愿意指导。</p>
-  <p class="opt"><strong>找不到奔跑协会入群入口时，按这条路径找：</strong>① 开学第一周的<strong>社团招新摊位</strong>（操场/食堂门口）；② 问<strong>班长或体育委员</strong>，跑团信息通常从这两个口子流转；③ 关注<strong>体育学院公众号</strong>，或去 NB 区体操馆直接问普拉提老师<strong>钟利</strong>；④ 校运会报名通知（10 月上旬发）出来后，现场也能加到组织群。<strong>先加群、拿到校运会的确切日期，比什么都重要。</strong></p>
+  <p class="opt"><strong>找不到奔跑协会入群入口时，按这条路径找：</strong>① 开学第一周的<strong>社团招新摊位</strong>（操场/食堂门口）；② 问<strong>班长或体育委员</strong>，跑团信息通常从这两个口子流转；③ 关注<strong>体育学院公众号</strong>，或去 NB 区体操馆直接问普拉提老师<strong>钟利</strong>；④ 校运会报名通知（下学期赛前发）出来后，现场也能加到组织群。<strong>先加群、拿到校运会的确切日期，比什么都重要。</strong></p>
 </div>
 
 <h3>2026–2027 学年关键日期</h3>
@@ -2635,6 +2638,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 <tr><td class="c">2.26</td><td>学生报到</td><td>—</td></tr>
 <tr><td class="c">3.1</td><td>第二学期正式行课</td><td>进入专项准备期，为 5 月市赛上强度</td></tr>
 <tr><td class="c"><strong>4.15–4.16</strong></td><td><strong>学生运动会</strong>（校历原文：4.14 下午教师运动会，4.15–16 学生运动会）</td><td>不设田径项目，跳过（不是比赛机会）</td></tr>
+<tr><td class="c"><strong>下学期（日期待定）</strong></td><td><strong>校田径运动会</strong>（红河 A 区田径场；原定 2026.11 下旬，因 50 周年校庆推迟）</td><td>摸底赛：报 1500m + 800m，不专门减量（见第 14 节）</td></tr>
 <tr><td class="c">6.28–7.4</td><td>非毕业年级集中考试</td><td>再次降量</td></tr>
 <tr><td class="c">7.19</td><td>放暑假</td><td>永川 7–8 月是过渡期（第 13 节），跑量砍到 40–60%</td></tr>
 </tbody>
@@ -2642,9 +2646,9 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 </div>
 
 <div class="callout good">
-  <span class="lbl">校运动会：预计 11 月下旬（日期每年变，以 10 月竞赛规程为准）</span>
-  <p><strong>校田径运动会预计在 11 月下旬</strong>（红河 A 区田径场）。<strong>2025 年是 11 月 26–28 日；2024 年是 11 月 6 日开幕——所以日期不是固定的，以体育学院 10 月上旬发的《竞赛规程》为准。</strong>甲组设 800M / 1500M，每人限报 2 个单项，前八名按 10/8/7/5/5/5/5/5 分计入体育成绩，破纪录另有奖金。</p>
-  <p><strong class="need">但要把预期放对：这场比赛距你 10.05 开始训练只有 7–8 周，那时周跑量约 20–24km。</strong>按 VDOT 推算，你大概能跑 1500m 5:25–5:40、800m 2:22–2:30。<strong>这不是失败，这就是"练了 7–8 周"的真实样子。</strong></p>
+  <span class="lbl">校运动会：推迟至下学期（50 周年校庆，具体以竞赛规程为准）</span>
+  <p><strong>校田径运动会推迟至下学期</strong>（红河 A 区田径场）。<strong>原定 11 月下旬；2025 年是 11 月 26–28 日，2024 年是 11 月 6 日开幕——日期本就不固定，以下学期的《竞赛规程》为准。</strong>甲组设 800M / 1500M，每人限报 2 个单项，前八名按 10/8/7/5/5/5/5/5 分计入体育成绩，破纪录另有奖金。</p>
+  <p><strong class="need">但要把预期放对：推迟到下学期后，你已是竞赛期水平，不再用"复训 7–8 周"的 5:25–5:40。</strong>按赛前最近一次实测/体测成绩，用第 14 章摸底表找对应预期。<strong>这不是失败，这就是按当时水平定的合理预期。</strong></p>
   <p><strong>它真正的价值是流程：</strong>熟悉检录、起跑、分道、抢位、以及"站在起跑线上腿软"的感觉。这些东西第一次经历会慌，第二次就不会了——<strong>把它当成明年 4–5 月市赛的预演。</strong></p>
   <p><strong>赛前处理：</strong>不专门减量，赛前 3 天把跑量降到 80%（＝×0.8；摸底赛不按正式赛周的 ×0.5 处理），赛后休息 1–2 天。报 1500m + 800m 两个单项，<strong>先跑 1500m</strong>（<strong class="need">战术用第 14 节的「摸底水平」表，不要用 4:13 那张</strong>）。</p>
   <p class="opt">关于 4 月 15–16 日校历上那场"学生运动会"：你说不设田径项目，那按不设处理。<strong>你春季的真正目标是 5 月的重庆市大学生田径比赛</strong>（2026 年是 5 月 7–10 日，西南大学）。</p>
@@ -4043,14 +4047,14 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 <thead><tr><th scope="col">时间</th><th scope="col">比赛</th><th scope="col">定位</th><th scope="col">目标</th></tr></thead>
 <tbody>
 <tr><td>2026.10 – 11 月中旬</td><td>无比赛</td><td>—</td><td>复跑适应期 ＋ 基础期前段，<strong>专心堆有氧，不用管比赛</strong></td></tr>
-<tr><td><strong>2026.11 下旬</strong><br><span class="opt">（以 10 月竞赛规程为准）</span></td><td><strong>校田径运动会</strong>（红河 A 区田径场）</td><td>摸底</td><td>报 1500m + 800m（甲组每人限报 2 项），不专门减量（赛前处理见第 07 节），<strong>当一次"熟悉检录与起跑流程"的摸底赛</strong>。前八名按 10/8/7/5/5/5/5/5 分计入体育成绩</td></tr>
+<tr><td><strong>下学期（日期待定）</strong><br><span class="opt">（原定 2026.11 下旬，因 50 周年校庆推迟）</span></td><td><strong>校田径运动会</strong>（红河 A 区田径场）</td><td>摸底</td><td>报 1500m + 800m（甲组每人限报 2 项），不专门减量（赛前处理见第 07 节），<strong>当一次"熟悉检录与起跑流程"的摸底赛</strong>。前八名按 10/8/7/5/5/5/5/5 分计入体育成绩</td></tr>
 <tr><td>2026.12</td><td>自测 1500m</td><td>评估</td><td>目标 <strong>5:05 以内</strong>——先回到接近高二水平。VDOT 50 左右</td></tr>
 <tr><td>2027.02</td><td>自测 5000m</td><td>评估</td><td>目标 <strong>19:00 以内</strong>（VDOT 52.9）。有氧进步最直接的体现</td></tr>
 <tr><td>2027.03</td><td>自测 1500m + 800m</td><td>评估</td><td>目标 <strong>4:35 / 2:15</strong>。到这一步说明冬训跑量兑现了</td></tr>
 <tr><td>2027.04 上旬</td><td>重庆田协大众田径挑战赛（若时间合适）</td><td>练兵</td><td>熟悉比赛节奏和检录流程，不计成绩</td></tr>
 <tr><td><span class="opt">2027.04.15–16</span></td><td><span class="opt">校历"学生运动会"</span></td><td><span class="opt">不设田径</span></td><td><span class="opt">你确认这场不设田径项目，<strong>所以它不是比赛机会</strong>，按不设处理。春季真正的目标是 5 月的重庆市大学生田径比赛。</span></td></tr>
 <tr><td><strong>2027.05 上旬</strong></td><td><strong>重庆市大学生田径比赛</strong></td><td><strong>重点</strong></td><td><strong>报 1500m + 800m，主目标冲三级（4:28.69 / 2:09.53），二级是超额目标</strong></td></tr>
-<tr><td>2027.05</td><td>自测 1500m + 800m</td><td>复测</td><td>若 5 月市赛未达标，用自测评估差距，转入夏训针对性补强。<strong>（校运会预计 11 月下旬——2025 年是 11 月 26–28 日、2024 年是 11 月 6 日，以 10 月竞赛规程为准；4 月 15–16 日那场校历"学生运动会"不设田径。）</strong></td></tr>
+<tr><td>2027.05</td><td>自测 1500m + 800m</td><td>复测</td><td>若 5 月市赛未达标，用自测评估差距，转入夏训针对性补强。<strong>（校运会推迟至下学期——原定 11 月下旬；4 月 15–16 日那场校历"学生运动会"不设田径。）</strong></td></tr>
 <tr><td>2027.07</td><td>全国大学生田径锦标赛（如入选）</td><td>高级别</td><td>见世面为主。这个水平的对手会把你甩开很远，但那是学习</td></tr>
 </tbody>
 </table>
@@ -4061,7 +4065,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 <div class="callout danger">
   <span class="lbl">战术表必须按"你当时的实测水平"选，不能按"四年后的目标"选</span>
   <p><strong>这一节有四张表，成对使用：</strong></p>
-  <p><strong>① 摸底表（1500m 5:10–5:20 / 800m 2:22–2:30）</strong>——给<strong>从现在到实测跑进 4:30 之前</strong>的所有比赛用，<strong>包括 11 月校运会</strong>。<br>
+  <p><strong>① 摸底表（1500m 5:10–5:20 / 800m 2:22–2:30）</strong>——给<strong>从现在到实测跑进 4:30 之前</strong>的所有比赛用，<strong>包括下学期校运会（推迟，日期待定）</strong>。<br>
   <strong>② 目标表（1500m 4:13.86 / 800m 2:02.11）</strong>——只在<strong>实测跑进 4:30 之后</strong>才启用。<strong class="need">现在照着它跑，等于前 400m 就冲爆。</strong></p>
   <p><strong>换表规则：</strong>每场比赛前，取<strong>最近一次 1500m 实测成绩</strong>，选最接近的一档。<strong>成绩没变，表就不换。</strong>绝不允许用"四年后的目标配速"来跑今天的比赛。</p>
 </div>
@@ -4405,7 +4409,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <span class="lbl">最危险的一件事</span>
   <p>不要因为"想快点达到二级"就偷偷加量。你的目标是<strong>四年的持续进步</strong>，不是三个月的爆发。<strong>一次重伤可能让你错过整个赛季，甚至永久性地影响成绩上限。</strong>这份计划里每一个减量周、每一个轻松跑，都是为了让你能一直练下去。</p>
 </div></template>
-<template data-ch="16" data-title="测试与评估"><p>没有测试的训练是盲目的。每 4 周做一次恢复/训练状态评估（结合减量周）；正式全力测试按下面各项目的频率进行。</p>
+<template data-ch="16" data-title="测试与评估"><p>没有测试的训练是盲目的。每 4 周做一次恢复/训练状态评估；正式全力测试按下面各项目的频率进行。</p>
 
 <div class="tblwrap">
 <table>
@@ -4754,7 +4758,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 <div class="callout good">
   <span class="lbl">三个数据交叉验证：你的能力结构现在很清楚了</span>
   <p><strong>有氧端：</strong>3000m 12:00 → VDOT <strong>47.9</strong>；5km 非全力 22–23 分钟（折合全力 21:00）→ VDOT <strong>47.0</strong>。<strong>两个独立数据差 0.9 个点，说明你的自评靠谱。</strong></p>
-  <p><strong>速度端（高二实测部分）：</strong>停训前 800m 2:15（VDOT 62.3）比同期 5km 20:00（VDOT 49.8）强 <strong>12.5 个 VDOT 点</strong>——<strong>速度端相对强，这部分是实测数据。</strong><span class="opt">注意：这组比较用的是高二同期成绩；当前 5km 已退到 21:00（VDOT 47.0），800m 尚未重测。<strong>不要拿当前 5km 去减高二 800m</strong>——那样得到的 15.3 点里混着"停训掉下来的有氧"，不能当作能力结构差。等 11 月校运会跑出新的 800m，再用同期数据重算一次。</span><span class="opt">至于"速度耐力是否也缺"，取决于你真实的 400m 能力，目前待验证。</span></p>
+  <p><strong>速度端（高二实测部分）：</strong>停训前 800m 2:15（VDOT 62.3）比同期 5km 20:00（VDOT 49.8）强 <strong>12.5 个 VDOT 点</strong>——<strong>速度端相对强，这部分是实测数据。</strong><span class="opt">注意：这组比较用的是高二同期成绩；当前 5km 已退到 21:00（VDOT 47.0），800m 尚未重测。<strong>不要拿当前 5km 去减高二 800m</strong>——那样得到的 15.3 点里混着"停训掉下来的有氧"，不能当作能力结构差。等下学期校运会跑出新的 800m，再用同期数据重算一次。</span><span class="opt">至于"速度耐力是否也缺"，取决于你真实的 400m 能力，目前待验证。</span></p>
   <p><strong>合起来看：</strong>速度天赋好（<strong>这一条依据的是实测的 800m 2:15</strong>；至于 400m，那是<strong>估算值、不是计时成绩</strong>）、有氧偏弱（5km 弱）、中距离也没发挥出速度潜力（800m 居中）——<strong>所以训练重点是两条：堆有氧 + 补速度耐力。绝对速度不用再练太多，它已经是资产了。</strong>配速表按 VDOT 47 定盘，一个字不用改。</p>
   <p><strong>已确认口径：</strong>3000m 12:00 你说"基本代表现在的实力"；5km 那次你说"非全力"。（哪天如果发现 5km 那次其实是全力跑的，<strong>整张表自己按 D 表往下调约 5 秒/km</strong>——即从 21:00 那一行换到 22:00 附近那一行。）</p>
   <p style="margin-bottom:0">同时反推出一个结论：你跑 22–23 分钟那次，实际已经跑到最大能力的 <strong>93% 左右</strong>——所以下次别再叫它"非全力"了，那基本就是你的全力。</p>
@@ -4801,7 +4805,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 <tr><td class="c">10.26–11.01</td><td>适应期第 4 周（减量）</td><td class="c">按第 05 节曲线</td><td>有没有哪里不舒服</td></tr>
 <tr><td class="c">11.02 起</td><td>进入有氧基础期：按 E 配速跑，周三晚加节奏跑</td><td class="c">按第 05 节曲线</td><td>每周反馈一次</td></tr>
 <tr><td class="c">11.22 起</td><td>满 7 周。如全程无痛，<strong>可开始引入力量 B 的最低档</strong>（每周 1 次、只做跳绳双摇）</td><td class="c">按第 05 节曲线</td><td>再测一次 5000m</td></tr>
-<tr><td class="c"><strong>11 月下旬</strong></td><td><strong>校田径运动会</strong>（红河 A 区）· 报 1500m + 800m · 赛前 3 天把跑量降到 80%（×0.8），不专门减量<br><span class="opt">具体日期以体育学院 10 月发的竞赛规程为准</span></td><td class="c">按第 05 节曲线</td><td>比赛成绩 + 比赛感受</td></tr>
+<tr><td class="c"><strong>下学期</strong><br><span class="opt">（待定，原定 11 月下旬）</span></td><td><strong>校田径运动会</strong>（红河 A 区）· 报 1500m + 800m · 赛前 3 天把跑量降到 80%（×0.8），不专门减量<br><span class="opt">日期确定后本行移到对应时间位置；若与 5 月市赛撞期，以市赛为主</span></td><td class="c">按第 05 节曲线</td><td>比赛成绩 + 比赛感受</td></tr>
 <tr><td class="c">2027.4.15–16</td><td>校"学生运动会"——<strong>不设田径项目，跳过</strong></td><td class="c">—</td><td>不用管</td></tr>
 </tbody>
 </table>
@@ -5568,7 +5572,6 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 <h4>第二步：照抄当日数字</h4>
 <div class="tblwrap"><table><caption>表 23-1 · 常用周跑量 → 每日分配速查（27 档）</caption><tr><th>周跑量</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>日</th></tr><tr><td>12</td><td>2</td><td>1</td><td>2</td><td>1</td><td>2</td><td>4</td><td>0</td></tr><tr><td>14</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>4</td><td>0</td></tr><tr><td>15</td><td>2</td><td>2</td><td>3</td><td>2</td><td>2</td><td>4</td><td>0</td></tr><tr><td>18</td><td>3</td><td>2</td><td>3</td><td>2</td><td>3</td><td>5</td><td>0</td></tr><tr><td>19</td><td>3</td><td>2</td><td>3</td><td>2</td><td>3</td><td>6</td><td>0</td></tr><tr><td>21</td><td>3</td><td>3</td><td>4</td><td>2</td><td>3</td><td>6</td><td>0</td></tr><tr><td>23</td><td>4</td><td>3</td><td>4</td><td>3</td><td>3</td><td>6</td><td>0</td></tr><tr><td>24</td><td>4</td><td>3</td><td>4</td><td>3</td><td>3</td><td>7</td><td>0</td></tr><tr><td>25</td><td>4</td><td>3</td><td>4</td><td>3</td><td>3</td><td>8</td><td>0</td></tr><tr><td>27</td><td>4</td><td>3</td><td>5</td><td>3</td><td>3</td><td>9</td><td>0</td></tr><tr><td>30</td><td>5</td><td>4</td><td>5</td><td>4</td><td>3</td><td>9</td><td>0</td></tr><tr><td>31</td><td>4</td><td>4</td><td>5</td><td>4</td><td>4</td><td>10</td><td>0</td></tr><tr><td>32</td><td>5</td><td>4</td><td>5</td><td>4</td><td>4</td><td>10</td><td>0</td></tr><tr><td>33</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>10</td><td>0</td></tr><tr><td>34</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>11</td><td>0</td></tr><tr><td>35</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>12</td><td>0</td></tr><tr><td>36</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>13</td><td>0</td></tr><tr><td>38</td><td>5</td><td>4</td><td>6</td><td>5</td><td>4</td><td>14</td><td>0</td></tr><tr><td>39</td><td>6</td><td>5</td><td>6</td><td>5</td><td>5</td><td>12</td><td>0</td></tr><tr><td>40</td><td>6</td><td>5</td><td>6</td><td>5</td><td>5</td><td>13</td><td>0</td></tr><tr><td>42</td><td>6</td><td>5</td><td>7</td><td>5</td><td>4</td><td>15</td><td>0</td></tr><tr><td>43</td><td>6</td><td>5</td><td>7</td><td>5</td><td>4</td><td>16</td><td>0</td></tr><tr><td>44</td><td>6</td><td>5</td><td>7</td><td>5</td><td>5</td><td>16</td><td>0</td></tr><tr><td>45</td><td>5</td><td>7</td><td>7</td><td>6</td><td>4</td><td>16</td><td>0</td></tr><tr><td>48</td><td>5</td><td>8</td><td>8</td><td>6</td><td>4</td><td>17</td><td>0</td></tr><tr><td>51</td><td>5</td><td>9</td><td>8</td><td>7</td><td>4</td><td>18</td><td>0</td></tr><tr><td>54</td><td>6</td><td>9</td><td>9</td><td>7</td><td>4</td><td>19</td><td>0</td></tr></table></div><p style="font-size:13px;color:var(--ink2)">增幅规则：连续加量周：以数学计算的 10% 为上限，再取最接近的现有跑量档位；因此允许因整数档位产生约 0.2–0.4km 的离散取整误差。</p> <!-- 2026-10-05:27档静态，与SPLIT同源 -->
 
-</div>
 <h4>三条硬性上限（不许破）</h4>
 <ol><li>连续加量周：30km 以下允许每档 +3km；30km 以上增幅 ≤ 10%</li><li>第 4 周强制减量 20%（×0.8）</li><li>减量周按比例每天减 20%</li></ol>
 <h4>课型说明</h4>
@@ -5618,7 +5621,7 @@ function v18checkFirst(){
 function refreshCounts(){
   try{
     var n=CH.length;
-    var el=document.querySelector(".brand em"); if(el) el.textContent="v18.0 · "+n+" 圈";
+    var el=document.querySelector(".brand em"); if(el) el.textContent="v18.1 · "+n+" 圈";
     el=document.querySelector(".rail .rh"); if(el) el.textContent="目录 · "+n+" 圈";
     el=document.querySelector(".drawer .dh"); if(el) el.textContent="全部章节 · "+n+" 圈";
     var tbl=CH.reduce(function(a,c){return a+(((c.html||"").match(/<table/g)||[]).length);},0);
@@ -5627,11 +5630,11 @@ function refreshCounts(){
   }catch(e){}
 }
 
-setTimeout(refreshCounts,100); /* 2026-10-04:初始化调用 */
+/* 2026-10-13:P1-7，删100ms重复调用，render内已有 */
 /* 2026-10-04:每章要点3条（本章开头卡片） */
 var CH_POINTS={
 "00":["主攻1500m兼800m","有氧是确定短板","当前VDOT约47"],
-"01":["用2024新标准旧版废","三级1500m 4:28.69","大一末目标冲三级"],
+"01":["用2026新标准（84号）","三级1500m 4:28.69","大一末目标冲三级"],
 "02":["5月市赛是主线战场","校运会只摸底不达级","自费参赛通道已确认"],
 "03":["1500m八成靠有氧","80/20强度分配","先堆量后上强度"],
 "04":["记住一圈2:15就够","E跑占八成跑量","进步了自己换表"],
@@ -5707,21 +5710,22 @@ var KEYS=[12,14,15,18,19,21,23,24,25,27,30,31,32,33,34,35,36,38,39,40,42,43,44,4
 var RED_CONS={4:1,8:1,14:1,18:1,25:1,29:1,42:1,45:1,47:1} /* 2026-10-05:W35是阶段切换，非减量周 */; /* 2026-10-04 回滚：W14需保留供buildMileage图表标记减量周 */  /* v16.8:保守版 W12(30→31)不是减量，W34(38→38)持平，均剔除 */
 var RED_ORIG={4:1,8:1,12:1,14:1,18:1,25:1,29:1,42:1,45:1,47:1};  /* v16.8:原版 W12(39→31)是减量，保留 */
 function curRED(){return (typeof PLAN_VER!=="undefined"&&PLAN_VER==="orig")?RED_ORIG:RED_CONS;}
-var RACE={8:1,30:1,31:1}; /* 2026-10-05:W8校运会也是比赛周；W8同时是减量周(RED_CONS)，双重标记 */   /* v16.6:赛前1周/赛周单列，不再混入减量周 */
+var RACE={30:1,31:1}; /* 2026-10-13:W8校运会推迟至下学期，移除比赛周标记；日期确定后加回 */   /* v16.6:赛前1周/赛周单列，不再混入减量周 */
 /* 周次标签：口径与第 05 节一致。
    RED 只表示「减量/降量周」；RACE 表示「赛前 1 周 / 赛周」，图表用不同标记区分。
    v16.8:W18/W29 的 ×0.8 是相对阶段峰值 48，不是相对上周 45；W30/W31 同理。W34 持平。 */
 function weekTag(w, sep){
   var s = sep ? " · " : "";
+  if(w===1) return s+"起步周";   /* 2026-10-13:第1周不是加量 */
   if(w===14) return s+"×0.8 · 停全部质量课";   /* 阶段名已是「考试周」，此处只补系数，避免重复 */
   if(w===30) return s+"赛前 1 周 · 峰值×"+(KM[29]/48).toFixed(2); /* 2026-10-04 P0-2:竞赛期峰值48 */
   if(w===31) return s+"赛周 · 峰值×"+(KM[30]/48).toFixed(2); /* 2026-10-04 P0-2:竞赛期峰值48 */
   if(w===32) return s+"赛后恢复周";   /* v16.13:与 §05 文本对齐（固定 30km，不按 ×0.8） */
   if(w===33) return s+"恢复性回升";   /* v16.23:表05-1明确为恢复性回升，不受10%限制 */
-  if(curRED()[w]){ /* 2026-10-04 P2-1:用 curRED 判断减量周，不硬编码周号；峰值按阶段取 */
-    var _stagePeak = Math.max.apply(null, KM.slice(Math.max(0,w-9), Math.max(0,w-1))); /* 2026-10-04:取前8周峰值，不含当前周 */
-    if(w===18||w===29) _stagePeak = 48; /* 2026-10-04 P0-1:寒假段/竞赛期峰值取48，前8周法在这两周失效 */
-    return s+"减量周 · 峰值×"+(KM[w-1]/_stagePeak).toFixed(2);
+  if(curRED()[w]){ /* 2026-10-13:显示与上一周的实际比值（表05-1可验证），替代此前的前8周峰值法 */
+    var _rr=(KM[w-1]/KM[w-2]).toFixed(2);
+    if(w===18||w===29) _rr+="（相对阶段峰值48：×"+(KM[w-1]/48).toFixed(2)+"）"; /* 2026-10-13:表05-1明确以48为峰值，tooltip补注 */
+    return s+"减量周 · ×"+_rr;
   }
   if(w>1 && KM[w-1]===KM[w-2]) return s+"持平周";
   if(w>1 && KM[w-1] < KM[w-2]) return s+"回落周";   /* 比上周低、但不属于计划的 ×0.8/×0.67/×0.5 */
@@ -5753,7 +5757,7 @@ var LV_SEC={};for(var _lk in LV){LV_SEC[_lk]=LV[_lk].map(function(x){return t2s(
 function nearest(v){var b=KEYS[0];for(var i=0;i<KEYS.length;i++)if(Math.abs(KEYS[i]-v)<Math.abs(b-v))b=KEYS[i];return b;}
 function s2t(s){s=Math.round(s*10)/10;var m=Math.floor(s/60),r=s-m*60;if(r>=59.95){m++;r=0;}return m+":"+(r<10?"0":"")+(Math.round(r*10)/10);}
 function v18mmss(s){ /* 2026-10-05:输入框3/4位数转mm:ss，如430→4:30、1555→15:55 */ try{ s=String(s).trim(); if(/^\d{3}$/.test(s)){ var _m=s.slice(0,1), _ss3=s.slice(1); if(parseInt(_ss3,10)<60) return _m+':'+_ss3; } if(/^\d{4}$/.test(s)){ var _mm=s.slice(0,2), _ss=s.slice(2); if(parseInt(_ss,10)<60) return _mm+':'+_ss; } }catch(e){} return s; }
-function t2s(t){var s=String(t).replace(/：/g,":").replace(/．/g,".").trim();var m=s.match(/^([1-9]\d{0,2}):([0-5]\d(?:\.\d{1,2})?)$/);if(m)return parseInt(m[1],10)*60+parseFloat(m[2]);if(s.indexOf(":")>=0)return NaN;   /* v16.10 A3:含冒号但格式非法（如 4:60）直接 NaN；2026-10-04 P0-1:拒绝 0:xx 与 00:xx，分钟位不为0开头 */if(!/^\d+(\.\d+)?$/.test(s))return NaN;var n=parseFloat(s);return isNaN(n)?NaN:n;}
+function t2s(t){var s=String(t).replace(/：/g,":").replace(/．/g,".").trim();var m=s.match(/^([1-9]\d{0,2}):([0-5]\d(?:\.\d{1,2})?)$/);if(m)return parseInt(m[1],10)*60+parseFloat(m[2]);if(s.indexOf(":")>=0)return NaN;   /* v16.10 A3:含冒号但格式非法（如 4:60）直接 NaN；2026-10-04 P0-1:拒绝 0:xx 与 00:xx，分钟位不为0开头（0:30不是合法人类配速，属有意设计）；2026-10-13:注意t2s本身接受mm:ss.xx小数，PB输入框另有限制见v18bindPB */if(!/^\d+(\.\d+)?$/.test(s))return NaN;var n=parseFloat(s);return isNaN(n)?NaN:n;}
 function lap(km){var t=t2s(km);return s2t(t/2.5);}
 function lapR(r){return r.split("–").map(lap).join(" – ");}
 function phaseOf(w){
@@ -5823,12 +5827,12 @@ function todayModule(){
     var _oor=_sug.outOfRange?'<br><span style="color:var(--warn)">⚠️ 你的成绩超出本表范围（21:00–14:00），以上为最接近行，仅供参考，请按体感跑</span>':'';
     _sugHtml='<div class="tm-banner tm-warn" style="margin:8px 0">🎯 你的 5km 从 '+esc(_sug.old)+' → '+esc(_sug.now)+'，按 D 表建议切到第 '+(_sug.row+1)+' 行：<br>E '+esc(_pr[2])+' · T '+esc(_pr[4])+' · I '+esc(_pr[5])+' · R '+esc(_pr[6])+_oor+'<br><button type="button" class="v18-btn" id="v18paceok" style="margin-top:6px">知道了</button> <button type="button" class="v18-btn" id="v18paceno" style="margin-top:6px;background:transparent">暂不</button></div>';
   }
-  if(pw.days<0){
+  if(pw.days<0){ /* 2026-10-13:P1-1，恢复<0（-1改窄了会导致Week 0/48） */
     /* 2026-10-04:计划开始前显示明日预告（W1周一） */
     var _pvSp=SPLIT[12]||SPLIT[nearest(12)], _pvKm=_pvSp?_pvSp[0]:2;
     var _pvD=new Date(); _pvD.setDate(_pvD.getDate()+1); /* 2026-10-04:明天日期，非START */
     var _pvDs=(_pvD.getMonth()+1)+'.'+_pvD.getDate()+' 周'+["日","一","二","三","四","五","六"][_pvD.getDay()];
-    var _pvHtml='<div class="tm-sub" style="margin-top:8px">📅 明日预告（'+_pvDs+'）：约 '+_pvKm+' km · 按体感跑</div>'; /* 2026-10-04:日期动态算 */
+    var _pvHtml=(pw.days===-1)?'<div class="tm-sub" style="margin-top:8px">📅 明日预告（'+_pvDs+'）：约 '+_pvKm+' km · 按体感跑</div>':''; /* 2026-10-13:仅剩1天显示明日预告 */
     return '<div class="todaymod" style="--ld:430ms">'+head+_sugHtml+
       '<div class="tm-big">还有 '+(-pw.days)+' 天开始</div>'+
       '<div class="tm-sub">复跑适应期 · Week 01/48 · 首周 12 km</div>'+_pvHtml+
@@ -5926,19 +5930,17 @@ function todayModule(){
   var _circ=97.39;   /* V18:2*π*15.5 */
   var _dash=(_dayNum/7*_circ).toFixed(1)+" "+_circ.toFixed(1);
   var _msW=0, _msName="";
-  if(w<=8){ _msW=8; _msName="校运会"; } /* 2026-10-04:w<=8，含当周 */
-  else if(w<31){ _msW=31; _msName="赛周"; }
+  if(w<31){ _msW=31; _msName="赛周"; } /* 2026-10-13:校运会推迟至下学期，W8里程碑移除；日期确定后加回 */
   else if(w<=48){ _msW=48; _msName="第一年结束"; }
   var _msDays=_msW>0?((_msW-w)*7-wd):-1;   /* V18:距目标周周一的天数 */
   var _msHtml="";
   if(_msDays>0){
     _msHtml='<span class="tm-ms">距'+_msName+'（W'+_msW+'）还有 <b>'+_msDays+'</b> 天</span>';
   }
-  if(w===8 && _msName==="校运会"){ _msHtml='<span class="tm-ms">📍 本周校运会（W8 · 11.23–29）</span>'; } /* 2026-10-04:当周特殊显示 */
+  /* 2026-10-13:校运会推迟，W8当周特殊显示移除 */
   /* 2026-10-04:赛前2周横幅 */
   var _banner='';
-  if(w>=6 && w<8){ _banner='<div class="tm-banner">⚠️ 距离校运会还有 '+((8-w)*7-wd)+' 天 · 赛前3天请降到 ×0.8</div>'; }
-  else if(w>=29 && w<31){ _banner='<div class="tm-banner">⚠️ 距离赛周还有 '+((31-w)*7-wd)+' 天 · 赛前3天请降到 ×0.8</div>'; }
+  if(w>=29 && w<31){ _banner='<div class="tm-banner">⚠️ 距离赛周还有 '+((31-w)*7-wd)+' 天 · 赛周前3天单日跑量请降到 ×0.8</div>'; } /* 2026-10-13:P2-9，加"单日"限定防误解为整周 */
   var _extraHtml='<div class="tm-extra">'+
     '<div class="tm-ringwrap"><svg class="tm-ring" viewBox="0 0 36 36" aria-label="本周进度'+_ringPct+'%">'+
     '<circle cx="18" cy="18" r="15.5" class="tm-ring-bg"/>'+
@@ -6007,7 +6009,7 @@ function v18showSummary(){
   var el=document.getElementById('v18sumshow');
   if(!el) return;
   try{
-    try{ var _pw=planWeek(); var _w=_pw?_pw.w:0; if(_w<1||_w>48){ el.innerHTML='<div class="tm-rx">'+(_w<1?'计划尚未开始（10.05 开跑后才有周总结）':'第一年计划已结束')+'</div>'; return; } }catch(e){}
+    try{ var _pw=planWeek(); var _pwW=_pw?_pw.w:0; if(_pwW<1||_pwW>48){ el.innerHTML='<div class="tm-rx">'+(_pwW<1?'计划尚未开始（10.05 开跑后才有周总结）':'第一年计划已结束')+'</div>'; return; } }catch(e){} /* 2026-10-13:重命名避免与下方_w混淆 */
     var arr=v18get('v18_checkin',[]);
     if(!Array.isArray(arr)||arr.length===0){ el.innerHTML='<div class="tm-rx">还没有打卡记录</div>'; return; }
     function ds(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
@@ -6083,7 +6085,7 @@ function v18showTrend(){
 }
 /* 2026-10-04 E1:周次事件单一数据源（TL_EVENTS/_msW/MILESTONES 三处派生） */
 var WEEK_EVENTS={
-  8:{t:"校运会", c:"race", d:"1500m 目标 5:25–5:40"},
+  8:{t:"校运会（推迟，日期待定）", c:"", d:"原定11月下旬，因50周年校庆推迟至下学期"},
   14:{t:"考试周", c:"rest", d:""},
   30:{t:"赛前1周", c:"race", d:""},
   31:{t:"赛周", c:"race", d:"1500m 保守预测 4:50–5:00"},
@@ -6130,7 +6132,7 @@ function coverHTML(){
       '<div class="hstat"><div class="k">大一峰值</div><div class="v">54<small>km/周</small></div><div class="d">3 月专项期 · 全年 '+KM.reduce(function(a,b){return a+b;},0)+'km</div></div>'+
       '<div class="hstat"><div class="k">篇幅</div><div class="v">'+CH.length+'<small>章</small></div><div class="d" data-count="tables">99 张表 · 一次只看一章</div></div>'+
     '</div>'+
-    '<div class="htags" style="--ld:430ms"><span class="hot">体竞字〔2024〕121号</span><span>主攻 1500m</span>'+
+    '<div class="htags" style="--ld:430ms"><span class="hot">体竞字〔2026〕84号</span><span>主攻 1500m</span>'+
       '<span>48 周跑量曲线</span><span>自我更新六规则</span><span>旧伤适配</span></div>'+
     '<div id="v18first" style="display:none"><div class="tm-banner tm-warn">👋 第一次打开？<br>1. 先看第 00 章「你的档案」——5 分钟了解为什么这么设计<br>2. 然后跳到第 06 章「周训练模板」——这就是你每天要跑的东西<br>3. 剩下的 23 章平时不用读，遇到问题按索引翻<br><button type="button" class="v18-btn" id="v18firstok" style="margin-top:6px">我知道了，不再显示</button></div></div>'+
     todayModule()+
@@ -6298,8 +6300,8 @@ function bindChToc(){
 function bindTools(i){
   var n=CH[i].n;
   var stage=$("#stage"); if(!stage) return;   /* v16.16:P0 修 ReferenceError（stage 未定义致整条导航链中断） */
-  if(VIZ[n]) VIZ[n][1]();
-  if(TOOLS[n]) TOOLS[n][1]();
+  if(VIZ[n]) try{ VIZ[n][1](); }catch(e){ try{console.debug('[viz]',n,e&&e.message);}catch(_e){} } /* 2026-10-13:P1-1，可视化失败不阻断导航 */
+  if(TOOLS[n]) try{ TOOLS[n][1](); }catch(e){ try{console.debug('[tool]',n,e&&e.message);}catch(_e){} } /* 2026-10-13:P1-1 */
   [].forEach.call(stage.querySelectorAll(".card,.stat,.hstat,.tg a,.po,.lv"),function(x){x.classList.add("spot");});   /* v16.16:去冗余 #stage 前缀 */
   bindAesthetic();
   bindChToc();   /* V18:绑定章节TOC（项目06） */
@@ -6400,9 +6402,9 @@ function go(v,restoreY){
       stage.classList.add("enter");
       void stage.offsetWidth;
       stage.classList.remove("enter");
-      sync();
       if(!restoring) savePos();   // v16.1:恢复期间不存，避免 y=0 覆盖
     }finally{
+      try{ sync(); }catch(_se){} /* 2026-10-13:P1-1，render抛错也要同步导航 */
       transitioning=false;   // v16.5 B8:render 抛错也不卡死导航
       stage.classList.remove("out","enter");   /* v16.11 P3:抛错时过渡类不残留 */
     }
@@ -6598,6 +6600,7 @@ function bindWeek(){
     rollNum($("#wkr .num"),km);
     lastKm=km;
     var row=SPLIT[nearest(km)], names=["一","二","三","四","五","六","日"];
+    if(!row){ $("#wkd").innerHTML='<div class="err">数据异常</div>'; return; } /* 2026-10-13:P1-4 */
     $("#wkd").innerHTML=row.map(function(v,i){
       return '<div class="day'+(i===2?" q":"")+'"><div class="d">周'+names[i]+'</div><div class="v">'+v+'</div></div>';
     }).join("");
@@ -6626,7 +6629,7 @@ function toolLevel(){
       Object.keys(LV).map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join("")+
     '</select><input type="text" id="lvt" value="4:40" placeholder="例：4:40 或 300"></div>'+
     '<div class="lvrow" id="lvo" aria-live="polite"></div>'+   /* v16.13:结果更新播报 */
-    '<p class="ref" style="margin-top:14px">依据体育总局《运动员技术等级标准》体竞字〔2024〕121 号（电计成绩）。</p>'+
+    '<p class="ref" style="margin-top:14px">依据体育总局《运动员技术等级标准》体竞字〔2026〕84 号（电计成绩）。</p>'+
     '</div></div>';
 }
 function bindLevel(){
@@ -7143,7 +7146,7 @@ function palOpen(){ if(pal.classList.contains("on"))return;   /* v16.10 A4:幂�
   pin.value=""; palRender(""); setTimeout(function(){pin.focus();},60); }
 function palClose(){ pal.classList.remove("on");
   /* 2026-10-04 P0-3:移除类、清变量并 scrollTo 恢复位置 */
-  document.body.classList.remove("pal-open"); document.body.style.removeProperty("--pal-top"); if(pal._sy!=null) window.scrollTo(0,pal._sy);
+  document.body.classList.remove("pal-open"); document.body.style.removeProperty("--pal-top"); if(pal._sy!=null) window.scrollTo({top:pal._sy,behavior:"auto"}); /* 2026-10-13:P1-2，防smooth跳动 */
   pin.blur();   /* v16.10 A4:palOpener 若在 pal 内（隐藏子树）则不回焦 */ if(palOpener&&palOpener.focus&&!pal.contains(palOpener))palOpener.focus(); palOpener=null; }
 $("#sBtn").addEventListener("click",palOpen);
 pin.addEventListener("input",function(){ palRender(pin.value); });
@@ -7264,7 +7267,7 @@ function v18today(){
 /* 2026-10-04 功能B:打卡连续天数（今天没打卡则从昨天起算） */
 /* 2026-10-04:红旗词表常量（与第15/21节正文红旗标准对应，改正文须同步改这里） */
 /* 明确排除：弹响（不伴无力/疼痛时属良性，不触发红档） */
-var RED_FLAGS=/夜间痛|静息痛|跛行|肿胀|晨僵|压痛|单脚跳|蹬地无力|打软腿|卡住|骨性|刺痛|发软/;
+/* 2026-10-13:RED_FLAGS正则已删除（定义后从未使用），统一用v18hasRedFlag的words数组 */
 function v18hasRedFlag(txt){ if(!txt) return false; var words=['夜间痛','静息痛','跛行','肿胀','晨僵','压痛','单脚跳','蹬地无力','打软腿','卡住','骨性','刺痛','发软']; for(var i=0;i<words.length;i++){ var w=words[i], idx=txt.indexOf(w); while(idx>=0){ var pre=txt.slice(Math.max(0,idx-3),idx); if(!/[无没不未否]/.test(pre)) return true; idx=txt.indexOf(w,idx+1); } } return false; } /* 2026-10-05:否定不触发 */
 /* 2026-10-04 B1:旧伤信号追踪（第15节原文阈值） */
 function v18injWarn(){
@@ -7357,7 +7360,10 @@ function v18streak(){
 function v18toSec(s){
   if(!s) return NaN;
   s = String(s).trim().replace(/[：∶]/g,':').replace(/[．。]/g,'.');
+  if(!/^[0-9:.\s]+$/.test(s)) return NaN; /* 2026-10-13:严格字符集，"4:30abc"类尾部垃圾直接拒 */
   var parts = s.split(':');
+  if(parts.length<1||parts.length>3) return NaN; /* 2026-10-13:"1:2:3:4"类超段输入直接拒 */
+  for(var _vi=0;_vi<parts.length;_vi++){ if(!/^\s*\d+(\.\d+)?\s*$/.test(parts[_vi])) return NaN; } /* 2026-10-13:逐段严格数字，替代parseFloat截断语义 */
   if(parts.length===2){
     var m = parseFloat(parts[0]), sec = parseFloat(parts[1]);
     if(isNaN(m)||isNaN(sec)||m<0||sec<0||sec>=60) return NaN;
@@ -7466,8 +7472,9 @@ function v18renderFab(){
       return;
     }
     /* 2026-10-04:点外部关菜单 */
-    if(tools.classList.contains('open') && !e.target.closest('.v18-tools') && !e.target.closest('#v18tbtn')){
-      tools.classList.remove('open');
+    var _t=document.getElementById('v18tools'); /* 2026-10-13:P1-3，实时获取防闭包指向旧节点 */
+    if(_t&&_t.classList.contains('open') && !e.target.closest('.v18-tools') && !e.target.closest('#v18tbtn')){
+      _t.classList.remove('open');
     }
   });}
   document.body.appendChild(tools); /* 2026-10-04:document click监听移至IIFE顶层，只绑一次 */
@@ -7502,8 +7509,8 @@ function v18openModal(tab){
       }
     });
   }
+  try{ m._prevFocus=document.activeElement; }catch(e){} /* 2026-10-13:先捕获焦点，再渲染（P1-4） */
   v18renderModal(tab||'checkin');
-  try{ m._prevFocus=document.activeElement; }catch(e){}
   m.classList.add('open');
   try{ var _f=m.querySelector('button, input, [tabindex]'); if(_f) _f.focus(); }catch(e){}
   /* 2026-10-05:焦点进入 */
@@ -7544,7 +7551,8 @@ function v18renderModal(tab){
     '<div style="margin-top:14px"><button class="v18-btn ghost" id="v18close">关闭</button></div>';
   box.querySelectorAll('[data-v18tab]').forEach(function(b){
     b.addEventListener('click', function(){ v18renderModal(b.getAttribute('data-v18tab')); });
-  /* 2026-10-05:恢复打卡表单 */
+  });
+  /* 2026-10-13:恢复打卡表单（移出forEach，P3-2） */
   try{
     if(tab==='checkin'&&window._v18cfSave){
       var _s=window._v18cfSave;
@@ -7555,7 +7563,6 @@ function v18renderModal(tab){
       if(document.getElementById('v18type')) document.getElementById('v18type').value=_s.type||'E';
     }
   }catch(e){}
-  });
   var cb = document.getElementById('v18close');
   if(cb) cb.addEventListener('click', v18closeModal);
   if(tab==='checkin') v18bindCheckin();
@@ -7620,7 +7627,7 @@ function v18bindCheckin(){
   v18renderHist();
 }
 /* 2026-10-04:功能C+ - 训练自动分析（规则版） */
-function v18sanitizeHtml(h){ try{ var s=String(h||''); s=s.replace(/<script[^>]*>[\s\S]*?<\/script>/gi,''); s=s.replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi,''); s=s.replace(/javascript:/gi,''); return s; }catch(e){ return ''; } } /* 2026-10-05:存分析前消毒 */
+function v18sanitizeHtml(h){ try{ var s=String(h||''); s=s.replace(/<script[^>]*>[\s\S]*?<\/script>/gi,''); s=s.replace(/<\/?iframe[^>]*>/gi,''); /* 2026-10-13:分析正文不需要iframe，整标签剥除，堵srcdoc载体 */ s=s.replace(/<([a-zA-Z][a-zA-Z0-9]*)\/(on\w+\s*=)/g,'<$1 $2'); /* 2026-10-13:先把<svg/onload=归一化为空格形式，再走原有on*剥除，堵斜杠绕过 */ s=s.replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi,''); s=s.replace(/javascript:/gi,''); return s; }catch(e){ return ''; } } /* 2026-10-05:存分析前消毒 */
 function v18analyzeWorkout(d){
   try{
     var laps=d.laps;
@@ -7794,8 +7801,9 @@ function v18importFile(e){
     function _next(){
       if(_idx>=files.length){
         _v18importLock=false;
-        err.style.display='block'; err.style.color='var(--ac,#2bd9be)';
+        if(err){ err.style.display='block'; err.style.color='var(--ac,#2bd9be)'; /* 2026-10-13:P0-4，模态框已关时err为null */
         err.textContent='✓ 批量导入完成：成功'+_done+'个'+(_skip>0?'，跳过'+_skip+'个（日期重复或解析失败）':'')+(_fitSkip>0?'；其中'+_fitSkip+'个FIT请在COROS App中导出为GPX/TCX':'');
+        } /* 2026-10-13:P0-4 end if(err) */
         v18renderHist(); v18renderFab();
         try{ if(typeof render==='function'){ var _sy=window.scrollY; render(cur); window.scrollTo({top:_sy,behavior:"auto"}); } }catch(e){} /* 2026-10-04 P0-2:刷新TODAY */
         e.target.value='';
@@ -7874,13 +7882,14 @@ function v18importFile(e){
           }
           _anaDiv.innerHTML=_anaHtml; try{ window._v18pendingAna={dateStr:r.dateStr, html:_anaHtml}; }catch(_pe){} /* 2026-10-05:缓存分析 */
           /* 存档分析 */
-          try{ if(r.dateStr){ v18pruneAnalysis(); /* 2026-10-05:导入只预览 */ void 0; } }catch(ae2){} /* 2026-10-04:空日期不存档 */
+          try{ if(r.dateStr){ /* 2026-10-13:P3-7，预览不清理旧分析（无副作用） */ void 0; } }catch(ae2){} /* 2026-10-04:空日期不存档 */
         }
       }
     }catch(ae){}
     err.style.display='block'; err.style.color='var(--ac,#2bd9be)';
     err.textContent='✓ 已导入 '+f.name+'（'+r.km.toFixed(2)+'km），请补体感/睡眠后保存';
   }).catch(function(ex){
+    if(!err) return; /* 2026-10-13:P3-6，err节点缺失时不抛裸异常 */
     err.style.display='block'; err.style.color='';
     err.textContent='导入失败：'+(ex.message||ex);
   });
@@ -7969,7 +7978,7 @@ function v18parseWorkoutFile(f){
                 var _lt=(_t-_lapStartT)/1000;
                 if(_lt>0){
                   _gLaps.push({spk:_lt, hr:_lapHrN>0?Math.round(_lapHrSum/_lapHrN):0}); _lapHrSum=0; _lapHrN=0; // 2026-10-05:HR平均
-                }
+                } else { try{ console.debug('[gpx] skip zero-length lap at km '+_kmCount); }catch(_e){} } /* 2026-10-13:P3-5 */
                 _kmCount++; _lapStartT=_t;
               }
             } else {
@@ -8022,14 +8031,15 @@ function v18parseWorkoutFile(f){
           /* 心率：按时间加权平均 */
           var ah=laps[li].getElementsByTagName('AverageHeartRateBpm')[0];
           var mh=laps[li].getElementsByTagName('MaximumHeartRateBpm')[0];
-          var _ahv=ah?parseFloat(ah.getElementsByTagName('Value')[0].textContent)||0:0;
-          var _mhv=mh?parseFloat(mh.getElementsByTagName('Value')[0].textContent)||0:0;
+          var _val=function(el){ var v=el&&el.getElementsByTagName('Value')[0]; return v?(parseFloat(v.textContent)||0):0; }; /* 2026-10-13:P0-2，Value缺失不抛错 */
+          var _ahv=_val(ah);
+          var _mhv=_val(mh);
           if(_ahv>0&&_lt>0) hrSum+=_ahv*_lt;
           if(_mhv>hrMax) hrMax=_mhv;
           /* 分段：每 Lap 的配速 */
           if(_lm>50&&_lt>0){
             var _spk=_lt/(_lm/1000);
-            _splits.push((_lm/1000).toFixed(2)+'km@'+Math.floor(_spk/60)+':'+('0'+Math.round(_spk%60)).slice(-2));
+            _splits.push((_lm/1000).toFixed(2)+'km@'+v18paceFmt(_spk)); /* 2026-10-13:用v18paceFmt，防4:60 */
           }
         }
         km = totalM/1000;
@@ -8038,7 +8048,7 @@ function v18parseWorkoutFile(f){
         var avgHr=totalS>0?Math.round(hrSum/totalS):0;
         if(totalS>0&&km>0){
           var spk=totalS/km;
-          pace=Math.floor(spk/60)+':'+('0'+Math.round(spk%60)).slice(-2)+'/km';
+          pace=v18paceFmt(spk)+'/km'; /* 2026-10-13:用v18paceFmt，防4:60 */
         }
         /* 2026-10-04:存分析用数据 */
         var _anaLaps=[];
@@ -8287,7 +8297,7 @@ function v18pbEditHTML(){
     var r = pr[it.k]||{};
     html += '<div class="v18-pr"><div class="pk">'+it.label+'</div>'+
       '<div class="pv">'+esc(r.time||'—')+'</div>'+
-      '<div class="pm">'+(r.date||'未记录')+(r.scene?' · '+r.scene:'')+'</div>'+
+      '<div class="pm">'+esc(r.date||'未记录')+(r.scene?' · '+esc(r.scene):'')+'</div>'+ /* 2026-10-13:补esc，防备份恢复带入的存储型XSS */
       '<div style="margin-top:8px"><input data-prk="'+it.k+'" data-prf="time" placeholder="成绩 mm:ss" value="'+esc(r.time||'')+'" style="margin-bottom:6px">'+
       '<div class="v18-row"><input type="date" data-prk="'+it.k+'" data-prf="date" value="'+esc(r.date||'')+'">'+ /* 2026-10-04:补esc防属性注入 */
       '<select data-prk="'+it.k+'" data-prf="scene">'+
@@ -8315,23 +8325,31 @@ function v18bindPB(){
       var sEl = box.querySelector('[data-prk="'+it.k+'"][data-prf="scene"]');
       var t = tEl?tEl.value.trim():'';
       if(t){
-        if(/\./.test(t)){ _errs.push(it.label+'（不能含小数点，请用 mm:ss）'); ok=false; return; }
+        /* 2026-10-13:允许小数秒（如4:28.69），t2s已支持mm:ss.xx */
         var _norm = v18mmss(t);
         var sec = v18toSec(_norm);
         if(isNaN(sec)||sec<=0){
           _errs.push(it.label); ok=false; return;
         }
-        pr[it.k] = {time:v18toStr(sec), date:dEl?dEl.value:'', scene:sEl?sEl.value:''};
+        var _timeStr = (/\.\d/.test(_norm)) ? _norm : v18toStr(sec); /* 小数保留原样，避免v18toStr四舍五入丢精度 */
+        pr[it.k] = {time:_timeStr, date:dEl?dEl.value:'', scene:sEl?sEl.value:''};
       } else {
         delete pr[it.k];
       }
     });
     if(!ok){
       err.style.color=''; /* 2026-10-04:复位颜色 */
-      err.textContent = _errs.join('、')+' 成绩格式无效（用 mm:ss，如 4:30）';
+      err.textContent = _errs.join('、')+' 成绩格式无效（用 mm:ss，如 4:30；支持小数秒如 4:28.69）';
       err.style.display='block'; return;
     }
     var _old5k = (v18get('v18_pb',{})['5km']||{}).time;
+    /* 2026-10-13:P2-6，可疑大幅进步（>5分钟）先确认再写入，取消则不保存 */
+    try{
+      var _chk5k=(pr['5km']||{}).time, _co=v18toSec(v18mmss(_old5k)), _cn=v18toSec(v18mmss(_chk5k));
+      if(_chk5k&&!isNaN(_co)&&!isNaN(_cn)&&(_co-_cn)>300){
+        if(!confirm('5km 从 '+_old5k+' 提升到 '+_chk5k+'（快了 '+Math.round((_co-_cn)/60)+' 分钟），确认成绩无误吗？')){ return; }
+      }
+    }catch(e){}
     if(!v18set('v18_pb', pr)){
       err.style.color=''; /* 2026-10-04:复位颜色，防上次成功残留绿色 */
       err.textContent='保存失败：浏览器可能禁用了本地存储'; err.style.display='block'; return;
@@ -8340,7 +8358,7 @@ function v18bindPB(){
     try{
       var _new5k=(pr['5km']||{}).time, _o=v18toSec(v18mmss(_old5k)), _n=v18toSec(v18mmss(_new5k));
       if(_new5k&&!isNaN(_o)&&!isNaN(_n)&&(_o-_n)>=15){
-        if((_o-_n)>300 && !confirm('5km 从 '+_old5k+' 提升到 '+_new5k+'（快了 '+Math.round((_o-_n)/60)+' 分钟），确认成绩无误吗？')){ ok=false; return; }
+        /* 2026-10-13:大幅进步确认已在写入前完成，此处只做换表提示 */
         var _best=null,_bd=1e9;
         PACE.forEach(function(pp,idx){ var _ps=v18toSec(pp[0]); if(!isNaN(_ps)){ var _d=Math.abs(_ps-_n); if(_d<_bd){_bd=_d;_best=idx;} } });
         if(_best!==null){
@@ -8493,14 +8511,14 @@ function v18exportICS(){
   function wdate(w){ var d=new Date(S.getTime()); d.setDate(d.getDate()+(w-1)*7); return d; }
   var evs=[
     ev(S,'🏃 开跑 Day 1','四年计划第一天，W1周一，2km 按体感跑'),
-    ev(wdate(8),'🏆 校运会周','1500m 目标 5:25–5:40，赛前3天降量×0.8'),
+    /* 2026-10-13:校运会推迟至下学期，W8事件移除；日期确定后加回 */
     ev(wdate(14),'📝 考试周','减量周×0.8，停全部质量课'),
-    ev(wdate(30),'⏳ 赛前1周','峰值×0.67，32km'),
-    ev(wdate(31),'🏁 赛周','峰值×0.48，1500m 目标 4:50–5:00')
+    ev(wdate(30),'⏳ 赛前1周','峰值×'+(KM[29]/48).toFixed(2)+'，'+KM[29]+'km'), /* 2026-10-13:P3-4，系数从KM派生 */
+    ev(wdate(31),'🏁 赛周','峰值×'+(KM[30]/48).toFixed(2)+'，1500m 目标 4:50–5:00') /* 2026-10-13:P3-4 */
   ];
-  /* 每月测试日（W4/W12/W16...，跳过W8校运会） */
-  [4,12,16,20,24,28,32,36,40,44].forEach(function(w){
-    evs.push(ev(wdate(w),'📊 月度测试','第'+w+'周，按第16节做测试'));
+  /* 每 4 周一次状态评估（2026-10-13:移除W32，赛后恢复周不做测试） */
+  [4,12,16,20,24,28,36,40,44].forEach(function(w){
+    evs.push(ev(wdate(w),'📊 状态评估','第'+w+'周，按第16节做测试'));
   });
   var ics='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//runbook//v18//CN\r\n'+evs.join('\r\n')+'\r\nEND:VCALENDAR';
   v18dlRaw('v18-训练日历.ics', ics, 'text/calendar;charset=utf-8'); /* 2026-10-04:ICS无BOM */
@@ -8521,7 +8539,7 @@ function v18backupHTML(){
 function v18bindBackup(){
   var e=document.getElementById('v18bkexp');
   if(e) e.addEventListener('click', function(){
-    var keys=['v18_checkin','v18_pb','v18_bookmarks','runbook_theme_v18','runbook_mchart_type','runbook_read','runbook_pos_v16','runbook_planver','runbook_v18_visited']; /* 2026-10-04:补2键 */ /* 2026-10-04:补3键 */ /* 2026-10-04:修正主题键名 */
+    var keys=['v18_checkin','v18_pb','v18_bookmarks','v18_pace_suggest','runbook_theme_v18','runbook_mchart_type','runbook_read','runbook_pos_v16','runbook_planver','runbook_v18_visited']; /* 2026-10-13:补v18_pace_suggest */ /* 2026-10-04:补2键 */ /* 2026-10-04:补3键 */ /* 2026-10-04:修正主题键名 */
     /* 2026-10-04 P2-7:备份包含分析存档 */
     try{ for(var i=0;i<localStorage.length;i++){ var _k=localStorage.key(i); if(_k&&_k.indexOf('v18_analysis_')===0&&keys.indexOf(_k)<0) keys.push(_k); } }catch(e){}
     var data={}; keys.forEach(function(k){ try{ data[k]=localStorage.getItem(k); }catch(e){ data[k]=null; } }); /* 2026-10-04:拿原值 */
@@ -8542,7 +8560,7 @@ function v18bindBackup(){
 }
 function v18restore(json){
   try{
-    var data=JSON.parse(json), keys=['v18_checkin','v18_pb','v18_bookmarks','runbook_theme_v18','runbook_mchart_type','runbook_read','runbook_pos_v16','runbook_planver','runbook_v18_visited'];
+    var data=JSON.parse(json), keys=['v18_checkin','v18_pb','v18_bookmarks','v18_pace_suggest','runbook_theme_v18','runbook_mchart_type','runbook_read','runbook_pos_v16','runbook_planver','runbook_v18_visited'];
     /* 2026-10-04:版本闸门 */
     var _ver=data._meta&&data._meta.ver;
     if(_ver&&_ver!=='v18'&&_ver!=='v17'){ try{ window._v18restoreErr='备份版本不兼容：'+_ver; }catch(e){ try{ console.debug("[v18restore]", e&&e.message||e); }catch(_e){ try{ console.debug("[v18restore]", _e&&_e.message||_e); }catch(_e){} } } return false; }
@@ -8566,6 +8584,11 @@ function v18restore(json){
       if(k==='v18_pb'){
         var _pb; try{ _pb=JSON.parse(_v); }catch(e){ _failed.push(k+':解析失败'); return; }
         if(!_pb||typeof _pb!=='object'||Array.isArray(_pb)){ _failed.push(k+':非对象'); return; }
+        for(var _pk in _pb){ var _pr=_pb[_pk]; if(!_pr) continue; /* 2026-10-13:字段级校验，与展示层esc双保险 */
+          if(_pr.date&&!/^\d{4}-\d{2}-\d{2}$/.test(_pr.date)){ _failed.push(k+':date非法'); return; }
+          if(_pr.scene&&_pr.scene!=='训练'&&_pr.scene!=='比赛'){ _failed.push(k+':scene非法'); return; }
+          if(_pr.time&&isNaN(v18toSec(v18mmss(_pr.time)))){ _failed.push(k+':time非法'); return; }
+        }
       }
       if(k==='v18_bookmarks'){
         var _bm; try{ _bm=JSON.parse(_v); }catch(e){ _failed.push(k+':解析失败'); return; }
