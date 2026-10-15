@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  四年中长跑成长计划手册 · v18.1 (2026-10-13)
+  四年中长跑成长计划手册 · v18.2 (2026-10-15)
   ═══════════════════════════════════════════
   架构速览（单文件）：
   - <head> 内联 <style> ×4：v16 主样式 / v13 分道线 / v14 动效 / 打印
@@ -58,7 +58,7 @@ window.addEventListener("afterprint",function(){ var pa=document.getElementById(
 window.addEventListener("load",function(){setTimeout(function(){if(!window.__APP_OK){document.documentElement.classList.remove("js");window.__buildPrintAll();var pa=document.getElementById("printall");if(pa)pa.style.display="block";var st=document.getElementById("stage");if(st)st.style.display="none";}},5000);   /* v18.1 fix B6 */});</script>
 <noscript><style>#stage{display:none!important}
 </style><p style="padding:40px 20px;text-align:center">本手册需要启用 JavaScript 才能交互阅读。请在浏览器设置中启用后刷新。</p></noscript>
-<title>四年中长跑成长计划手册 · v18.1 成年礼典藏版</title>
+<title>四年中长跑成长计划手册 · v18.2 成年礼典藏版</title>
 <meta name="description" content="重庆文理学院 1500m/800m 四年成长计划。25 圈逐章阅读：48 周跑量交互曲线、五档配速跑道条、全年训练热力周历、配速/周跑量/等级线三个查询器。">
 <style>
 input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]),select,textarea{font-size:16px!important} /* 2026-10-04:防iOS缩放 */
@@ -1284,7 +1284,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 <div class="prog" aria-hidden="true"><i id="progBar"></i><span class="pdash" id="progDash"></span></div>
 
 <header class="topbar" id="topbar">
-  <div class="brand"><i></i>四年成长计划手册 <em>v18.1 · 25 圈</em></div>
+  <div class="brand"><i></i>四年成长计划手册 <em>v18.2 · 25 圈</em></div>
   <div class="crumb"><b id="crumbN">封面</b><span id="crumbT">四年中长跑成长计划</span></div>
   <button class="sbtn" id="sBtn" aria-label="搜索章节">搜索<kbd>Ctrl K</kbd></button>
   <button class="tbtn" id="tBtn" aria-label="切换主题（6种）" title="切换主题">🌓</button>
@@ -1439,7 +1439,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 
 <div class="callout danger">
   <span class="lbl">⚠️ 这一栏数据特别容易错，注意核对</span>
-  <p><strong>网上流传的 800m 2:03.00 / 2:12.40、1500m 4:15.00 / 4:34.10，是已废止的 2024 版标准（体竞字〔2024〕121号，2025.1.1–2026.8.18 在役）数值。</strong>现行标准（体竞字〔2026〕84号，2026.8.19 起施行）正确值是 <strong>800m 二级 2:02.11、三级 2:09.53；1500m 二级 4:13.86、三级 4:28.69</strong>。</p>
+  <p><strong>网上流传的 800m 2:03.00 / 2:12.40、1500m 4:15.00 / 4:34.10，是更早的 2021 版标准（体竞字〔2021〕131号）数值，已被后续版本修订。</strong>现行标准（体竞字〔2026〕84号，2026.8.19 起施行）正确值是 <strong>800m 二级 2:02.11、三级 2:09.53；1500m 二级 4:13.86、三级 4:28.69</strong>。（注：2024 版 121 号在这几个项目上的数值与 84 号完全相同，并非网上流传的那组旧值。）</p>
   <p><span class="opt">（2026.10.01 复核：这组错误值至今仍在大量网页和部分地方材料里流传，1500m 二级也常被误写成 4:15.00、三级 4:40.00。<strong>本次已直接比对体育总局官网新版标准 PDF 原件，确认表 01-1 的 7 行 33 个数值逐字准确</strong>（3000 米国际级、健将两格为"—"）。若今后再看到不同数字，一律以官网 PDF 为准，不要以网页转载或二手汇总为准。）</span></p>
   <p>这个差别不小：都以你当前的 1500m 5:00 为基线——按错误的三级线 4:40.00 算，你「只差 20.00 秒」；按正确的三级线 4:28.69 算，你实际差 <strong>31.31 秒</strong>，两者相差 <strong>11.31 秒</strong>。二级线同理：错误值 4:15.00 算差 45.00 秒，正确值 4:13.86 算差 <strong>46.14 秒</strong>，相差 1.14 秒。<strong>光是标准用错，三级的目标差距就被低估了 11 秒以上，足以让第一年的目标定错。</strong></p>
   <p>另一个高发错误：<strong>10000 米那一行经常被整体错位一列</strong>（把"国际级运动健将"的 28:19.00 当成健将线）。正确的 10000 米健将线是 29:45.00。</p>
@@ -5621,7 +5621,7 @@ function v18checkFirst(){
 function refreshCounts(){
   try{
     var n=CH.length;
-    var el=document.querySelector(".brand em"); if(el) el.textContent="v18.1 · "+n+" 圈";
+    var el=document.querySelector(".brand em"); if(el) el.textContent="v18.2 · "+n+" 圈";
     el=document.querySelector(".rail .rh"); if(el) el.textContent="目录 · "+n+" 圈";
     el=document.querySelector(".drawer .dh"); if(el) el.textContent="全部章节 · "+n+" 圈";
     var tbl=CH.reduce(function(a,c){return a+(((c.html||"").match(/<table/g)||[]).length);},0);
@@ -5757,7 +5757,7 @@ var PHA=["#8fa6b8","#2bd9be","#b98a24","#b04034","#c96034","#7a6fd0"] /* V18:六
 var LV_SEC={};for(var _lk in LV){LV_SEC[_lk]=LV[_lk].map(function(x){return t2s(x[1]);});}   /* v16.11 P3:预计算秒数，避免 draw() 重复解析 */
 function nearest(v){var b=KEYS[0];for(var i=0;i<KEYS.length;i++)if(Math.abs(KEYS[i]-v)<Math.abs(b-v))b=KEYS[i];return b;}
 function s2t(s){s=Math.round(s*10)/10;var m=Math.floor(s/60),r=s-m*60;if(r>=59.95){m++;r=0;}return m+":"+(r<10?"0":"")+(Math.round(r*10)/10);}
-function v18mmss(s){ /* 2026-10-05:输入框3/4位数转mm:ss，如430→4:30、1555→15:55 */ try{ s=String(s).trim(); if(/^\d{3}$/.test(s)){ var _m=s.slice(0,1), _ss3=s.slice(1); if(parseInt(_ss3,10)<60) return _m+':'+_ss3; } if(/^\d{4}$/.test(s)){ var _mm=s.slice(0,2), _ss=s.slice(2); if(parseInt(_ss,10)<60) return _mm+':'+_ss; } }catch(e){} return s; }
+function v18mmss(s){ /* 2026-10-05:输入框3/4位数转mm:ss，如430→4:30、1555→15:55；2026-10-15:支持"秒"后缀表总秒数 */ try{ s=String(s).trim(); if(/^\d+\s*秒$/.test(s)){ return s.replace(/\s*秒$/,''); } if(/^\d{3}$/.test(s)){ var _m=s.slice(0,1), _ss3=s.slice(1); if(parseInt(_ss3,10)<60) return _m+':'+_ss3; } if(/^\d{4}$/.test(s)){ var _mm=s.slice(0,2), _ss=s.slice(2); if(parseInt(_ss,10)<60) return _mm+':'+_ss; } }catch(e){} return s; }
 function t2s(t){var s=String(t).replace(/：/g,":").replace(/．/g,".").trim();var m=s.match(/^([1-9]\d{0,2}):([0-5]\d(?:\.\d{1,2})?)$/);if(m)return parseInt(m[1],10)*60+parseFloat(m[2]);if(s.indexOf(":")>=0)return NaN;   /* v16.10 A3:含冒号但格式非法（如 4:60）直接 NaN；2026-10-04 P0-1:拒绝 0:xx 与 00:xx，分钟位不为0开头（0:30不是合法人类配速，属有意设计）；2026-10-13:注意t2s本身接受mm:ss.xx小数，PB输入框另有限制见v18bindPB */if(!/^\d+(\.\d+)?$/.test(s))return NaN;var n=parseFloat(s);return isNaN(n)?NaN:n;}
 function lap(km){var t=t2s(km);return s2t(t/2.5);}
 function lapR(r){return r.split("–").map(lap).join(" – ");}
@@ -6974,6 +6974,8 @@ document.addEventListener("click",function(e){
   if(_t){ try{ v18showTrend(); }catch(e){} e.preventDefault(); return; }
   var _a=e.target.closest?e.target.closest("[data-ana-date]"):null;
   if(_a){ try{ v18showAna(_a.getAttribute("data-ana-date")); }catch(e){} e.preventDefault(); return; }
+  var _d=e.target.closest?e.target.closest("[data-del-date]"):null;
+  if(_d){ try{ v18delCheckin(_d.getAttribute("data-del-date")); }catch(e){} e.preventDefault(); return; } /* 2026-10-15:删除打卡记录 */
   var _ac=e.target.closest?e.target.closest("[data-anaclose]"):null;
   if(_ac){ var _el=document.getElementById('v18anashow'); if(_el) _el.innerHTML=''; e.preventDefault(); return; }
   var _sc=e.target.closest?e.target.closest("[data-sumclose]"):null;
@@ -7524,16 +7526,24 @@ function v18closeModal(){
 function v18renderModal(tab){
   var box = document.getElementById('v18box');
   if(!box) return;
-  /* 2026-10-05:切标签前保存打卡表单 */
+  /* 2026-10-05:切标签前保存打卡表单；2026-10-15:只在模态框已打开时采集，新打开时跳过（防旧DOM污染） */
   try{
+    var _mChk=document.getElementById('v18modal');
     var _cf=document.getElementById('v18date');
-    if(_cf){
+    if(_mChk&&_mChk.classList.contains('open')&&_cf){
       window._v18cfSave={
         date:document.getElementById('v18date').value,
         km:document.getElementById('v18km').value,
         feel:document.getElementById('v18feel').value,
         note:document.getElementById('v18note').value,
-        type:(document.getElementById('v18type')||{}).value
+        type:(document.getElementById('v18type')||{}).value,
+        plan:document.getElementById('v18km').hasAttribute('data-plan'), /* 2026-10-15:保存计划标记状态 */
+        sleep:(document.getElementById('v18sleep')||{}).value||'',
+        inj_foot:!!(document.getElementById('v18inj_foot')||{}).checked,
+        inj_ach:!!(document.getElementById('v18inj_ach')||{}).checked,
+        inj_arch:!!(document.getElementById('v18inj_arch')||{}).checked,
+        pain:!!(document.getElementById('v18pain')||{}).checked,
+        paindesc:(document.getElementById('v18paindesc')||{}).value||'' /* 2026-10-15:补全睡眠/旧伤/疼痛字段 */
       };
     }
   }catch(e){}
@@ -7559,10 +7569,15 @@ function v18renderModal(tab){
     if(tab==='checkin'&&window._v18cfSave){
       var _s=window._v18cfSave;
       if(document.getElementById('v18date')) document.getElementById('v18date').value=_s.date||'';
-      if(document.getElementById('v18km')) document.getElementById('v18km').value=_s.km||'';
+      if(document.getElementById('v18km')){ var _rkm=document.getElementById('v18km'); _rkm.value=_s.km||''; if(_s.plan){ _rkm.setAttribute('data-plan','1'); }else{ _rkm.removeAttribute('data-plan'); } } /* 2026-10-15:按保存时的状态还原计划标记 */
       if(document.getElementById('v18feel')) document.getElementById('v18feel').value=_s.feel||'';
       if(document.getElementById('v18note')) document.getElementById('v18note').value=_s.note||'';
       if(document.getElementById('v18type')) document.getElementById('v18type').value=_s.type||'E';
+      if(document.getElementById('v18sleep')) document.getElementById('v18sleep').value=_s.sleep||'';
+      if(document.getElementById('v18inj_foot')) document.getElementById('v18inj_foot').checked=!!_s.inj_foot;
+      if(document.getElementById('v18inj_ach')) document.getElementById('v18inj_ach').checked=!!_s.inj_ach;
+      if(document.getElementById('v18inj_arch')) document.getElementById('v18inj_arch').checked=!!_s.inj_arch;
+      if(document.getElementById('v18pain')){ document.getElementById('v18pain').checked=!!_s.pain; var _pd=document.getElementById('v18paindesc'); if(_pd){ _pd.value=_s.paindesc||''; _pd.style.display=_s.pain?'block':'none'; } } /* 2026-10-15:恢复睡眠/旧伤/疼痛 */
     }
   }catch(e){}
   var cb = document.getElementById('v18close');
@@ -7571,6 +7586,7 @@ function v18renderModal(tab){
   else if(tab==='pace') v18bindPace();
   else if(tab==='pr') v18bindPB();
   else if(tab==='backup') v18bindBackup();
+  if(tab==='checkin'){ try{ var _pa2=window._v18pendingAna; if(_pa2&&_pa2.html&&!document.getElementById('v18analysis')){ var _ad2=document.createElement('div'); _ad2.id='v18analysis'; _ad2.dataset.datestr=_pa2.dateStr||''; _ad2.style.cssText='margin:8px 0;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:10px'; _ad2.innerHTML=v18sanitizeHtml(_pa2.html); var _bx=document.getElementById('v18box'), _sv=document.getElementById('v18save'); if(_bx&&_sv) _bx.insertBefore(_ad2,_sv); } }catch(_re2){} } /* 2026-10-15:切tab回来恢复分析面板；加sanitize+日期标记 */
   try{ var _tb=document.querySelector('[data-v18tab="'+tab+'"]'); if(_tb) _tb.focus(); }catch(_fe){} /* 2026-10-05:tab焦点 */
 }
 /* V18: 打卡表单 HTML */
@@ -7578,33 +7594,43 @@ function v18renderModal(tab){
 function v18checkinHTML(){
   var t = v18today();
   var done = v18isCheckedToday();
-  /* 2026-10-04:预填今日计划跑量 */
-  var _tkm='';
-  try{
-    var _pw=planWeek(), _wd=(_pw.date.getDay()+6)%7;
-    if(_pw.w>=1 && _pw.w<=48){ /* 2026-10-04 B3:先判边界 */
-      var _sp=SPLIT[KM[_pw.w-1]]||SPLIT[nearest(KM[_pw.w-1])];
-      if(_sp) _tkm=_sp[_wd]||''; /* 2026-10-04:周日0km留空 */
-    }
-  }catch(e){}
+  /* 2026-10-15:已有记录时预填记录值（防覆盖丢失），否则预填计划跑量 */
+  var _ex=null;
+  try{ var _arr=v18get('v18_checkin',[]); if(Array.isArray(_arr)){ for(var _i=0;_i<_arr.length;_i++){ if(_arr[_i]&&_arr[_i].date===t){ _ex=_arr[_i]; break; } } } }catch(e){}
+  var _tkm='', _tfeel='', _tsleep='', _tnote='', _ttype='E', _injF='', _injA='', _injR='', _isPlan=true;
+  if(_ex){
+    _tkm=(_ex.km!=null&&_ex.km!=='')?_ex.km:''; _tfeel=(_ex.feel||''); _tsleep=(_ex.sleep!=null&&_ex.sleep!=='')?_ex.sleep:'';
+    _tnote=_ex.note||''; _ttype=_ex.type||'E'; _isPlan=false;
+    if(_ex.inj){ if(_ex.inj.foot) _injF=' checked'; if(_ex.inj.ach) _injA=' checked'; if(_ex.inj.arch) _injR=' checked'; }
+  }else{
+    try{
+      var _pw=planWeek(), _wd=(_pw.date.getDay()+6)%7;
+      if(_pw.w>=1 && _pw.w<=48){ /* 2026-10-04 B3:先判边界 */
+        var _sp=SPLIT[KM[_pw.w-1]]||SPLIT[nearest(KM[_pw.w-1])];
+        if(_sp) _tkm=_sp[_wd]||''; /* 2026-10-04:周日0km留空 */
+      }
+    }catch(e){}
+  }
+  function _sel(v){ return v===_ttype?' selected':''; }
+  function _escq(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
   return '<div class="v18-field"><label>日期</label>'+
     '<input type="date" id="v18date" value="'+t+'" max="'+t+'"></div>'+
     '<div class="v18-field"><label>训练类型</label>'+
-    '<select id="v18type"><option value="E">E 轻松跑</option><option value="M">M 马拉松配速</option>'+
-    '<option value="T">T 阈值跑</option><option value="I">I 间歇</option><option value="R">R 重复跑</option>'+
-    '<option value="L">L 长距离</option><option value="力量">力量训练</option><option value="休息">休息</option></select></div>'+
+    '<select id="v18type"><option value="E"'+_sel('E')+'>E 轻松跑</option><option value="M"'+_sel('M')+'>M 马拉松配速</option>'+
+    '<option value="T"'+_sel('T')+'>T 阈值跑</option><option value="I"'+_sel('I')+'>I 间歇</option><option value="R"'+_sel('R')+'>R 重复跑</option>'+
+    '<option value="L"'+_sel('L')+'>L 长距离</option><option value="力量"'+_sel('力量')+'>力量训练</option><option value="休息"'+_sel('休息')+'>休息</option></select></div>'+
     '<div class="v18-row"><div class="v18-field"><label>跑量 (km)</label>'+
-    '<input type="number" id="v18km" min="0" max="100" step="0.1" placeholder="例：8.5" value="'+_tkm+'"></div>'+
+    '<input type="number" id="v18km" min="0" max="100" step="0.1" placeholder="例：8.5"'+(_isPlan?' data-plan="1"':'')+' value="'+_escq(_tkm)+'"></div>'+
     '<div class="v18-field"><label>体感 (1–10)</label>'+
-    '<input type="number" id="v18feel" min="1" max="10" step="1" placeholder="例：7"></div>'+
+    '<input type="number" id="v18feel" min="1" max="10" step="1" placeholder="例：7" value="'+_escq(_tfeel)+'"></div>'+
     '<div class="v18-field"><label>睡眠 (小时)</label>'+
-    '<input type="number" id="v18sleep" min="0" max="16" step="0.5" placeholder="例：7.5"></div></div>'+
+    '<input type="number" id="v18sleep" min="0" max="16" step="0.5" placeholder="例：7.5" value="'+_escq(_tsleep)+'"></div></div>'+
     '<div class="v18-field"><label>备注</label>'+
-    '<textarea id="v18note" rows="2" placeholder="例：操场，左脚无不适"></textarea></div>'+
+    '<textarea id="v18note" rows="2" placeholder="例：操场，左脚无不适">'+_escq(_tnote).replace(/"/g,'&quot;')+'</textarea></div>'+
     '<div class="v18-field"><label>旧伤信号（第15节）</label><div style="display:flex;gap:12px;flex-wrap:wrap">'+
-    '<label><input type="checkbox" id="v18inj_foot" style="width:auto"> 左脚/踝</label>'+
-    '<label><input type="checkbox" id="v18inj_ach" style="width:auto"> 跟腱</label>'+
-    '<label><input type="checkbox" id="v18inj_arch" style="width:auto"> 足弓</label></div></div>'+
+    '<label><input type="checkbox" id="v18inj_foot" style="width:auto"'+_injF+'> 左脚/踝</label>'+
+    '<label><input type="checkbox" id="v18inj_ach" style="width:auto"'+_injA+'> 跟腱</label>'+
+    '<label><input type="checkbox" id="v18inj_arch" style="width:auto"'+_injR+'> 足弓</label></div></div>'+
     '<div class="v18-field"><label><input type="checkbox" id="v18pain" style="width:auto;margin-right:6px">⚠️ 今日有疼痛/异常</label>'+
     '<input id="v18paindesc" placeholder="部位+描述，如：左脚踝外侧刺痛" style="margin-top:6px;display:none"></div>'+
     '<div class="v18-err" id="v18err" role="alert"></div>'+
@@ -7617,6 +7643,8 @@ function v18checkinHTML(){
 function v18bindCheckin(){
   var sv = document.getElementById('v18save');
   if(sv) sv.addEventListener('click', v18saveCheckin);
+  var _kme=document.getElementById('v18km');
+  if(_kme) _kme.addEventListener('input', function(){ _kme.removeAttribute('data-plan'); }); /* 2026-10-15:用户手输后不再是计划预填 */
   var _pc=document.getElementById('v18pain'), _pd=document.getElementById('v18paindesc');
   if(_pc && _pd) _pc.addEventListener('change', function(){ _pd.style.display=_pc.checked?'block':'none'; }); /* 2026-10-04:疼痛描述联动 */
   var ex = document.getElementById('v18exp');
@@ -7827,7 +7855,7 @@ function v18importFile(e){
             var _newNote=((_ex.note||'')+' +'+r.km.toFixed(1)+'km(批量)').slice(0,200);
             var _oldKm=_ex.km, _oldNote=_ex.note;
             _ex.km=_newKm; _ex.note=_newNote;
-            if(v18set('v18_checkin',arr)) _done++; else { _ex.km=_oldKm; _ex.note=_oldNote; _skip++; } /* 2026-10-04:失败回滚 */
+            if(v18set('v18_checkin',arr)){ _done++; try{ if(r.anaData&&r.dateStr){ var _ba2=v18analyzeWorkout(r.anaData); if(_ba2){ v18pruneAnalysis(); var _exAna=v18get('v18_analysis_'+r.dateStr,''); var _toSave=_exAna?(_exAna+'<hr style="margin:8px 0;border:none;border-top:1px dashed var(--line)">'+_ba2):_ba2; v18set('v18_analysis_'+r.dateStr, v18sanitizeHtml(_toSave)); } } }catch(_ae2){} /* 2026-10-15:累加分支也存分析，有旧则追加 */ } else { _ex.km=_oldKm; _ex.note=_oldNote; _skip++; } /* 2026-10-04:失败回滚 */
           }
           else{
             var _bn=((r.note||'')+' [待补体感]').slice(0,200); /* 2026-10-04:长度限制 */
@@ -7849,18 +7877,20 @@ function v18importFile(e){
     try{ var _ad=document.getElementById('v18analysis'); if(_ad) _ad.innerHTML=''; }catch(e){} /* 2026-10-04:清空旧分析 */
     var _kmEl=document.getElementById('v18km');
     if(_kmEl){
-      var _kmEl2=_kmEl, _oldKm=parseFloat(_kmEl2.value)||0, _oldDate=(document.getElementById('v18date')||{}).value;
-      var _noteEl=document.getElementById('v18note'), _hasUserData=_noteEl&&_noteEl.value.trim()!=='';
+      var _oldKm=parseFloat(_kmEl.value)||0, _oldDate=(document.getElementById('v18date')||{}).value; /* 2026-10-15:删冗余_kmEl2 */
+      var _noteEl=document.getElementById('v18note'), _feelEl=document.getElementById('v18feel'), _sleepEl=document.getElementById('v18sleep');
+      var _hasUserData=(_noteEl&&_noteEl.value.trim()!=='')||(_feelEl&&_feelEl.value.trim()!=='')||(_sleepEl&&_sleepEl.value.trim()!=='')||(_oldKm>0&&!_kmEl.hasAttribute('data-plan')); /* 2026-10-15:覆盖确认看全字段，不只看备注 */
       if(_oldKm>0 && _oldDate && r.dateStr && _oldDate!==r.dateStr){
         if(_hasUserData){
           if(!confirm('表单已有 '+_oldDate+' 的 '+_oldKm+'km 未保存，导入 '+r.dateStr+' 会覆盖。要继续吗？')) return;
         }
         _kmEl.value = r.km.toFixed(1);
-      } else if(_oldKm>0 && _oldDate && r.dateStr && _oldDate===r.dateStr){
-        _kmEl.value = (_oldKm + r.km).toFixed(1); /* 2026-10-05:同天累加，与批量一致 */
+      } else if(_oldKm>0 && !_kmEl.hasAttribute('data-plan') && _oldDate && r.dateStr && _oldDate===r.dateStr){
+        _kmEl.value = (_oldKm + r.km).toFixed(1); /* 2026-10-05:同天累加，与批量一致；2026-10-15:计划预填不累加，直接覆盖 */
       } else {
         _kmEl.value = r.km.toFixed(1);
       }
+      _kmEl.removeAttribute('data-plan'); /* 2026-10-15:导入值是真实数据 */
     }
     if(r.dateStr){
       var de=document.getElementById('v18date');
@@ -7870,24 +7900,26 @@ function v18importFile(e){
     if(ne&&r.note) ne.value=r.note; /* 2026-10-05:导入覆盖，不累加 */
     /* 分析 */
     try{
-      if(r.anaData&&(r.anaData.laps.length>=3||(r.anaData.chart&&r.anaData.chart.length>10))){
+      if(r.anaData&&((r.anaData.laps&&r.anaData.laps.length>=3)||(r.anaData.chart&&r.anaData.chart.length>10))){ /* 2026-10-15:laps空值保护 */
         var _anaHtml=v18analyzeWorkout(r.anaData);
         if(_anaHtml){
           var _anaDiv=document.getElementById('v18analysis');
           if(!_anaDiv){
             _anaDiv=document.createElement('div');
             _anaDiv.id='v18analysis';
+            _anaDiv.dataset.datestr=r.dateStr||''; /* 2026-10-15:标记分析所属日期，防改日期后存错槽 */
             _anaDiv.style.cssText='margin:8px 0;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.7';
             var _box=document.getElementById('v18box');
             var _saveBtn=document.getElementById('v18save');
             if(_box&&_saveBtn) _box.insertBefore(_anaDiv,_saveBtn);
           }
-          _anaDiv.innerHTML=_anaHtml; try{ window._v18pendingAna={dateStr:r.dateStr, html:_anaHtml}; }catch(_pe){} /* 2026-10-05:缓存分析 */
+          _anaDiv.innerHTML=_anaHtml; _anaDiv.dataset.datestr=r.dateStr||''; /* 2026-10-15:每次导入都更新日期标记 */ try{ window._v18pendingAna={dateStr:r.dateStr, html:_anaHtml}; }catch(_pe){} /* 2026-10-05:缓存分析 */
           /* 存档分析 */
           try{ if(r.dateStr){ /* 2026-10-13:P3-7，预览不清理旧分析（无副作用） */ void 0; } }catch(ae2){} /* 2026-10-04:空日期不存档 */
         }
       }
     }catch(ae){}
+    if(!err) return; /* 2026-10-15:单文件.then也判空，与.catch一致 */
     err.style.display='block'; err.style.color='var(--ac,#2bd9be)';
     err.textContent='✓ 已导入 '+f.name+'（'+r.km.toFixed(2)+'km），请补体感/睡眠后保存';
   }).catch(function(ex){
@@ -8153,7 +8185,20 @@ function v18saveCheckin(){
   if(idx>=0) arr[idx] = rec; else arr.push(rec);
   arr.sort(function(a,b){ return a.date<b.date?-1:1; });
   if(!v18set('v18_checkin', arr)){ fail('保存失败：浏览器可能禁用了本地存储'); return; }
-  try{ var _pa=window._v18pendingAna; if(_pa&&_pa.dateStr===date&&_pa.html){ v18pruneAnalysis(); v18set('v18_analysis_'+date, v18sanitizeHtml(_pa.html)); window._v18pendingAna=null; } else { var _ad=document.getElementById('v18analysis'); if(_ad&&_ad.innerHTML.trim()){ v18pruneAnalysis(); v18set('v18_analysis_'+date, v18sanitizeHtml(_ad.innerHTML)); } else { try{ localStorage.removeItem('v18_analysis_'+date); }catch(_re){ try{ console.debug("[v18saveCheckin]", _re&&_re.message||_re); }catch(_e){} } /* 2026-10-05:无新分析则删旧 */ } } }catch(_ae){ try{ console.debug("[v18saveCheckin]", _ae&&_ae.message||_ae); }catch(_e){} } /* 2026-10-05:优先用缓存，日期不符则丢弃 */ /* 2026-10-05:保存时存档分析，用表单日期 */
+  try{
+    var _pa=window._v18pendingAna;
+    if(_pa&&_pa.dateStr===date&&_pa.html){
+      v18pruneAnalysis(); v18set('v18_analysis_'+date, v18sanitizeHtml(_pa.html)); window._v18pendingAna=null;
+    }else{
+      var _ad=document.getElementById('v18analysis');
+      var _adDate=_ad&&_ad.dataset?_ad.dataset.datestr:'';
+      if(_ad&&_ad.innerHTML.trim()&&_adDate===date){
+        v18pruneAnalysis(); v18set('v18_analysis_'+date, v18sanitizeHtml(_ad.innerHTML));
+      }
+      /* 2026-10-15:无新分析时保留已有存档，不自动删除（删记录时由删除功能清理） */
+      /* 2026-10-15:日期不一致时既不存也不删，防10-05分析污染10-06槽位 */
+    }
+  }catch(_ae){ try{ console.debug("[v18saveCheckin]", _ae&&_ae.message||_ae); }catch(_e){} } /* 2026-10-05:优先用缓存，日期不符则丢弃 */ /* 2026-10-05:保存时存档分析，用表单日期 */
   v18renderFab(); /* V18: 更新绿点 */
   v18renderHist();
   try{ if(typeof render==='function'){ var _sy=window.scrollY; render(cur); window.scrollTo({top:_sy,behavior:"auto"}); } }catch(e){ try{ console.debug("[v18saveCheckin]", e&&e.message||e); }catch(_e){} } /* 2026-10-04 P2-9:刷新TODAY */
@@ -8178,8 +8223,25 @@ function v18renderHist(){
       var _ana=''; /* 2026-10-04:有存档分析显示📊 */
       try{ if(v18get('v18_analysis_'+r.date,'')) _ana=' <a href="javascript:void(0)" data-ana-date="'+esc(r.date)+'" title="查看分析">📊</a>'; }catch(e){}
       var _note=r.note?(' · '+esc(String(r.note).slice(0,30))):'';
-      return '<tr><td class="k">'+esc(r.date)+'</td><td class="v">'+esc(r.type||'E')+' · '+_hkm+'km · '+_hfeel+'分'+(_inj?' '+_inj:'')+_ana+'<br><span style="font-size:11px;color:var(--ink3)">'+_note+'</span></td></tr>'; /* 2026-10-04:显示备注 */
+      return '<tr><td class="k">'+esc(r.date)+'</td><td class="v">'+esc(r.type||'E')+' · '+_hkm+'km · '+_hfeel+'分'+(_inj?' '+_inj:'')+_ana+'<br><span style="font-size:11px;color:var(--ink3)">'+_note+'</span> <a href="javascript:void(0)" data-del-date="'+esc(r.date)+'" title="删除这条记录" style="color:var(--warn,#e8a020);font-size:11px">🗑</a></td></tr>';te+'</span></td></tr>'; /* 2026-10-04:显示备注 */
     }).join('') /* 2026-10-04 P0-2:XSS防护；2026-10-04:显示旧伤信号 */+'</table><p class="sub">共 '+arr.length+' 条'+(arr.length>5?' · 最近 5 条':'')+'</p><div id="v18anashow"></div></div>'; /* 2026-10-04:文案准确 */
+}
+/* 2026-10-15:删除打卡记录（含分析存档） */
+function v18delCheckin(date){
+  if(!date) return;
+  if(!confirm('确定删除 '+date+' 的打卡记录吗？\n（含当天的训练分析存档，删除后不可恢复）')) return;
+  try{
+    var arr=v18get('v18_checkin',[]);
+    if(Array.isArray(arr)){
+      var n0=arr.length;
+      arr=arr.filter(function(r){ return !(r&&r.date===date); });
+      if(arr.length!==n0&&v18set('v18_checkin',arr)){
+        try{ localStorage.removeItem('v18_analysis_'+date); }catch(e){}
+        try{ window._v18pendingAna=null; }catch(e){}
+        v18renderHist(); v18renderFab();
+      }
+    }
+  }catch(e){}
 }
 /* 2026-10-04 P2-7:清理旧分析存档，只保留30天 */
 function v18pruneAnalysis(){
@@ -8248,9 +8310,10 @@ function v18calcForward(){
   if(bestDiff > 90){
     warnHtml = '<p style="color:var(--warn,#e8a020);font-size:12.5px;margin:0 0 8px">⚠️ 你的成绩超出配速表范围，以下为最接近的 '+best[0]+' 档，仅供参考</p>';
   }
-  out.innerHTML = '<div class="v18-out">'+warnHtml+'<p style="margin:0 0 8px">匹配档位：<b>'+best[0]+'</b>（VDOT '+best[1]+'）</p>'+
+  out.innerHTML = '<div class="v18-out">'+warnHtml+'<p style="margin:0 0 8px;color:var(--mut,#888);font-size:12px">输入已按 '+v18fmtTime(sec)+' 理解</p><p style="margin:0 0 8px">匹配档位：<b>'+best[0]+'</b>（VDOT '+best[1]+'）</p>'+
     '<table>'+rows+'</table></div>';
 }
+function v18fmtTime(sec){ try{ sec=Math.round(sec); var m=Math.floor(sec/60), s=sec%60; return m+':'+('0'+s).slice(-2); }catch(e){ return sec; } } /* 2026-10-15:秒数转mm:ss显示 */
 function v18calcReverse(){
   var err = document.getElementById('v18perr'), out = document.getElementById('v18pout');
   err.style.display='none'; out.innerHTML='';
@@ -8498,7 +8561,7 @@ function v18exportICS(){
         var enc=new TextEncoder(), out='', bytes=0;
         for(var ch of line){
           var blen=enc.encode(ch).length;
-          if(bytes+blen>75){ out+='\r\n '; bytes=1; }
+          if(bytes+blen>75){ out+='\r\n '; bytes=0; } /* 2026-10-15:续行前导空格不计入75字节 */
           out+=ch; bytes+=blen;
         }
         return out;
