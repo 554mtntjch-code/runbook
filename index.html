@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  四年中长跑成长计划手册 · v18.2 (2026-10-15)
+  四年中长跑成长计划手册 · v18.2 (2026-10-23)
   ═══════════════════════════════════════════
   架构速览（单文件）：
   - <head> 内联 <style> ×4：v16 主样式 / v13 分道线 / v14 动效 / 打印
@@ -15,8 +15,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b0d11" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f5f4f1" media="(prefers-color-scheme: light)">
+<meta name="apple-mobile-web-app-capable" content="yes"><!-- 2026-10-24:iOS 添加到主屏幕后全屏打开（无 Safari 地址栏） -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes"><!-- 2026-10-24:无前缀版，兼容旧 Android Chromium 全屏模式 -->
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png"><!-- 2026-10-06:主屏幕图标（用户提供图片→180x180 PNG；iOS 添加到主屏幕时使用。相对路径：与 index.html 同目录上传 icon-180.png 即可，不依赖外部图床） -->
-<script>document.documentElement.classList.add("js");/* v16.8:打印稿懒生成——避免首屏建 1 万节点 */
+<script>document.documentElement.classList.add("js");
+/* 2026-10-23:主题引导——主脚本在 body 末尾，先按 localStorage 定主题防首屏闪色（与主脚本 apply() 口径一致） */
+try{var __t=localStorage.getItem("runbook_theme_v18")||localStorage.getItem("runbook_theme")||"system";if(["system","track","night","paper","gold","auto","dark","light"].indexOf(__t)<0)__t="system";if(__t==="auto"){var __h=new Date().getHours();__t=(__h>=18||__h<6)?"dark":"light";}if(__t!=="system"){document.documentElement.setAttribute("data-theme",__t);document.documentElement.setAttribute("data-scheme",(__t==="light"||__t==="paper")?"light":"dark");}}catch(e){}/* v16.8:打印稿懒生成——避免首屏建 1 万节点 */
 function _pesc(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');} /* 2026-10-04:打印标题转义 */
 window.__buildPrintAll=function(){
 if(document.getElementById("printall"))return;
@@ -28,7 +33,7 @@ var out='<section class="print-cover"><div class="pc-inner">'+
 '<p class="pc-kicker">V18 · 成年礼典藏版</p>'+
 '<h1>四年中长跑<br>成长计划手册</h1>'+
 '<p class="pc-sub">从 5km 21:00 起步 · 主项 1500m · 兼项 800m</p>'+
-'<p class="pc-meta">共 25 章 · 48 周训练曲线 · 五档配速体系</p>'+
+'<p class="pc-meta">共 '+(typeof CH!=="undefined"&&CH.length?CH.length:25)+' 章 · 48 周训练曲线 · 五档配速体系</p>'+
 '<p class="pc-date">打印日期：'+_ds+'</p>'+
 '</div></section>';
 /* V18:打印说明（原有内容保留） */
@@ -50,16 +55,20 @@ out+='</ol><p class="ptoc-note">注：页码为章节顺序号，实际分页以
   out+='<section class="print-ch"><h2>'+_pesc(_chH)+"　"+_pesc(_ti)+"</h2>"+t.innerHTML+
     '<div class="print-foot">'+_pesc(_chH)+' · 四年中长跑成长计划手册</div></section>';
 });
-pa.innerHTML=out;document.body.appendChild(pa);};
+pa.innerHTML=out;
+/* 2026-10-24:只打印本章——章节头 🖨 置 window.__printOnlyCh 时，给容器与目标章打标记，打印 CSS 据此隐藏其余 section */
+try{ if(typeof window.__printOnlyCh==="number"){ pa.classList.add("print-only"); var _pcs=pa.querySelectorAll(".print-ch"); if(_pcs[window.__printOnlyCh]) _pcs[window.__printOnlyCh].classList.add("only"); } }catch(e){}
+document.body.appendChild(pa);};
 window.addEventListener("beforeprint",window.__buildPrintAll);
+try{var __mq=window.matchMedia("print");if(__mq.addEventListener)__mq.addEventListener("change",function(e){if(e.matches)window.__buildPrintAll();});else if(__mq.addListener)__mq.addListener(function(e){if(e.matches)window.__buildPrintAll();});}catch(e){} /* 2026-10-23:打印兜底——WebKit 上 beforeprint 之外的第二触发点 */
 window.addEventListener("afterprint",function(){ var pa=document.getElementById("printall"); if(pa) pa.remove(); }); /* 2026-10-13:P1-5，打印后拆除，下次重建日期最新 */
 /* v16.14:删 requestIdleCallback 分支，只保留 beforeprint（从不打印的用户不浪费 23 章 DOM 构建） */
 /* 兜底：主脚本若因运行时错误未执行，5s 后显示 #printall 静态全文，避免空白页 */
 window.addEventListener("load",function(){setTimeout(function(){if(!window.__APP_OK){document.documentElement.classList.remove("js");window.__buildPrintAll();var pa=document.getElementById("printall");if(pa)pa.style.display="block";var st=document.getElementById("stage");if(st)st.style.display="none";}},5000);   /* v18.1 fix B6 */});</script>
-<noscript><style>#stage{display:none!important}
-</style><p style="padding:40px 20px;text-align:center">本手册需要启用 JavaScript 才能交互阅读。请在浏览器设置中启用后刷新。</p></noscript>
+<noscript><style>#stage{display:none!important}</style></noscript>
 <title>四年中长跑成长计划手册 · v18.2 成年礼典藏版</title>
 <meta name="description" content="重庆文理学院 1500m/800m 四年成长计划。25 圈逐章阅读：48 周跑量交互曲线、五档配速跑道条、全年训练热力周历、配速/周跑量/等级线三个查询器。">
+
 <style>
 input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]),select,textarea{font-size:16px!important} /* 2026-10-04:防iOS缩放 */
 .topbar,.app{padding-left:max(var(--gut,16px),env(safe-area-inset-left));padding-right:max(var(--gut,16px),env(safe-area-inset-right))} /* 2026-10-04:safe-area */
@@ -73,7 +82,7 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]
   /* 暗色（默认） */
   --on-ac:#08110e;   /* v16.16:C2 按钮前景，浅色下为 #fff */
   --bg:#0b0d11; --paper:#14171c; --paper2:#1a1e24; --paper3:#20252c;
-  --ink:#eef1f4; --ink2:#a7aeb8; --ink3:#6f7882; --ink4:#6e7681;   /* v16.10 A10:深色 #5b636e→#6e7681，对比度 3.25→4.1 */
+  --ink:#eef1f4; --ink2:#a7aeb8; --ink3:#899098; --ink4:#818891;   /* v16.10 A10:深色 #5b636e→#6e7681，对比度 3.25→4.1 */
   --title:#f4f6f8;
   --line:rgba(238,241,244,.08); --line2:rgba(238,241,244,.15);
   --ac:#2bd9be; --ac-deep:#1da38c; --ac-dim:rgba(43,217,190,.13);
@@ -124,7 +133,7 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]
   :root:not([data-theme]){
     --on-ac:#fff;
     --bg:#f5f4f1; --paper:#ffffff; --paper2:#fafaf8; --paper3:#f1f0ec;
-    --ink:#1a1d22; --ink2:#474d56; --ink3:#878e98; --ink4:#6f767f;   /* v16.8:浅色 #b9bfc7→#6f767f，对比度 1.8→4.2 */
+    --ink:#1a1d22; --ink2:#474d56; --ink3:#656a72; --ink4:#6c727b;   /* v16.8:浅色 #b9bfc7→#6f767f，对比度 1.8→4.2 */
     --title:#17263f;
     --line:rgba(23,25,29,.08); --line2:rgba(23,25,29,.15);
     --ac:#21796b; --ac-deep:#1a6357; --ac-dim:rgba(33,121,107,.10);
@@ -141,7 +150,7 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]
 [data-theme="light"]{
   --on-ac:#fff;
   --bg:#f5f4f1; --paper:#ffffff; --paper2:#fafaf8; --paper3:#f1f0ec;
-  --ink:#1a1d22; --ink2:#474d56; --ink3:#878e98; --ink4:#6f767f;
+  --ink:#1a1d22; --ink2:#474d56; --ink3:#656a72; --ink4:#6c727b;
   --title:#17263f;
   --line:rgba(23,25,29,.08); --line2:rgba(23,25,29,.15);
   --ac:#21796b; --ac-deep:#1a6357; --ac-dim:rgba(33,121,107,.10);
@@ -159,7 +168,7 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]
 [data-theme="track"]{color-scheme:dark;
   --ac:#e85d3d;--ac-deep:#c74a2e;--ac-dim:rgba(232,93,61,.14);--on-ac:#08110e; /* 2026-10-04:亮底配深字 */
   --bg:#1a1512;--paper:#241d18;--paper2:#2a221b;--paper3:#332920;
-  --ink:#f0e8e0;--ink2:#c4b49e;--ink3:#8a7a68;--ink4:#6b5d4d;
+  --ink:#f0e8e0;--ink2:#c4b49e;--ink3:#a09385;--ink4:#948a7f;
   --title:#f5ede2;--line:rgba(240,232,224,.08);--line2:rgba(240,232,224,.16);
   --ok:#4ade80;--warn:#e8a020;--bad:#f05648;
   --glow:0 0 12px rgba(232,93,61,.12);--ice:#e8a880;}
@@ -177,7 +186,7 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]
 [data-theme="night"]{
   --on-ac:#08110e; /* 2026-10-04:亮底配深字 */
   --bg:#0a0e14; --paper:#0f141c; --paper2:#131a24; --paper3:#0c1118;
-  --ink:#e8eef4; --ink2:#b8c4d0; --ink3:#7a8a9a; --ink4:#5a6a7a;
+  --ink:#e8eef4; --ink2:#b8c4d0; --ink3:#7e8e9d; --ink4:#788592;
   --title:#e8eef4;
   --line:rgba(232,238,244,.08); --line2:rgba(232,238,244,.15);
   --ac:#2bd9be; --ac-deep:#1fb89f; --ac-dim:rgba(43,217,190,.10);
@@ -191,7 +200,7 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]
 [data-theme="paper"]{
   --on-ac:#fff;
   --bg:#fdfcf9; --paper:#ffffff; --paper2:#faf8f3; --paper3:#f5f2ea;
-  --ink:#1a1a1a; --ink2:#4a4a4a; --ink3:#8a8a8a; --ink4:#6a6a6a;
+  --ink:#1a1a1a; --ink2:#4a4a4a; --ink3:#696969; --ink4:#6a6a6a;
   --title:#1a1a1a;
   --line:rgba(26,26,26,.08); --line2:rgba(26,26,26,.15);
   --ac:#8b5e2a; --ac-deep:#6d4a20; --ac-dim:rgba(139,94,42,.10);
@@ -205,7 +214,7 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]
 [data-theme="gold"]{
   --on-ac:#0a0a0a;
   --bg:#0c0a06; --paper:#12100a; --paper2:#171410; --paper3:#0e0c08;
-  --ink:#f0e8d4; --ink2:#c9bfa8; --ink3:#8a8068; --ink4:#6a6250;
+  --ink:#f0e8d4; --ink2:#c9bfa8; --ink3:#918871; --ink4:#868071;
   --title:#f0e8d4;
   --line:rgba(201,162,39,.12); --line2:rgba(201,162,39,.20);
   --ac:#c9a227; --ac-deep:#a8861f; --ac-dim:rgba(201,162,39,.12);
@@ -220,12 +229,17 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scrollbar-color:var(--ink4) var(--bg);color-scheme:dark light}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--fs-5)/1.85 var(--sans);
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;overflow-x:clip}
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+@supports (overflow-x:clip){body{overflow-x:clip}}
 img,svg{display:block;max-width:100%}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--ac);color:var(--on-ac)}   /* v16.16:C2 */
 :focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:var(--r-1)}
+@supports not (selector(:focus-visible)){:focus{outline:2px solid var(--ac);outline-offset:3px}}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.v18-link{background:none;border:0;padding:0;color:var(--ac);cursor:pointer;font:inherit}
+.chhead-row{display:flex;align-items:center;gap:12px}   /* 2026-10-24:标题与收藏按钮留间距 */
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--paper3);border-radius:99px;border:3px solid var(--bg)}
@@ -251,7 +265,7 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- 顶栏 ---------- */
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--top);z-index:900;display:flex;align-items:center;gap:var(--sp-4);
-  padding-top:0;padding-bottom:0;padding-left:max(var(--gut),env(safe-area-inset-left));padding-right:max(var(--gut),env(safe-area-inset-right));background:color-mix(in srgb,var(--bg) 74%,transparent); /* 2026-10-13:safe-area并入主样式 */
+  padding-top:0;padding-bottom:0;padding-left:max(var(--gut),env(safe-area-inset-left));padding-right:max(var(--gut),env(safe-area-inset-right));background:var(--bg);background:color-mix(in srgb,var(--bg) 74%,transparent); /* 2026-10-13:safe-area并入主样式 */
   backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);
   border-bottom:1px solid transparent;transition:border-color .4s}
 .topbar.stuck{border-bottom-color:var(--line)}
@@ -286,7 +300,7 @@ a{color:inherit;text-decoration:none}
 .rail{display:none}
 @media(min-width:1000px){
   .rail{display:block;position:sticky;top:calc(var(--top) + 28px);align-self:start;
-    max-height:calc(100dvh - var(--top) - 56px);overflow-y:auto;padding-right:6px}
+    max-height:calc(100vh - var(--top) - 56px);max-height:calc(100dvh - var(--top) - 56px);overflow-y:auto;padding-right:6px}
 }
 .rail .rh{font-family:var(--mono);font-size:var(--fs-1);letter-spacing:.22em;text-transform:uppercase;
   color:var(--ink4);margin:0 0 var(--sp-3)}
@@ -303,10 +317,10 @@ a{color:inherit;text-decoration:none}
 .rail a.on i{color:var(--ac)}
 .rail a.cv{margin-bottom:var(--sp-2);padding-bottom:var(--sp-2);border-bottom:1px solid var(--line);color:var(--ink3)}
 /* V18:六部分组导航标题 */
-.part-group{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ac);
+.part-group{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--ac);
   padding:10px 10px 4px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .part-group:first-of-type{padding-top:2px}
-.tg .part-group{grid-column:1/-1;padding:14px 2px 2px;font-size:11px}
+.tg .part-group{grid-column:1/-1;padding:14px 2px 2px;font-size:12px}
 /* V18:章节内TOC */
 .ch-toc{margin:0 0 18px;border:1px solid var(--line);border-radius:var(--r-2);background:var(--paper2);overflow:hidden}
 .ch-toc>summary{cursor:pointer;list-style:none;padding:10px 14px;font-size:var(--fs-3);font-weight:600;color:var(--ink2);display:flex;align-items:center;gap:8px}
@@ -333,13 +347,13 @@ a{color:inherit;text-decoration:none}
 .tl-wk.ev.rest::before{background:var(--ink3)}
 .tl-wk .tl-t{position:absolute;left:50%;transform:translateX(-50%);top:0;font-size:10px;color:var(--ink3);
   white-space:nowrap;font-family:var(--mono)}
-.tl-wk .tl-n{position:absolute;left:50%;transform:translateX(-50%);bottom:0;font-size:10px;color:var(--ink4);font-family:var(--mono)}
+.tl-wk .tl-n{position:absolute;left:50%;transform:translateX(-50%);bottom:0;font-size:12px;color:var(--ink4);font-family:var(--mono)}
 /* V18:阅读统计模态框 */
 .stat-modal{position:fixed;inset:0;z-index:990;display:none;align-items:center;justify-content:center;
   background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)} /* 2026-10-04:iOS */
 .stat-modal.on{display:flex}
 .stat-box{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-3);
-  padding:24px;width:min(420px,90vw);max-height:80dvh;overflow-y:auto}
+  padding:24px;width:min(420px,90vw);max-height:80vh;max-height:80dvh;overflow-y:auto}
 .stat-box h3{margin:0 0 16px;font-size:var(--fs-4)}
 .stat-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:var(--fs-3)}
 .stat-row:last-child{border-bottom:none}
@@ -369,7 +383,7 @@ a{color:inherit;text-decoration:none}
 
 /* ════════════════ 封面 · 杂志式全出血 ════════════════ */
 .cover{position:relative;overflow:hidden;margin:0 calc(var(--gut) * -1);
-  min-height:min(96svh,940px);display:flex;flex-direction:column;justify-content:center;
+  min-height:min(96vh,940px);min-height:min(96svh,940px);display:flex;flex-direction:column;justify-content:center;
   padding:calc(var(--top) + clamp(40px,9vh,90px)) var(--gut) clamp(40px,6vh,72px);
   background:radial-gradient(120% 90% at 78% 18%,var(--paper2),var(--bg) 62%)}
 /* 跑道轨迹（右侧出血背景） */
@@ -444,7 +458,7 @@ a{color:inherit;text-decoration:none}
 .go{display:inline-flex;align-items:center;gap:var(--sp-2);margin-top:clamp(24px,3.4vw,38px);
   background:var(--ac);color:var(--on-ac);border-radius:var(--r-3);padding:13px 24px;font-size:var(--fs-4);   /* v16.16:C2 */
   font-weight:600;transition:transform .5s var(--ease),box-shadow .5s var(--ease),background .3s;box-shadow:var(--sh1)}
-.go:hover{transform:translateY(-3px);background:color-mix(in srgb,var(--ac) 88%,#fff);box-shadow:var(--sh2),0 0 30px -6px var(--ac)}   /* v16.12:跟 --ac 走，浅色不跳变 */
+.go:hover{transform:translateY(-3px);background:var(--ac);background:color-mix(in srgb,var(--ac) 88%,#fff);box-shadow:var(--sh2),0 0 30px -6px var(--ac)}   /* v16.12:跟 --ac 走，浅色不跳变 */
 .go span{font-family:var(--mono);font-size:var(--fs-2);opacity:.7}
 
 /* ════════════════ 章节开场 · 杂志式全出血 ════════════════ */
@@ -522,11 +536,11 @@ a{color:inherit;text-decoration:none}
   box-shadow:0 0 0 4px var(--ac-dim);flex:none}
 .callout p{margin:0 0 9px;color:var(--ink2)}
 .callout p:last-child{margin-bottom:0}
-.callout.danger{border-left-color:var(--bad);background:color-mix(in srgb,var(--bad) 7%,var(--paper))}
+.callout.danger{border-left-color:var(--bad);background:var(--paper);background:color-mix(in srgb,var(--bad) 7%,var(--paper))}
 .callout.danger .lbl{color:var(--bad)}.callout.danger .lbl::before{background:var(--bad);box-shadow:0 0 0 4px rgba(240,86,72,.15)}
-.callout.good{border-left-color:var(--ok);background:color-mix(in srgb,var(--ok) 6%,var(--paper))}
+.callout.good{border-left-color:var(--ok);background:var(--paper);background:color-mix(in srgb,var(--ok) 6%,var(--paper))}
 .callout.good .lbl{color:var(--ok)}.callout.good .lbl::before{background:var(--ok);box-shadow:0 0 0 4px rgba(45,212,168,.14)}
-.callout.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 7%,var(--paper))}
+.callout.warn{border-left-color:var(--warn);background:var(--paper);background:color-mix(in srgb,var(--warn) 7%,var(--paper))}
 .callout.warn .lbl{color:var(--warn)}.callout.warn .lbl::before{background:var(--warn);box-shadow:0 0 0 4px rgba(227,178,60,.14)}
 
 /* ════════════════ card ════════════════ */
@@ -554,7 +568,7 @@ a{color:inherit;text-decoration:none}
 .tblwrap td:first-child{white-space:nowrap}   /* v16.8:首列不换行，「热痉挛」不再被压成两行 */
 .tblwrap td{padding:13px 14px;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top;
   font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.tblwrap tbody tr:nth-child(even){background:color-mix(in srgb,var(--paper2) 50%,transparent)}
+.tblwrap tbody tr:nth-child(even){background:var(--paper2);background:color-mix(in srgb,var(--paper2) 50%,transparent)}
 .tblwrap tr:last-child td{border-bottom:0}
 .tblwrap td:first-child{color:var(--ink)}
 .tblwrap tbody tr{position:relative;transition:background .3s}
@@ -618,11 +632,11 @@ a{color:inherit;text-decoration:none}
 .box{border:1px solid var(--line);border-left:2px solid var(--ink4);border-radius:var(--r-2);background:var(--paper);
   padding:16px 19px;margin:16px 0}   /* v16.1:去阴影，更扁平 */
 .box .h{font-family:var(--mono);font-size:var(--fs-1);letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);margin-bottom:9px}
-.box.ok{border-left-color:var(--ok);background:color-mix(in srgb,var(--ok) 6%,var(--paper))}
+.box.ok{border-left-color:var(--ok);background:var(--paper);background:color-mix(in srgb,var(--ok) 6%,var(--paper))}
 .box.ok .h{color:var(--ok)}
-.box.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 6%,var(--paper))}
+.box.warn{border-left-color:var(--warn);background:var(--paper);background:color-mix(in srgb,var(--warn) 6%,var(--paper))}
 .box.warn .h{color:var(--warn)}
-.box.stop{border-left-color:var(--bad);background:color-mix(in srgb,var(--bad) 6%,var(--paper))}
+.box.stop{border-left-color:var(--bad);background:var(--paper);background:color-mix(in srgb,var(--bad) 6%,var(--paper))}
 .box.stop .h{color:var(--bad)}
 .box ol,.box ul{margin:0;padding-left:20px}
 .box li{font-size:var(--fs-4)}
@@ -795,7 +809,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .lv{flex:1;min-width:110px;background:var(--paper2);border:1px solid var(--line);border-radius:var(--r-3);
   padding:11px 13px;transition:all .4s var(--ease)}
 .lv.hit{border-color:var(--ac);background:var(--ac-dim)}
-.err{color:var(--bad);font-size:var(--fs-4);padding:10px 12px;border:1px solid var(--bad);border-radius:var(--r-2);background:color-mix(in srgb,var(--bad) 8%,transparent)}   /* v16.13:统一错误文案样式 */
+.err{color:var(--bad);font-size:var(--fs-4);padding:10px 12px;border:1px solid var(--bad);border-radius:var(--r-2);background:var(--paper);background:color-mix(in srgb,var(--bad) 8%,transparent)}   /* v16.13:统一错误文案样式 */
 .lv .k{font-family:var(--mono);font-size:var(--fs-1);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)   /* v16.16:C1 对比度，ink4→ink3 */}
 .lv .v{font-family:var(--mono);font-size:1.05rem;font-variant-numeric:tabular-nums;margin-top:4px;color:var(--title);letter-spacing:-.02em}
 .lv.hit .v{color:var(--ac);text-shadow:var(--glow)}
@@ -819,7 +833,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 }
 
 /* ════════════════ 抽屉 / 命令面板 ════════════════ */
-.drawer{position:fixed;inset:0;z-index:950;background:color-mix(in srgb,var(--bg) 90%,transparent);
+.drawer{position:fixed;inset:0;z-index:950;background:var(--bg);background:color-mix(in srgb,var(--bg) 90%,transparent);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:calc(var(--top) + 18px) var(--gut) calc(30px + env(safe-area-inset-bottom));   /* v16.11 P2:safe-area */
   overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
 .drawer.on{opacity:1;visibility:visible}
@@ -828,7 +842,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .drawer a{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:var(--fs-5);color:var(--ink2)}
 .drawer a i{font-style:normal;font-family:var(--mono);font-size:var(--fs-2);color:var(--ac);min-width:22px}
 .drawer a.on{color:var(--ink)}
-.pal{position:fixed;inset:0;z-index:980;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(16px);   /* v16.11 P2:跟主题走，不再硬编码深色 */
+.pal{position:fixed;inset:0;z-index:980;background:var(--bg);background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(16px);   /* v16.11 P2:跟主题走，不再硬编码深色 */
   -webkit-backdrop-filter:blur(16px);display:flex;align-items:flex-start;justify-content:center;
   padding:14vh 16px 30px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 .pal.on{opacity:1;visibility:visible}
@@ -838,6 +852,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .palbox input{width:100%;background:transparent;border:0;outline:0;color:var(--ink);font-size:var(--fs-5);
   padding:17px 20px;border-bottom:1px solid var(--line)}
 .palbox input::placeholder{color:var(--ink4)}
+.palbox input:focus{border-bottom-color:var(--ac);box-shadow:0 1px 0 var(--ac)}
 .palres{max-height:min(52vh,420px);overflow-y:auto}
 .palres a{display:flex;gap:12px;padding:11px 20px;font-size:var(--fs-4);color:var(--ink2);
   border-bottom:1px solid var(--line);position:relative}
@@ -857,7 +872,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
   color:var(--ink4);letter-spacing:.06em}
 
 /* 移动端章条 */
-.mrail{position:fixed;z-index:940;left:0;right:0;bottom:0;background:color-mix(in srgb,var(--bg) 88%,transparent);
+.mrail{position:fixed;z-index:940;left:0;right:0;bottom:0;background:var(--bg);background:color-mix(in srgb,var(--bg) 88%,transparent);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);
   padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px}
 @media(min-width:1000px){.mrail{display:none}}
@@ -868,8 +883,8 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 /* v16:移动端中间章节指示 LAP 08/23 + 细进度线 */
 .mrail .mmid{flex:1.4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:0}
 .mrail .mmid span{font-family:var(--mono);font-size:var(--fs-1);letter-spacing:.1em;color:var(--ink3);white-space:nowrap}
-.mrail .mmid u{display:block;width:100%;height:2px;background:var(--line);border-radius:1px;text-decoration:none;overflow:hidden}
-.mrail .mmid u i{display:block;height:100%;width:0;background:var(--ac);border-radius:1px;transition:width .3s var(--ease)}
+.mrail .mmid #mProg{display:block;width:100%;height:2px;background:var(--line);border-radius:1px;text-decoration:none;overflow:hidden}
+.mrail .mmid #mProg i{display:block;height:100%;width:0;background:var(--ac);border-radius:1px;transition:width .3s var(--ease)}
 /* v16: TODAY / CURRENT PHASE 模块 —— Level A 数据卡 */
 .todaymod{margin:26px 0;padding:20px 22px;border:1px solid var(--border-default);
   border-radius:var(--radius-md);background:var(--paper)}
@@ -884,7 +899,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 @media(max-width:360px){.tm-week{gap:4px}.tm-d i{font-size:9px}}   /* v16.13:超窄屏降字号+减间距，防"今·一"撑破 */
 .tm-d{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border:1px solid var(--line);
   border-radius:var(--r-2);background:var(--paper2)}
-.tm-d i{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--ink4);white-space:nowrap}   /* v16.12:超窄屏不换行 */
+.tm-d i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--ink4);white-space:nowrap}   /* v16.12:超窄屏不换行 */
 .tm-hint{font-size:var(--fs-1)}   /* v16.14:替代内联 style="font-size:11px" */
 /* V18:TODAY升级 - 进度环与里程碑样式 */
 .tm-extra{display:flex;align-items:center;gap:14px;margin:14px 0 4px;padding:12px;border:1px solid var(--line);border-radius:var(--r-2);background:var(--paper2)}
@@ -898,7 +913,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 .tm-ms{font-size:12px;color:var(--ink3)}
 .tm-ms b{color:var(--ac);font-family:var(--mono)}
 .tm-d b{font-family:var(--mono);font-size:13px;color:var(--ink2);font-weight:600}
-.tm-d.on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent)}
+.tm-d.on{border-color:var(--ac);background:var(--ac-dim);background:color-mix(in srgb,var(--ac) 12%,transparent)}
 .tm-d.on b{color:var(--ac-deep)}
 .tm-d.rest b{color:var(--ink4)}
 .tm-go{margin-top:14px;background:none;border:1px solid var(--border-default);border-radius:var(--radius-sm);
@@ -922,13 +937,13 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
   *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
-/* ════════════════ 打印（纯 CSS，不依赖 JS 注入） ════════════════ */
 @media (hover:none){
   .tbtn:hover,.hstat:hover,.tg a:hover,.go:hover,.callout:hover,.card:hover,.stat:hover,
   .quick a:hover,.pace:hover,.chbtn:hover,.po:hover,.chtop:hover,.checkin-fab:hover,.heat .c:hover{
     transform:none!important;box-shadow:none!important}
 }
 
+/* ════════════════ 打印（纯 CSS，不依赖 JS 注入） ════════════════ */
 @media print{#printall{print-color-adjust:exact;-webkit-print-color-adjust:exact}.vizwrap,.tool{display:none!important} /* 2026-10-04:打印 */
   #printall,#printall *{color:#1a1a1a!important;background-color:transparent!important;border-color:#999!important;}
   #printall th{background:#f2f2f2!important;}
@@ -955,7 +970,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 }
 /* V18:打印稿升级样式（封面/目录/页脚） */
 @media print{
-  .print-cover{page-break-after:always;display:flex!important;align-items:center;justify-content:center;min-height:90dvh;text-align:center}
+  .print-cover{page-break-after:always;display:flex!important;align-items:center;justify-content:center;min-height:90vh;min-height:90dvh;text-align:center}
   .print-cover .pc-inner{max-width:90%}
   .print-cover .pc-kicker{font-family:var(--mono);font-size:11pt;letter-spacing:.3em;color:#666;margin-bottom:18pt}
   .print-cover h1{font-size:28pt;line-height:1.4;margin:0 0 14pt;color:#000}
@@ -973,6 +988,9 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
   .print-toc .ptoc-note{font-size:9pt;color:#888;margin-top:12pt}
   .print-ch{page-break-before:always}
   .print-ch:first-of-type{page-break-before:auto}
+  /* 2026-10-24:只打印本章模式——其余 section 全隐藏，仅目标章显示且不强制分页前断 */
+  #printall.print-only section{display:none!important}
+  #printall.print-only section.only{display:block!important;page-break-before:auto}
   .print-foot{margin-top:16pt;padding-top:8pt;border-top:1px solid #ccc;
     font-family:var(--mono);font-size:9pt;color:#888;text-align:center}
 }
@@ -1116,7 +1134,7 @@ body::before{
 /* 提示层级：安静（无框）→ 标准（好/警告）→ 响亮（危险，只留给停跑与伤病信号） */
 #stage .callout:not(.good):not(.warn):not(.danger){   /* v16.12:删 .amber/.blue/.green 死 :not()（无定义无使用） */
   background:transparent;border-color:transparent;border-left:2px solid var(--line2);border-radius:0;padding:4px 0 4px 18px}
-#stage .callout.danger{border-left-width:4px;background:color-mix(in srgb,var(--bad) 11%,var(--paper));
+#stage .callout.danger{border-left-width:4px;background:var(--paper);background:color-mix(in srgb,var(--bad) 11%,var(--paper));
   box-shadow:0 0 0 1px color-mix(in srgb,var(--bad) 30%,transparent),0 14px 30px -18px color-mix(in srgb,var(--bad) 55%,transparent)}
 /* 表格：数字等宽；横向可滚动时两侧出现边缘阴影 */
 #stage .tblwrap{background:
@@ -1199,7 +1217,7 @@ border-radius:999px;padding:10px 16px;font-size:13px;cursor:pointer;box-shadow:0
 background:rgba(0,0,0,.55);padding:18px}
 .v18-modal.open{display:flex}
 .v18-box{background:var(--card,#1c1f24);color:var(--ink,#e8eaed);border:1px solid var(--line,#2e3238);
-border-radius:14px;max-width:440px;width:100%;max-height:88dvh;overflow:auto;padding:20px}
+border-radius:14px;max-width:440px;width:100%;max-height:88vh;max-height:88dvh;overflow:auto;padding:20px}
 .v18-box h3{margin:0 0 4px;font-size:17px}
 .v18-box .sub{font-size:12px;color:var(--ink3,#878e98);margin:0 0 14px}
 .v18-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
@@ -1232,9 +1250,9 @@ padding:12px;margin-top:10px;font-size:14px;line-height:1.7}
 .v18-pr .pm{font-size:11px;color:var(--ink3,#878e98)}
 /* V18: 书签按钮 */
 .v18-bmk{background:transparent;border:1px solid var(--line,#2e3238);border-radius:6px;font-size:19px;cursor:pointer;padding:2px 8px;line-height:1;
-color:var(--ink,#e8eaed);vertical-align:middle;margin-left:8px}
+color:var(--ink,#e8eaed);vertical-align:middle}   /* 2026-10-24:原 margin-left:8px 与 .chhead-row 的 gap:12px 叠加成 20px，删 margin 统一为 12px */
 .v18-bmk:hover{border-color:var(--ac,#2bd9be)}
-.v18-bmk.on{color:#e8b62a;border-color:#e8b62a} /* 2026-10-04:收藏按钮更显眼 */
+.v18-bmk.on{color:var(--warn);border-color:var(--warn)} /* 2026-10-04:收藏按钮更显眼 */
 .v18-bmklist{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .v18-bmklist a{display:inline-block;background:var(--card,#1c1f24);border:1px solid var(--line,#2e3238);
 border-radius:999px;padding:7px 14px;font-size:13px;color:var(--ink,#e8eaed);text-decoration:none}
@@ -1265,9 +1283,9 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 
 /* 2026-10-05:小屏顶栏修复(≤480px) */
 @media(max-width:480px){
-  .topbar{gap:6px;padding:0 8px}
+  .topbar{gap:6px;padding:0 max(8px,env(safe-area-inset-right)) 0 max(8px,env(safe-area-inset-left))}
   .topbar .brand{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
-  .tbtn{width:30px;height:30px;flex-shrink:0}
+  .tbtn{width:36px;height:36px;flex-shrink:0}
 }
 /* 2026-10-05:封面小字对比度+字号 */
 .hstat .d,.hstat .k,.cover .opt{font-size:12px !important;color:var(--ink2) !important}
@@ -1279,44 +1297,46 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 </style>
 </head>
 <body>
+<noscript><p style="padding:40px 20px;text-align:center">本手册需要启用 JavaScript 才能交互阅读。请在浏览器设置中启用后刷新。</p></noscript>
 <a class="skip" href="#stage">跳到正文</a>
+<div id="srLive" class="sr-only" role="status" aria-live="polite"></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="prog" aria-hidden="true"><i id="progBar"></i><span class="pdash" id="progDash"></span></div>
 
 <header class="topbar" id="topbar">
   <div class="brand"><i></i>四年成长计划手册 <em>v18.2 · 25 圈</em></div>
   <div class="crumb"><b id="crumbN">封面</b><span id="crumbT">四年中长跑成长计划</span></div>
-  <button class="sbtn" id="sBtn" aria-label="搜索章节">搜索<kbd>Ctrl K</kbd></button>
+  <button class="sbtn" id="sBtn" aria-label="搜索章节" aria-expanded="false" aria-controls="pal">搜索<kbd>Ctrl K</kbd></button>
   <button class="tbtn" id="tBtn" aria-label="切换主题（6种）" title="切换主题">🌓</button>
   <button class="tbtn" id="statBtn" aria-label="阅读统计" title="阅读统计">📊</button>   <!-- V18:阅读统计入口（项目08） -->
-  <button class="railbtn" id="railbtn">目录</button>
+  <button class="railbtn" id="railbtn" aria-expanded="false" aria-controls="drawer">目录</button>
 </header>
 
 <div class="app">
   <aside class="rail">
-    <p class="rh">目录 · 25 圈</p>
-    <nav id="railList"></nav>
+    <p class="rh" role="heading" aria-level="2">目录 · 25 圈</p>
+    <nav id="railList" aria-label="全书目录"></nav>
   </aside>
   <main class="stage">
-    <div id="stage" tabindex="-1"></div>
+    <div id="stage" tabindex="-1" role="region" aria-label="正文"></div>
   </main>
 </div>
 
 <div class="mrail">
   <button id="mPrev">← 上一圈</button>
-  <div class="mmid"><span id="mLap">– / —</span><u id="mProg"><i></i></u></div>
+  <div class="mmid"><span id="mLap">– / —</span><div id="mProg" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="25" aria-valuenow="0"><i></i></div></div>
   <button id="mNext">下一圈 →</button>
 </div>
 
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="全部章节">
-  <p class="dh">全部章节 · 25 圈</p>
-  <nav id="drawList"></nav>
+  <p class="dh" role="heading" aria-level="2">全部章节 · 25 圈</p>
+  <nav id="drawList" aria-label="全部章节"></nav>
 </div>
 
 <div class="pal" id="pal" role="dialog" aria-modal="true" aria-label="章节搜索">
   <div class="palbox">
-    <input id="palIn" type="text" role="searchbox" aria-label="搜索章节或正文关键词" placeholder="搜索章节 / 正文关键词…" autocomplete="off" spellcheck="false">
-    <div class="palres" id="palRes"></div>
+    <input id="palIn" type="text" role="combobox" aria-autocomplete="list" aria-controls="palRes" aria-expanded="false" aria-label="搜索章节或正文关键词" placeholder="搜索章节 / 正文关键词…" autocomplete="off" spellcheck="false">
+    <div class="palres" id="palRes" role="listbox" aria-label="搜索结果"></div>
     <div class="palf">↑↓ 选择 · ↵ 跳转 · esc 关闭 · ←→ 换圈</div>
   </div>
 </div>
@@ -1405,7 +1425,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <tr><td><strong>学业高峰 / 考研备考，跑不动了</strong></td><td class="c"><strong>第 20 节 20.2</strong>（维持模式）</td></tr>
   <tr><td><strong>计划落后了 / 断了</strong></td><td class="c"><strong>第 20 节 20.3</strong>（落后 vs 断了的处理）</td></tr>
   <tr><td>寒暑假一个人跑不动</td><td class="c"><strong>第 20 节 20.4</strong></td></tr>
-  <tr><td><strong>扭了 / 拉了 / 摔了（急症）</strong></td><td class="c"><strong>第 21 节 21.1</strong>（PEACE & LOVE）</td></tr>
+  <tr><td><strong>扭了 / 拉了 / 摔了（急症）</strong></td><td class="c"><strong>第 21 节 21.1</strong>（PEACE &amp; LOVE）</td></tr>
   <tr><td><strong>夏天跑得头晕恶心</strong></td><td class="c"><strong>第 21 节 21.2</strong>（中暑三级识别）</td></tr>
   <tr><td>岔气 / 黑指甲 / 水泡</td><td class="c"><strong>第 21 节 21.3–21.4</strong></td></tr>
   <tr><td>感冒了要不要吃药、能不能跑</td><td class="c"><strong>第 21 节 21.5</strong></td></tr>
@@ -4822,66 +4842,66 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
   <p>从 2:15 到 1:51，是绝大多数人一生都走不完的路。但<strong>从"只能跑 4–5 km"到"1500m 跑进 4:29（三级）"，是你认真练一年就大概率能做到的事</strong>。别被那个遥远的目标吓到，也别因为它而忽略了眼前这一年。</p>
   <p><strong>先把 10 月这 4 周跑完——每周 3–5 km 的小慢跑，一次不落，跑完不痛。做到这件事，你就已经超过 95% 的大学生跑者了。</strong></p>
 </div></template>
-<template data-ch="19" data-title="自己跑下去：16 个常见情境怎么处理"><p>这一节是给"以后没人可问"准备的。<strong>下面每一条都是你大概率会遇到的情况，照着做就行。</strong></p><nav class="quick-chips"><a href="#c19-1" class="qc-chip">感冒</a><a href="#c19-2" class="qc-chip">考试周</a><a href="#c19-3" class="qc-chip">寒假</a><a href="#c19-4" class="qc-chip">下雨</a><a href="#c19-5" class="qc-chip">状态差</a><a href="#c19-6" class="qc-chip">膝盖疼</a><a href="#c19-7" class="qc-chip">跟腱</a><a href="#c19-8" class="qc-chip">打球</a><a href="#c19-9" class="qc-chip">加练</a><a href="#c19-10" class="qc-chip">赛前紧张</a><a href="#c19-11" class="qc-chip">跑崩</a><a href="#c19-12" class="qc-chip">停训回归</a><a href="#c19-13" class="qc-chip">体重</a><a href="#c19-14" class="qc-chip">教练冲突</a><a href="#c19-15" class="qc-chip">半马</a><a href="#c19-16" class="qc-chip">没达标</a></nav>
+<template data-ch="19" data-title="自己跑下去：16 个常见情境怎么处理"><p>这一节是给"以后没人可问"准备的。<strong>下面每一条都是你大概率会遇到的情况，照着做就行。</strong></p><nav aria-label="本章情境快捷跳转" class="quick-chips"><a href="#c19-1" class="qc-chip">感冒</a><a href="#c19-2" class="qc-chip">考试周</a><a href="#c19-3" class="qc-chip">寒假</a><a href="#c19-4" class="qc-chip">下雨</a><a href="#c19-5" class="qc-chip">状态差</a><a href="#c19-6" class="qc-chip">膝盖疼</a><a href="#c19-7" class="qc-chip">跟腱</a><a href="#c19-8" class="qc-chip">打球</a><a href="#c19-9" class="qc-chip">加练</a><a href="#c19-10" class="qc-chip">赛前紧张</a><a href="#c19-11" class="qc-chip">跑崩</a><a href="#c19-12" class="qc-chip">停训回归</a><a href="#c19-13" class="qc-chip">体重</a><a href="#c19-14" class="qc-chip">教练冲突</a><a href="#c19-15" class="qc-chip">半马</a><a href="#c19-16" class="qc-chip">没达标</a></nav>
 
-<h4 id="c19-1">1. 感冒了 / 发烧了怎么办？</h4>
+<h3 id="c19-1">1. 感冒了 / 发烧了怎么办？</h3>
 <p><strong>脖子以上</strong>（鼻塞、流鼻涕、轻微喉咙痛）→ 可以跑，但只跑轻松跑，距离减半。<br>
 <strong>脖子以下</strong>（咳嗽、发烧、全身酸痛、腹泻）→ 完全停跑，症状消失后 2 天再恢复。<br>
 <strong class="need">发烧绝对不跑。</strong>发烧时运动有心肌炎风险，这不是"拼意志"的事。</p>
 
-<h4 id="c19-2">2. 考试周怎么办？</h4>
+<h3 id="c19-2">2. 考试周怎么办？</h3>
 <p>考试周（1 月、6 月）切到"维持模式"：<strong>只保留轻松跑，砍掉所有质量课，周跑量降到 80%（＝第 05 节的 ×0.8）。</strong>两周降量不会毁掉你的有氧，但两周缺觉会。<strong>考完第一周不要急着补跑量，按 80% 恢复。</strong></p>
 
-<h4 id="c19-3">3. 寒假回家怎么办？</h4>
+<h3 id="c19-3">3. 寒假回家怎么办？</h3>
 <p>你是本地人，回家不是问题——<strong>问题是有没有人陪你跑</strong>。三件事：① 固定一条路线、固定时间，形成习惯；② 永川冬天湿冷，防风外套 + 手套必须穿；③ <strong>寒假是冬训的关键期</strong>，很多人寒假一停，春天就白练了。</p>
 
-<h4 id="c19-4">4. 连着下雨怎么办？</h4>
+<h3 id="c19-4">4. 连着下雨怎么办？</h3>
 <p>看第 13 节的雨天分级。<strong>小雨照跑；中雨改室内（自行车 / 跑步机 / 核心）；大雨直接休息。</strong><br>
 <strong class="need">雷雨天绝对不要在操场跑。</strong>空旷场地 + 金属钉鞋，这是会出人命的。</p>
 
-<h4 id="c19-5">5. 某天状态特别差怎么办？</h4>
+<h3 id="c19-5">5. 某天状态特别差怎么办？</h3>
 <p><strong>先跑 10 分钟再说。</strong>如果 10 分钟后还是腿发木、心率异常高 → 改成轻松跑或直接回去。<strong>不要硬上质量课</strong>——状态差的时候上强度，是最容易受伤的时候。</p>
 
-<h4 id="c19-6">6. 跑完膝盖 / 小腿疼怎么办？</h4>
+<h3 id="c19-6">6. 跑完膝盖 / 小腿疼怎么办？</h3>
 <p>分三种处理：<br>
 <strong>① 肌肉酸痛</strong>（对称、大面积酸、24–48 小时缓解）→ 正常，继续练。<br>
 <strong>② 关节或骨头的点状痛</strong>（一个手指能按到明确痛点）→ 停跑观察 3 天，不缓解就去医院。<br>
 <strong>③ 跑起来痛、跑完消失</strong> → 减量，别加量。</p>
 
-<h4 id="c19-7">7. 跟腱又开始响 / 痛了怎么办？</h4>
+<h3 id="c19-7">7. 跟腱又开始响 / 痛了怎么办？</h3>
 <p>看第 15 节的鉴别表。<strong>只是响、不痛不肿</strong> → 照常练 + 每天离心提踵；<strong>出现晨起僵硬或按压痛</strong> → 当天质量课降级为轻松跑；<strong class="need">突然"啪"一声 + 蹬地无力</strong> → 立刻急诊，这是断裂。</p>
 
-<h4 id="c19-8">8. 朋友约打球（篮球）怎么办？</h4>
+<h3 id="c19-8">8. 朋友约打球（篮球）怎么办？</h3>
 <p><strong>赛季里尽量少打。</strong>理由不是篮球不好，是<strong>负荷不可控</strong>——篮球的急停、变向、落地冲击是跑步的好几倍，而你左脚有骨折史。<br>
 如果一定要打：① 一周不超过 1 次；② 打球那天不排质量课；③ 第二天跑量减半。<strong>把篮球当"额外冲击负荷"算进总量里。</strong></p>
 
-<h4 id="c19-9">9. 想加练 / 觉得跑太少怎么办？</h4>
+<h3 id="c19-9">9. 想加练 / 觉得跑太少怎么办？</h3>
 <p><strong>不要加。</strong>你的瓶颈是有氧，不是跑量不够——而是跑量还没堆到位你就想加。<strong>很多业余跑者的伤病，都来自额外加量、恢复不足或训练负荷控制失误。</strong>第 05 节的曲线已经是给你的上限。</p>
 
-<h4 id="c19-10">10. 比赛前紧张、睡不好怎么办？</h4>
+<h3 id="c19-10">10. 比赛前紧张、睡不好怎么办？</h3>
 <p>正常，所有人都有。<strong>偶尔一晚睡眠不佳不一定明显影响成绩</strong>（真正影响你的是赛前一周的整体睡眠）。但连续多晚睡眠不足会影响恢复和表现，所以别把"一晚没事"当成"天天熬夜也没事"。做法：① 赛前一天把装备全部收拾好，减少早上决策；② 赛前 2 小时到场，熟悉环境；③ <strong>热身一定要做足</strong>——紧张时身体更僵，热身是解药。</p>
 
-<h4 id="c19-11">11. 比赛跑崩了怎么办？</h4>
+<h3 id="c19-11">11. 比赛跑崩了怎么办？</h3>
 <p><strong>先看是不是配速错了。</strong>1500m 跑崩的常见原因之一是前 400m 冲太快（第 14 节有分段表）。<br>
 跑崩不是失败，是数据——<strong>把崩在第几圈、当时体感多少记进日志，下一次就知道该慢多少。</strong></p>
 
-<h4 id="c19-12">12. 停训一段时间后怎么回来？</h4>
+<h3 id="c19-12">12. 停训一段时间后怎么回来？</h3>
 <p><strong>按"停多久，用多久回来"的原则。</strong>停 2 周 → 用 2 周恢复；停 1 个月 → 用 1 个月。<strong>回来第一周只跑轻松跑，跑量为原来的一半。</strong>急着补回来，是非常常见的二次受伤诱因。</p>
 
-<h4 id="c19-13">13. 体重掉了 / 涨了怎么办？</h4>
+<h3 id="c19-13">13. 体重掉了 / 涨了怎么办？</h3>
 <p><strong>掉体重</strong>（一个月超过 2kg）→ 吃不够，加餐，尤其是碳水和蛋白。<br>
 <strong>涨体重</strong> → 冬训期涨 1–2kg 很正常；涨超过 3kg 就查一下零食和夜宵。<br>
 <strong class="need">不要为了跑步减重。</strong>你 173/60 已经偏瘦，再减只会掉肌肉和成绩。</p>
 
-<h4 id="c19-14">14. 老师 / 教练让我按他的方法练，冲突怎么办？</h4>
+<h3 id="c19-14">14. 老师 / 教练让我按他的方法练，冲突怎么办？</h3>
 <p><strong>先听他的。</strong>如果他是体育学院的田径老师或校队教练，他的经验比这份手册更贴近你的实际情况。<br>
 但问清楚两个问题：<strong>① 这个安排针对哪个阶段？② 我的左脚旧伤和扁平足他知道吗？</strong>把这份手册给他看，让他判断哪里要改。<strong>有教练的时候，教练说了算。</strong></p>
 
-<h4 id="c19-15">15. 想跑半马 / 全马可以吗？</h4>
+<h3 id="c19-15">15. 想跑半马 / 全马可以吗？</h3>
 <p><strong>大一大二不建议跑全马。</strong>以你当前的训练积累（周跑量 40–50km 级），42km 的单次负荷远超身体适应范围，受伤风险高，而且会挤占发展速度基础的关键窗口。<br>
 半马可以尝试，但<strong>至少要等 5km 跑进 18:00 之后</strong>，而且只当"训练性比赛"，不专门备赛。</p>
 
-<h4 id="c19-16">16. 如果最后没达标怎么办？</h4>
+<h3 id="c19-16">16. 如果最后没达标怎么办？</h3>
 <p><strong>那就没达标。</strong>但你会得到别的东西：一个能跑 48km/周的身体、一套自己会调整训练的方法、以及 5km 从 21:00 到 17:00 的成绩。<strong>这些不会因为一张证书没拿到就消失。</strong></p>
 <p>而且等级线不是只有一条。第 01 节说过你手上有三张门票：1500m、800m、5000m。<strong>一条走不通，换一条。</strong></p>
 
@@ -4972,11 +4992,11 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 </div></template>
 <template data-ch="21" data-title="急症、小毛病与心理低谷"><p>前面 21 节讲的是"怎么练"。这一节讲的是<strong>练的过程里会突然出现的麻烦</strong>——身体的急症、反复的小毛病，以及最难处理的那个：<strong>不想练了。</strong></p>
 
-<h3>21.1 急性伤病：扭伤 / 拉伤 / 摔倒 —— PEACE & LOVE</h3>
-<p>跑道上最容易发生的三种急性伤：<strong>踝扭伤、小腿拉伤、摔倒擦伤</strong>。目前运动医学更常用 <strong>PEACE & LOVE</strong>（2019）框架——它不强调长时间制动和冰敷，而是<strong>保护 + 尽早合理负荷</strong>。</p>
+<h3>21.1 急性伤病：扭伤 / 拉伤 / 摔倒 —— PEACE &amp; LOVE</h3>
+<p>跑道上最容易发生的三种急性伤：<strong>踝扭伤、小腿拉伤、摔倒擦伤</strong>。目前运动医学更常用 <strong>PEACE &amp; LOVE</strong>（2019）框架——它不强调长时间制动和冰敷，而是<strong>保护 + 尽早合理负荷</strong>。</p>
 <div class="tblwrap">
 <table>
-<caption>表 21-1 · 急性伤病：PEACE（伤后即刻）& LOVE（随后几天）</caption>
+<caption>表 21-1 · 急性伤病：PEACE（伤后即刻）&amp; LOVE（随后几天）</caption>
 <thead><tr><th class="c" scope="col">步骤</th><th scope="col">做什么</th><th class="c" scope="col">做多久</th></tr></thead>
 <tbody>
 <tr><td class="c"><strong>P</strong>rotect<br>保护</td><td><strong>立刻停跑</strong>，别再试"走两步看看"；必要时用弹性绷带轻压包扎</td><td class="c">1–3 天</td></tr>
@@ -5570,7 +5590,7 @@ body.pal-open{position:fixed;top:var(--pal-top,0px);overflow:hidden;width:100%}
 <h4>第一步：查本周跑量</h4>
 <p>看第 05 节表 05-1，找到本周是第几周，对应跑量是多少。</p>
 <h4>第二步：照抄当日数字</h4>
-<div class="tblwrap"><table><caption>表 23-1 · 常用周跑量 → 每日分配速查（27 档）</caption><tr><th>周跑量</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>日</th></tr><tr><td>12</td><td>2</td><td>1</td><td>2</td><td>1</td><td>2</td><td>4</td><td>0</td></tr><tr><td>14</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>4</td><td>0</td></tr><tr><td>15</td><td>2</td><td>2</td><td>3</td><td>2</td><td>2</td><td>4</td><td>0</td></tr><tr><td>18</td><td>3</td><td>2</td><td>3</td><td>2</td><td>3</td><td>5</td><td>0</td></tr><tr><td>19</td><td>3</td><td>2</td><td>3</td><td>2</td><td>3</td><td>6</td><td>0</td></tr><tr><td>21</td><td>3</td><td>3</td><td>4</td><td>2</td><td>3</td><td>6</td><td>0</td></tr><tr><td>23</td><td>4</td><td>3</td><td>4</td><td>3</td><td>3</td><td>6</td><td>0</td></tr><tr><td>24</td><td>4</td><td>3</td><td>4</td><td>3</td><td>3</td><td>7</td><td>0</td></tr><tr><td>25</td><td>4</td><td>3</td><td>4</td><td>3</td><td>3</td><td>8</td><td>0</td></tr><tr><td>27</td><td>4</td><td>3</td><td>5</td><td>3</td><td>3</td><td>9</td><td>0</td></tr><tr><td>30</td><td>5</td><td>4</td><td>5</td><td>4</td><td>3</td><td>9</td><td>0</td></tr><tr><td>31</td><td>4</td><td>4</td><td>5</td><td>4</td><td>4</td><td>10</td><td>0</td></tr><tr><td>32</td><td>5</td><td>4</td><td>5</td><td>4</td><td>4</td><td>10</td><td>0</td></tr><tr><td>33</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>10</td><td>0</td></tr><tr><td>34</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>11</td><td>0</td></tr><tr><td>35</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>12</td><td>0</td></tr><tr><td>36</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>13</td><td>0</td></tr><tr><td>38</td><td>5</td><td>4</td><td>6</td><td>5</td><td>4</td><td>14</td><td>0</td></tr><tr><td>39</td><td>6</td><td>5</td><td>6</td><td>5</td><td>5</td><td>12</td><td>0</td></tr><tr><td>40</td><td>6</td><td>5</td><td>6</td><td>5</td><td>5</td><td>13</td><td>0</td></tr><tr><td>42</td><td>6</td><td>5</td><td>7</td><td>5</td><td>4</td><td>15</td><td>0</td></tr><tr><td>43</td><td>6</td><td>5</td><td>7</td><td>5</td><td>4</td><td>16</td><td>0</td></tr><tr><td>44</td><td>6</td><td>5</td><td>7</td><td>5</td><td>5</td><td>16</td><td>0</td></tr><tr><td>45</td><td>5</td><td>7</td><td>7</td><td>6</td><td>4</td><td>16</td><td>0</td></tr><tr><td>48</td><td>5</td><td>8</td><td>8</td><td>6</td><td>4</td><td>17</td><td>0</td></tr><tr><td>51</td><td>5</td><td>9</td><td>8</td><td>7</td><td>4</td><td>18</td><td>0</td></tr><tr><td>54</td><td>6</td><td>9</td><td>9</td><td>7</td><td>4</td><td>19</td><td>0</td></tr></table></div><p style="font-size:13px;color:var(--ink2)">增幅规则：连续加量周：以数学计算的 10% 为上限，再取最接近的现有跑量档位；因此允许因整数档位产生约 0.2–0.4km 的离散取整误差。</p> <!-- 2026-10-05:27档静态，与SPLIT同源 -->
+<div class="tblwrap"><table><caption>表 23-1 · 常用周跑量 → 每日分配速查（27 档）</caption><thead><tr><th scope="col">周跑量</th><th scope="col">一</th><th scope="col">二</th><th scope="col">三</th><th scope="col">四</th><th scope="col">五</th><th scope="col">六</th><th scope="col">日</th></tr></thead><tbody><tr><td>12</td><td>2</td><td>1</td><td>2</td><td>1</td><td>2</td><td>4</td><td>0</td></tr><tr><td>14</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>4</td><td>0</td></tr><tr><td>15</td><td>2</td><td>2</td><td>3</td><td>2</td><td>2</td><td>4</td><td>0</td></tr><tr><td>18</td><td>3</td><td>2</td><td>3</td><td>2</td><td>3</td><td>5</td><td>0</td></tr><tr><td>19</td><td>3</td><td>2</td><td>3</td><td>2</td><td>3</td><td>6</td><td>0</td></tr><tr><td>21</td><td>3</td><td>3</td><td>4</td><td>2</td><td>3</td><td>6</td><td>0</td></tr><tr><td>23</td><td>4</td><td>3</td><td>4</td><td>3</td><td>3</td><td>6</td><td>0</td></tr><tr><td>24</td><td>4</td><td>3</td><td>4</td><td>3</td><td>3</td><td>7</td><td>0</td></tr><tr><td>25</td><td>4</td><td>3</td><td>4</td><td>3</td><td>3</td><td>8</td><td>0</td></tr><tr><td>27</td><td>4</td><td>3</td><td>5</td><td>3</td><td>3</td><td>9</td><td>0</td></tr><tr><td>30</td><td>5</td><td>4</td><td>5</td><td>4</td><td>3</td><td>9</td><td>0</td></tr><tr><td>31</td><td>4</td><td>4</td><td>5</td><td>4</td><td>4</td><td>10</td><td>0</td></tr><tr><td>32</td><td>5</td><td>4</td><td>5</td><td>4</td><td>4</td><td>10</td><td>0</td></tr><tr><td>33</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>10</td><td>0</td></tr><tr><td>34</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>11</td><td>0</td></tr><tr><td>35</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>12</td><td>0</td></tr><tr><td>36</td><td>5</td><td>4</td><td>6</td><td>4</td><td>4</td><td>13</td><td>0</td></tr><tr><td>38</td><td>5</td><td>4</td><td>6</td><td>5</td><td>4</td><td>14</td><td>0</td></tr><tr><td>39</td><td>6</td><td>5</td><td>6</td><td>5</td><td>5</td><td>12</td><td>0</td></tr><tr><td>40</td><td>6</td><td>5</td><td>6</td><td>5</td><td>5</td><td>13</td><td>0</td></tr><tr><td>42</td><td>6</td><td>5</td><td>7</td><td>5</td><td>4</td><td>15</td><td>0</td></tr><tr><td>43</td><td>6</td><td>5</td><td>7</td><td>5</td><td>4</td><td>16</td><td>0</td></tr><tr><td>44</td><td>6</td><td>5</td><td>7</td><td>5</td><td>5</td><td>16</td><td>0</td></tr><tr><td>45</td><td>5</td><td>7</td><td>7</td><td>6</td><td>4</td><td>16</td><td>0</td></tr><tr><td>48</td><td>5</td><td>8</td><td>8</td><td>6</td><td>4</td><td>17</td><td>0</td></tr><tr><td>51</td><td>5</td><td>9</td><td>8</td><td>7</td><td>4</td><td>18</td><td>0</td></tr><tr><td>54</td><td>6</td><td>9</td><td>9</td><td>7</td><td>4</td><td>19</td><td>0</td></tr></tbody></table></div><p style="font-size:13px;color:var(--ink2)">增幅规则：连续加量周：以数学计算的 10% 为上限，再取最接近的现有跑量档位；因此允许因整数档位产生约 0.2–0.4km 的离散取整误差。</p> <!-- 2026-10-05:27档静态，与SPLIT同源 -->
 
 <h4>三条硬性上限（不许破）</h4>
 <ol><li>连续加量周：30km 以下允许每档 +3km；30km 以上增幅 ≤ 10%</li><li>第 4 周强制减量 20%（×0.8）</li><li>减量周按比例每天减 20%</li></ol>
@@ -5638,7 +5658,7 @@ var CH_POINTS={
 "02":["5月市赛是主线战场","校运会只摸底不达级","自费参赛通道已确认"],
 "03":["1500m八成靠有氧","80/20强度分配","先堆量后上强度"],
 "04":["记住一圈2:15就够","E跑占八成跑量","进步了自己换表"],
-"05":["80/20强度分配是主线","每周加量≤10%","每第4周强制×0.8"],
+"05":["跑量曲线是全手册唯一跑量来源","每周加量≤10%","每第4周强制×0.8"],
 "06":["查周跑量照抄当日数","周三质量课周六长跑","三条上限不许破"],
 "07":["质量课周三晚周六上午","22:30睡06:20起","午休30分钟补觉"],
 "08":["基础期只用7种课","距离是上限非配额","配速全跟第04节走"],
@@ -5721,7 +5741,8 @@ function weekTag(w, sep){
   if(w===30) return s+"赛前 1 周 · 峰值×"+(KM[29]/48).toFixed(2); /* 2026-10-04 P0-2:竞赛期峰值48 */
   if(w===31) return s+"赛周 · 峰值×"+(KM[30]/48).toFixed(2); /* 2026-10-04 P0-2:竞赛期峰值48 */
   if(w===32) return s+"赛后恢复周";   /* v16.13:与 §05 文本对齐（固定 30km，不按 ×0.8） */
-  if(w===33) return s+"恢复性回升";   /* v16.23:表05-1明确为恢复性回升，不受10%限制 */
+  if(w===33) return s+"恢复性回升";
+  if(w===35) return s+"阶段切换";   /* 2026-10-23:与RED_CONS注释口径一致（W35是阶段切换，非减量/回落） */   /* v16.23:表05-1明确为恢复性回升，不受10%限制 */
   if(curRED()[w]){ /* 2026-10-13:显示与上一周的实际比值（表05-1可验证），替代此前的前8周峰值法 */
     var _rr=(KM[w-1]/KM[w-2]).toFixed(2);
     if(w===18||w===29) _rr+="（相对阶段峰值48：×"+(KM[w-1]/48).toFixed(2)+"）"; /* 2026-10-13:表05-1明确以48为峰值，tooltip补注 */
@@ -5772,7 +5793,7 @@ function phaseOf(w){
 }
 function partColor(i){
   /* C1:用partIdx按六部分组取色，不再硬编码索引边界 */
-  var n = (typeof CH!=="undefined" && CH[i]) ? CH[i].n : String(i).padStart(2,"0");
+  var n = (typeof CH!=="undefined" && CH[i]) ? CH[i].n : (i<10?'0'+i:''+i);   /* 2026-10-24:ES5 写法替代 padStart（旧内核兼容，与 padStart(2) 等价） */
   var pi = (typeof partIdx==="function") ? partIdx(n) : 0;
   return PHA[pi] || PHA[0];
 }
@@ -5803,9 +5824,11 @@ function slideUp(el){
 var indexBuilt=false;
 function ensureIndex(){
   if(indexBuilt) return;
-  indexBuilt=true;
   for(var i=0;i<CH.length;i++) CH[i].s=plainText(CH[i].html);
+  indexBuilt=true;   /* 2026-10-23:建完才置位，中途异常下次可重试，不再留永久半成品 */
 }
+/* 2026-10-23:空闲时预建搜索索引，首次搜索不卡顿（失败无副作用，搜索时仍同步建） */
+try{ if(window.requestIdleCallback) window.addEventListener('load',function(){ requestIdleCallback(function(){ try{ ensureIndex(); }catch(e){} },{timeout:3000}); }); }catch(e){}
 
 /* ============ 视图 ============ */
 var cur=-1, trackRaf=null;
@@ -5821,6 +5844,7 @@ function todayModule(){
   var wd=(now.getDay()+6)%7, wdCN=["一","二","三","四","五","六","日"][wd];
   var ds=(now.getMonth()+1)+"."+now.getDate()+" · 周"+wdCN;
   var head='<div class="tm-head"><span class="tm-k">TODAY</span><span class="tm-date">'+ds+'</span></div>';
+  var _bkHtml=v18backupWarn();   /* 2026-10-24:备份提醒横幅（条件不满足时为空串） */
   /* 2026-10-04:PB换表提示横幅 */
   var _sug=v18get('v18_pace_suggest',null), _sugHtml='';
   if(_sug&&typeof PACE!=='undefined'&&PACE[_sug.row]){
@@ -5834,13 +5858,13 @@ function todayModule(){
     var _pvD=new Date(); _pvD.setDate(_pvD.getDate()+1); /* 2026-10-04:明天日期，非START */
     var _pvDs=(_pvD.getMonth()+1)+'.'+_pvD.getDate()+' 周'+["日","一","二","三","四","五","六"][_pvD.getDay()];
     var _pvHtml=(pw.days===-1)?'<div class="tm-sub" style="margin-top:8px">📅 明日预告（'+_pvDs+'）：约 '+_pvKm+' km · 按体感跑</div>':''; /* 2026-10-13:仅剩1天显示明日预告 */
-    return '<div class="todaymod" style="--ld:430ms">'+head+_sugHtml+
+    return '<div class="todaymod" style="--ld:430ms">'+head+_sugHtml+_bkHtml+
       '<div class="tm-big">还有 '+(-pw.days)+' 天开始</div>'+
       '<div class="tm-sub">复跑适应期 · Week 01/48 · 首周 12 km</div>'+_pvHtml+
       '<button class="tm-go" data-go="5">查看全年路线图 →</button></div>';
   }
   if(pw.w>48){
-    return '<div class="todaymod" style="--ld:430ms">'+head+_sugHtml+
+    return '<div class="todaymod" style="--ld:430ms">'+head+_sugHtml+_bkHtml+
       '<div class="tm-big">第一年计划已完成</div>'+
       '<div class="tm-sub">48/48 周 · 用实测成绩定下一年目标</div>'+
       '<button class="tm-go" data-go="17">查看大二至大四展望 →</button></div>';
@@ -5882,7 +5906,8 @@ function todayModule(){
           if(_best5){ var _s5=v18toSec(PACE[0][0]), _f5=v18toSec(PACE[PACE.length-1][0]); _satE=_best5[2]+((_sec5>_s5||_sec5<_f5)?'（超表，仅参考）':''); }
         }
       }catch(e){}
-      _rx='<div class="tm-rx">🏃 今日长距离 · '+tkm+'km · E配速 '+_satE+'/km<br><span class="opt">要点：周末上午跑，最后2-3km可提到M配速</span></div>';
+      if(raceSat){ _rx='<div class="tm-rx">🏃 今日 E 短 · '+tkm+'km · E配速 '+_satE+'/km<br><span class="opt">要点：竞赛期周六减量，全程轻松跑，不做末段提速</span></div>'; }   /* 2026-10-24:竞赛期周六与主文案 E 短口径一致，不再写长距离/M配速要点 */
+      else{ _rx='<div class="tm-rx">🏃 今日长距离 · '+tkm+'km · E配速 '+_satE+'/km<br><span class="opt">要点：周末上午跑，最后2-3km可提到M配速</span></div>'; }
     }
     /* 周一/二/四/五轻松跑已在 main 后显示 E 配速参考 */
   }
@@ -5967,7 +5992,7 @@ function todayModule(){
       if(_plan>0){
         var _pct=Math.min(999,Math.round(_done/_plan*100));
         var _fn=Math.min(10,Math.round(_pct/10));
-        var _bar='█'.repeat(_fn)+'░'.repeat(10-_fn);
+        var _bar=''; for(var _bi=0;_bi<10;_bi++) _bar+=(_bi<_fn?'█':'░');   /* 2026-10-24:循环拼接替代 ES6 的 String.repeat，与全文件 ES5 口径一致 */
         _wkProg='<div class="tm-rx">📊 本周 W'+pw.w+' · 计划 '+_plan+'km<br>已完成 '+_done.toFixed(1)+' / '+_plan+'km '+_bar+' '+_pct+'%'+(_pct>110?' <span style="color:var(--bad,#d32f2f)">⚠ 已超110%，剩余只做轻松跑</span>':'')+'</div>';
       }
       /* 2026-10-04:功能⑪ - 近4周计划vs实际偏差 */
@@ -5995,7 +6020,7 @@ function todayModule(){
       }
     }
   }catch(e){}
-  return '<div class="todaymod" style="--ld:430ms">'+head+_sugHtml+_banner+_injWarn+_adviceHtml+_wkProg+
+  return '<div class="todaymod" style="--ld:430ms">'+head+_sugHtml+_bkHtml+_banner+_injWarn+_adviceHtml+_wkProg+
     '<div class="tm-phase">CURRENT PHASE · '+ph.n+'</div>'+
     '<div class="tm-big">'+main+'</div>'+_rx+
     '<div class="tm-sub">'+sub+'</div>'+_extraHtml+weekHtml+
@@ -6038,7 +6063,7 @@ function v18showSummary(){
     if(sleepN>0) html+=' · 睡眠均 '+(sleepSum/sleepN).toFixed(1)+'h';
     if(injDays>0) html+='<br>⚠️ 旧伤信号 '+injDays+'天';
     html+='<br><span style="font-size:12px;color:var(--ink3)">'+ds(wStart)+' ~ '+ds(wEnd)+'</span>';
-    html+='<div style="text-align:right"><a href="javascript:void(0)" data-sumclose="1" style="font-size:12px">收起</a></div></div>';
+    html+='<div style="text-align:right"><button type="button" class="v18-link" data-sumclose="1" style="font-size:12px">收起</button></div></div>';
     el.innerHTML=html;
   }catch(e){ try{ console.debug('[v18summary]', e&&e.message||e); }catch(_e){} el.innerHTML='<div class="tm-rx">生成失败</div>'; }
 }
@@ -6048,6 +6073,7 @@ function v18showTrend(){
   if(!el) return;
   try{
     var arr=v18get('v18_checkin',[]);
+    if(!Array.isArray(arr)) arr=[];   /* 2026-10-24:与同键其他消费点一致的数组守卫（数据损坏时不抛错中断） */
     var W=320,H=160,P=36,bw=22;
     var weeks=[];
     var today=new Date();
@@ -6065,7 +6091,7 @@ function v18showTrend(){
     weeks.forEach(function(x){ if(x.w!==0) maxV=Math.max(maxV,x.actual,x.plan); }); /* 2026-10-06:排除计划前 */
     maxV=Math.ceil(maxV*1.1);
     function sy(v){ return H-P-(v/maxV)*(H-2*P); }
-    var svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;max-width:340px;background:var(--card);border-radius:8px">';
+    var svg='<svg role="img" aria-label="近 8 周跑量趋势：'+weeks.filter(function(x){return x.w>0;}).map(function(x){return '第'+x.w+'周 '+x.actual+' 公里，计划 '+x.plan+' 公里';}).join('；')+'" viewBox="0 0 '+W+' '+H+'" style="width:100%;max-width:340px;background:var(--card);border-radius:8px">';
     /* 计划线（灰色虚线） */
     var planPts=weeks.map(function(x,i){ return (P+i*(W-2*P)/7).toFixed(1)+','+sy(x.plan).toFixed(1); }).join(' ');
     svg+='<polyline points="'+planPts+'" fill="none" stroke="var(--ink3)" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>';
@@ -6080,13 +6106,13 @@ function v18showTrend(){
     svg+='<text x="'+(W-P-60)+'" y="12" font-size="9" fill="var(--ink3)">- - 计划</text>';
     svg+='</svg>';
     el.innerHTML='<div class="tm-rx" style="margin-top:8px"><b>📈 近8周跑量趋势</b><br>'+svg+
-      '<div style="font-size:11px;color:var(--ink3)">绿色=达标，黄色=未达标，虚线=计划</div>'+
-      '<div style="text-align:right"><a href="javascript:void(0)" data-sumclose="1" style="font-size:12px">收起</a></div></div>';
+      '<div style="font-size:11px;color:var(--ink3)">达标 / 未达标 · 虚线=计划</div>'+
+      '<div style="text-align:right"><button type="button" class="v18-link" data-sumclose="1" style="font-size:12px">收起</button></div></div>';
   }catch(e){ try{ console.debug('[v18summary]', e&&e.message||e); }catch(_e){} el.innerHTML='<div class="tm-rx">生成失败</div>'; }
 }
 /* 2026-10-04 E1:周次事件单一数据源（TL_EVENTS/_msW/MILESTONES 三处派生） */
 var WEEK_EVENTS={
-  8:{t:"校运会（推迟，日期待定）", c:"", d:"原定11月下旬，因50周年校庆推迟至下学期"},
+  8:{t:"校运会（推迟，日期待定）", c:"", d:"原定11月下旬，因50周年校庆推迟至下学期"}, /* ICS(v18exportICS)不含此条——日期确定后两处同步更新 */
   14:{t:"考试周", c:"rest", d:""},
   30:{t:"赛前1周", c:"race", d:""},
   31:{t:"赛周", c:"race", d:"1500m 保守预测 4:50–5:00"},
@@ -6095,14 +6121,15 @@ var WEEK_EVENTS={
 var TL_EVENTS=WEEK_EVENTS; /* 兼容旧引用 */
 /* V18:生成时间线HTML */
 function timelineHTML(){
-  var wks="";
+  var wks="", evs=[];
   for(var w=1; w<=48; w++){
     var ev=TL_EVENTS[w];
+    if(ev) evs.push('第'+w+'周 '+ev.t);
     var cls="tl-wk"+(ev?" ev "+ev.c:"");
     var label=ev?'<span class="tl-t">'+ev.t+'</span>':"";
     wks+='<div class="'+cls+'" title="第'+w+'周'+(ev?" · "+ev.t:"")+'">'+label+'<span class="tl-n">'+w+'</span></div>';
   }
-  return '<div class="tl-wrap" style="--ld:500ms"><div class="tl-head">48 周时间线 · 关键事件</div>'+
+  return '<div class="tl-wrap" role="img" aria-label="48 周时间线，关键事件：'+evs.join('；')+'" style="--ld:500ms"><div class="tl-head">48 周时间线 · 关键事件</div>'+
     '<div class="tl-scroll"><div class="tl-track">'+wks+'</div></div></div>';
 }
 function coverHTML(){
@@ -6110,7 +6137,7 @@ function coverHTML(){
   var chByN={};
   CH.forEach(function(c,i){ chByN[c.n]={c:c,i:i}; });
   var cards=PARTS.map(function(p){
-    var h='<span class="part-group">'+esc(p.t)+'</span>';
+    var h='<span class="part-group" role="heading" aria-level="2">'+esc(p.t)+'</span>';
     p.ch.forEach(function(n){
       var e=chByN[n];
       if(!e) return;   /* V18:边界保护 */
@@ -6135,7 +6162,7 @@ function coverHTML(){
     '</div>'+
     '<div class="htags" style="--ld:430ms"><span class="hot">体竞字〔2026〕84号</span><span>主攻 1500m</span>'+
       '<span>48 周跑量曲线</span><span>自我更新六规则</span><span>旧伤适配</span></div>'+
-    '<div id="v18first" style="display:none"><div class="tm-banner tm-warn">👋 第一次打开？<br>1. 先看第 00 章「你的档案」——5 分钟了解为什么这么设计<br>2. 然后跳到第 06 章「周训练模板」——这就是你每天要跑的东西<br>3. 剩下的 23 章平时不用读，遇到问题按索引翻<br><button type="button" class="v18-btn" id="v18firstok" style="margin-top:6px">我知道了，不再显示</button></div></div>'+
+    '<div id="v18first" style="display:none"><div class="tm-banner tm-warn">👋 第一次打开？<br>1. 先看第 00 章「你的档案」——5 分钟了解为什么这么设计<br>2. 然后跳到第 06 章「周训练模板」——这就是你每天要跑的东西<br>3. 剩下的 '+(CH.length-2)+' 章平时不用读，遇到问题按索引翻<br><button type="button" class="v18-btn" id="v18firstok" style="margin-top:6px">我知道了，不再显示</button></div></div>'+
     todayModule()+
     timelineHTML()+   /* V18:48周时间线（项目07） */
     '<div id="v18coverpr">'+(typeof v18pbBarHTML==="function"?v18pbBarHTML():"")+'</div>'+   /* V18: 封面PB展示（项目17） */
@@ -6180,10 +6207,11 @@ function renderChToc(toc){
   var links=toc.map(function(t){
     return '<a href="#'+t.id+'" data-toc="'+t.id+'" class="'+(t.lv===4?"lv4":"")+'">'+esc(t.txt)+'</a>';
   }).join("");
-  return '<details class="ch-toc"><summary>本章目录（'+toc.length+'节）</summary><nav>'+links+'</nav></details>';
+  return '<details class="ch-toc"><summary>本章目录（'+toc.length+'节）</summary><nav aria-label="本章目录">'+links+'</nav></details>';
 }
 function chapterHTML(i){
   var c=CH[i], prev=CH[i-1], next=CH[i+1], pc=partColor(i);
+  var _bm=v18getBm();   /* 2026-10-24:整章共用一份书签列表，避免重复读存储解析 */
   var tool=(TOOLS[c.n]?TOOLS[c.n][0]():"");
   var viz=(VIZ[c.n]?VIZ[c.n][0]():"");
   /* V18:生成章节TOC（项目06） */
@@ -6193,14 +6221,14 @@ function chapterHTML(i){
     '<div class="chhead" style="--phc:'+pc+'"><span class="chnum" aria-hidden="true">'+c.n+'</span>'+
       '<p class="chlap">LAP '+c.n+' / '+CH.length+'</p>'+
       '<p class="chlapzh">第 '+c.n+' 圈</p>'+
-      '<h2>'+esc(c.t)+'<button class="v18-bmk" data-bmk="'+c.n+'" aria-label="收藏本章">'+(v18getBm().indexOf(c.n)>=0?'★':'☆')+'</button></h2>'+
+      '<div class="chhead-row"><h2>'+esc(c.t)+'</h2><button class="v18-bmk" data-bmk="'+c.n+'" aria-label="收藏本章" aria-pressed="'+(_bm.indexOf(c.n)>=0?'true':'false')+'">'+(_bm.indexOf(c.n)>=0?'★':'☆')+'</button><button class="v18-bmk" data-prt="'+c.n+'" aria-label="只打印本章" title="只打印本章">🖨</button></div>'+   /* 2026-10-24:打印本章按钮 */
       /* V18: 章节书签按钮 */
       (CHEN[c.n]?'<p class="chsub">'+CHEN[c.n]+'</p>':"")+
       '<div class="chbar"></div></div>'+
     '<div class="chbody">'+
       (CH_POINTS[c.n]?'<div class="ch-points"><div class="ch-points-h">本章要点</div><ol>'+CH_POINTS[c.n].map(function(p){return '<li>'+esc(p)+'</li>';}).join('')+'</ol></div>':'')+
       chTocHtml+viz+tool+tocRes.html+'</div>'+ /* 2026-10-04:本章要点卡片 */
-    '<nav class="chnav">'+
+    '<nav class="chnav" aria-label="上一圈 / 下一圈">'+
       '<button class="chbtn" data-go="'+(i-1)+'"'+(prev?"":" disabled")+'>'+
         '<span class="k">← 上一圈</span><span class="v">'+(prev?esc(prev.t):"已经是第一圈")+'</span></button>'+
       '<button class="chbtn next" data-go="'+(i+1)+'"'+(next?"":" disabled")+'>'+
@@ -6244,7 +6272,7 @@ function render(v,restoreY){
   stopTrack();                       // 切章前无条件停掉跑者点动画
   if(v<0){ stage.innerHTML=coverHTML(); buildTrack(); try{ refreshCounts(); }catch(_f){} /* 2026-10-05:用refreshCounts统一口径 */ }
   else { stage.innerHTML=chapterHTML(v); bindTools(v); }
-  window.scrollTo({top:0,behavior:"auto"});   /* v16.14:instant→auto，旧内核兼容 */
+  if(!(restoreY!=null&&restoreY>0)) window.scrollTo({top:0,behavior:"auto"});   /* v16.14:instant→auto，旧内核兼容；2026-10-24:有恢复位置时不再先滚顶，消除刷新闪顶 */
   if(restoreY!=null&&restoreY>0){     // v16:仅刷新/重开时恢复滚动位置
     restoring=true;                   // v16.1:恢复期间暂停 savePos，避免 y=0 覆盖存档
     requestAnimationFrame(function(){
@@ -6380,13 +6408,14 @@ function openStats(){
   var box=document.getElementById("statContent");
   if(box) box.innerHTML=html;
   var m=document.getElementById("statModal");
-  if(m) m.classList.add("on");
+  if(m){ m._opener=document.activeElement; m.classList.add("on"); document.body.style.overflow="hidden"; var _sc=document.getElementById("statClose"); if(_sc) setTimeout(function(){_sc.focus();},30); }   /* 2026-10-23:打开移焦+锁滚动 */
 }
 /* V18:关闭阅读统计面板 */
 function closeStats(){
   var m=document.getElementById("statModal");
-  if(m) m.classList.remove("on");
+  if(m){ m.classList.remove("on"); document.body.style.overflow=""; if(m._opener&&m._opener.focus) m._opener.focus(); }   /* 2026-10-23:关闭归还焦点 */
 }
+document.addEventListener("keydown",function(e){ var m=document.getElementById("statModal"); if(!m||!m.classList.contains("on"))return; if(e.key==="Escape"){ closeStats(); } else if(e.key==="Tab"){ var _sc=document.getElementById("statClose"); if(_sc){ _sc.focus(); e.preventDefault(); } } });   /* 2026-10-23:统计弹窗 Esc+焦点约束 */
 function go(v,restoreY){
   if(typeof v!=="number"||isNaN(v))return;   /* v16.11 P1:data-go 非法时不崩溃 */
   if(v < -1) v = -1; if(v >= CH.length) v = CH.length - 1;
@@ -6394,11 +6423,13 @@ function go(v,restoreY){
   if(transitioning){ pendingNav={v:v,y:restoreY||null}; return; }  // v16:不再丢弃连击；过渡中点回原章也排队
   if(v===cur&&restoreY==null) return;
   var stage=$("#stage");
+  var _fi=stage.contains(document.activeElement);   /* 2026-10-23:焦点在正文内（被点的翻页按钮将销毁）时，换章后移回正文 */
   transitioning=true;
   stage.classList.add("out");
   setTimeout(function(){
     try{
       cur=v; render(v,restoreY);
+      if(_fi){ try{ stage.focus({preventScroll:true}); }catch(_fe){ try{ stage.focus(); }catch(__fe){} } }   /* 2026-10-23:焦点移入正文；播报由 sync() 写 srLive */
       stage.classList.remove("out");
       stage.classList.add("enter");
       void stage.offsetWidth;
@@ -6431,7 +6462,9 @@ function loadPos(){
   }catch(e){ return null; }
 }
 function sync(){
-  [].forEach.call(document.querySelectorAll(".rail a"),function(a){
+  var _lv=document.getElementById("srLive");   /* 2026-10-23:换章播报（读屏） */
+  if(_lv) _lv.textContent = cur<0 ? "封面" : ("第 "+CH[cur].n+" 圈 · "+CH[cur].t);
+  [].forEach.call(document.querySelectorAll(".rail a, #drawList a"),function(a){
     a.classList.toggle("on", parseInt(a.getAttribute("data-go"),10)===cur);
   });
   var cn=$("#crumbN"), ct=$("#crumbT");
@@ -6449,8 +6482,22 @@ function sync(){
   var ml=$("#mLap"), mpg=$("#mProg i");
   if(ml) ml.textContent = cur<0?"COVER":"LAP "+CH[cur].n+" / "+CH.length;
   if(mpg) mpg.style.width=(p*100)+"%";
+  var _mp=$("#mProg"); if(_mp){ _mp.setAttribute("aria-valuemax",CH.length); _mp.setAttribute("aria-valuenow",cur<0?0:cur+1); }   /* 2026-10-23:进度条读屏值 */
 }
 
+function _mixRgb(varName){ /* 2026-10-24:只取基色三联值（"r,g,b"），供批量场景循环外取一次；取不到返回 null */
+  try{ var v=getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    var m=v.match(/^#([0-9a-f]{6})$/i);
+    if(m){ var n=parseInt(m[1],16); return ((n>>16)&255)+','+((n>>8)&255)+','+(n&255); }
+    var m2=v.match(/^rgba?\(([^)]+)\)$/);
+    if(m2){ var q=m2[1].split(','); return q[0].trim()+','+q[1].trim()+','+q[2].trim(); }
+  }catch(e){}
+  return null;
+}
+function _mixRgba(varName,pct){ /* 2026-10-23:color-mix 的等价 rgba——旧内核不支持 color-mix 时热力图/跑道仍可渲染 */
+  var rgb=_mixRgb(varName);
+  return rgb===null?'transparent':'rgba('+rgb+','+(pct/100)+')';
+}
 /* ============ 封面：400m 跑道 + 跑量轨迹 + 跑者点 ============ */
 function buildTrack(){
   var box=$("#cvTrack"); if(!box) return;
@@ -6462,7 +6509,7 @@ function buildTrack(){
   var lanes="";
   /* v16.13:跑道线用 CSS 变量，主题切换时自动跟随（原 matchMedia 一次性判断不响应切换） */
   [0,14,28].forEach(function(o){
-    lanes+='<ellipse cx="'+CX+'" cy="'+CY+'" rx="'+(RX-o)+'" ry="'+(RY-o*0.575)+'" fill="none" style="stroke:color-mix(in srgb, var(--ink) '+(o===0?16:9)+'%, transparent)" stroke-width="1"/>';
+    lanes+='<ellipse cx="'+CX+'" cy="'+CY+'" rx="'+(RX-o)+'" ry="'+(RY-o*0.575)+'" fill="none" style="stroke:'+_mixRgba('--ink',(o===0?16:9))+'" stroke-width="1"/>';
   });
   // 跑量丝带（48 段，统一灰 + 当前周青 + 减量周淡灰）
   var N=48, band="";
@@ -6472,11 +6519,12 @@ function buildTrack(){
     var rx1=RX-off, ry1=RY-off*0.575;
     var rx2=RX-70, ry2=RY-70*0.575;
     var O1=pt(rx1,ry1,a1), O2=pt(rx1,ry1,a2), I1=pt(rx2,ry2,a2), I2=pt(rx2,ry2,a1);
+    var _bandOp=(document.documentElement.getAttribute('data-scheme')==='light')?.42:.26; /* 2026-10-23:浅色主题加深丝带，防 1.6:1 糊成一片 */
     band+='<path d="M'+O1[0].toFixed(1)+','+O1[1].toFixed(1)+
       ' A'+rx1.toFixed(1)+','+ry1.toFixed(1)+' 0 0 1 '+O2[0].toFixed(1)+','+O2[1].toFixed(1)+
       ' L'+I1[0].toFixed(1)+','+I1[1].toFixed(1)+
       ' A'+rx2.toFixed(1)+','+ry2.toFixed(1)+' 0 0 0 '+I2[0].toFixed(1)+','+I2[1].toFixed(1)+
-      ' Z" fill="'+ph+'" fill-opacity=".26"/>';
+      ' Z" fill="'+ph+'" fill-opacity="'+_bandOp+'"/>';
   }
   // 轨迹描边（外轮廓）
   var contour="M";
@@ -6490,7 +6538,7 @@ function buildTrack(){
   for(var w=0;w<N;w+=4){
     var aa=-90+w*(360/N);
     var p1=pt(RX-6,RY-3.5,aa), p2=pt(RX-20,RY-11.5,aa);
-    ticks+='<line x1="'+p1[0].toFixed(1)+'" y1="'+p1[1].toFixed(1)+'" x2="'+p2[0].toFixed(1)+'" y2="'+p2[1].toFixed(1)+'" stroke="rgba(238,241,244,.4)" stroke-width="1.2"/>';
+    ticks+='<line x1="'+p1[0].toFixed(1)+'" y1="'+p1[1].toFixed(1)+'" x2="'+p2[0].toFixed(1)+'" y2="'+p2[1].toFixed(1)+'" stroke="var(--line2)" stroke-width="1.2"/>';
   }
   // 当前周标记（v16.11 P2:用 planWeek() 实时计算，不再用加载时快照 CURWK）
   var _pw=planWeek(), _cw=(_pw.days>=0&&_pw.w<=48)?_pw.w:(_pw.days<0?0:49);
@@ -6503,7 +6551,7 @@ function buildTrack(){
     (_cw>0&&_cw<=48?("第 "+_cw+" 周 · "+km0+"km"):(_cw===0?"10.05 起步 · 12km":"大一已结束"))+'</text>';
   box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="400 米跑道上的大一跑量轨迹">'+
     '<ellipse id="lanePath" cx="'+CX+'" cy="'+CY+'" rx="'+RX+'" ry="'+RY+'" fill="none" stroke="none"/>'+
-    lanes+band+'<path d="'+contour+'" fill="none" stroke="var(--ac)" stroke-width="2.6" stroke-linejoin="round" opacity="1" style="filter:drop-shadow(0 0 7px color-mix(in srgb, var(--ac) 55%, transparent))"/>'+
+    lanes+band+'<path d="'+contour+'" fill="none" stroke="var(--ac)" stroke-width="2.6" stroke-linejoin="round" opacity="1" style="filter:drop-shadow(0 0 7px '+_mixRgba('--ac',55)+')"/>'+
     ticks+curLine+'</svg>';
   // 跑者点沿跑道循环
   var path=$("#lanePath");
@@ -6517,7 +6565,7 @@ function buildTrack(){
       var t0=null;
       function loop(ts){
         // 元素已脱离文档（切章后 .cv-track 被销毁）时立即终止，避免对游离元素持续取点
-        if(!box.isConnected){ trackRaf=null; return; }
+        if(!box.isConnected||!path.isConnected){ trackRaf=null; return; }   /* 2026-10-24:取点的是 path，守卫须查 path 本身——切回标签页重建跑道后旧 path 游离、box 仍连接，只查 box 会放行并在游离元素上取点抛 InvalidStateError */
         if(t0===null)t0=ts;
         var f=((ts-t0)%9000)/9000;
         var p=path.getPointAtLength(total*f);
@@ -6626,9 +6674,9 @@ function bindWeek(){
 }
 function toolLevel(){
   return '<div class="tool"><div class="th"><b>等级线反查</b><em>输入成绩，看达到哪一级、离下一级差多少</em></div><div class="tb">'+
-    '<div class="tin"><select id="lvs">'+
+    '<div class="tin"><select id="lvs" aria-label="项目">'+
       Object.keys(LV).map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join("")+
-    '</select><input type="text" id="lvt" value="4:40" placeholder="例：4:40 或 300"></div>'+
+    '</select><input type="text" id="lvt" aria-label="成绩" value="4:40" placeholder="例：4:40 或 300"></div>'+
     '<div class="lvrow" id="lvo" aria-live="polite"></div>'+   /* v16.13:结果更新播报 */
     '<p class="ref" style="margin-top:14px">依据体育总局《运动员技术等级标准》体竞字〔2026〕84 号（电计成绩）。</p>'+
     '</div></div>';
@@ -6895,14 +6943,16 @@ function buildPace(){
 }
 function vizHeat(){
   return '<div class="vizwrap"><div class="vth"><b>全年训练热力周历</b><em>7 天 × 48 周 · 颜色深浅＝当天公里</em></div>'+
-    '<div class="vb"><div class="heat" id="heat" role="img" tabindex="0"></div><div class="heatcap" id="heatcap"></div></div></div>';
+    '<div class="vb"><div class="heat" id="heat" role="img"></div><div class="heatcap" id="heatcap"></div></div></div>';
 }   /* v16.14:容器单点承载（tabindex 0），336 格不再逐个可聚焦 */
 function buildHeat(){
   var box=$("#heat"), cap=$("#heatcap"); if(!box) return;
+  box.setAttribute("tabindex","0");   /* 2026-10-24:补容器焦点承载——注释与 .heat:focus-visible 早已声明、#mchart 亦有，此前独缺此处 */
   /* 单日峰值从数据派生 */
   var dmax=0;
   for(var k in SPLIT){var r=SPLIT[k];for(var i=0;i<7;i++)if(r[i]>dmax)dmax=r[i];}
   box.innerHTML="";
+  var _acRgb=_mixRgb('--ac');   /* 2026-10-24:基色在循环外取一次（原先 336 格 + 图例各调一次 getComputedStyle） */
   for(var w=0;w<48;w++){
     var km=KM[w], row=SPLIT[nearest(km)], col=document.createElement("div");   /* v16.22:用原始 KM（删 adjKm） */
     col.className="col";
@@ -6910,7 +6960,7 @@ function buildHeat(){
       var v=row[d], c=document.createElement("div");
       c.className="c";
       var a=v===0?.06:(0.12+(v/dmax)*0.8);
-      c.style.background="color-mix(in srgb, var(--ac) "+(a*100).toFixed(0)+"%, transparent)";   /* v16.9:跟主题走，不再写死亮青 */
+      c.style.background=(_acRgb===null?'transparent':'rgba('+_acRgb+','+(Math.round(a*100)/100)+')');   /* v16.9:跟主题走，不再写死亮青；2026-10-24:改用循环外取好的基色，拼法与 _mixRgba 逐字一致 */
       c.style.setProperty("--cd",Math.min((w*7+d)*5,1000)+"ms"); /* v14:波浪显现的 stagger */
       var hLabel="第 "+(w+1)+" 周 · 周"+"一二三四五六日"[d]+" · "+v+"km";
       c.title=hLabel;
@@ -6919,9 +6969,9 @@ function buildHeat(){
     }
     box.appendChild(col);
   }
-  cap.innerHTML='<span><i style="background:color-mix(in srgb, var(--ac) 12%, transparent)"></i>少</span>'+
-    '<span><i style="background:color-mix(in srgb, var(--ac) 55%, transparent)"></i>中</span>'+
-    '<span><i style="background:color-mix(in srgb, var(--ac) 92%, transparent)"></i>多（单日峰值 '+dmax+'km）</span>'+
+  cap.innerHTML='<span><i style="background:'+(_acRgb===null?'transparent':'rgba('+_acRgb+','+(12/100)+')')+'"></i>少</span>'+
+    '<span><i style="background:'+(_acRgb===null?'transparent':'rgba('+_acRgb+','+(55/100)+')')+'"></i>中</span>'+
+    '<span><i style="background:'+(_acRgb===null?'transparent':'rgba('+_acRgb+','+(92/100)+')')+'"></i>多（单日峰值 '+dmax+'km）</span>'+   /* 2026-10-24:图例同用缓存基色 */
     '<span style="margin-left:auto">深色格＝当天量大 · 空白＝休息</span>'; /* 2026-10-13:D4，色维度是当天公里数 */
   /* v16.14:容器级汇总信息（单日峰值 + 总周数），替代 336 格逐个播报 */
   box.setAttribute("aria-label","全年训练热力周历：48 周 × 7 天，颜色深浅代表当天公里数，单日峰值 "+dmax+"km，深色列为峰值周，空白为休息日");
@@ -6937,7 +6987,7 @@ VIZ["05"]=[function(){ return vizMileage()+vizHeat(); }, function(){ renderMchar
   var chByN={};
   CH.forEach(function(c,i){ chByN[c.n]={c:c,i:i}; });
   PARTS.forEach(function(p){
-    navHtml+='<span class="part-group">'+esc(p.t)+'</span>';
+    navHtml+='<span class="part-group" role="heading" aria-level="2">'+esc(p.t)+'</span>';
     p.ch.forEach(function(n){
       var e=chByN[n];
       if(!e) return;   /* V18:边界保护，缺章时跳过 */
@@ -7000,26 +7050,36 @@ function _showHelp(){
   var rows=[
     ["\u2190 \u2192","上一章 / 下一章"],
     ["g h","回封面"],
-    ["g 0-9","跳到对应章节（g 1 0 = 第10章）"],
+    ["g + 章节号","1–2 位数字：g 5=第5章，g 1 5=第15章"],
     ["/","搜索"],
     ["t","切换主题"],
     ["?","显示此帮助"],
     ["Esc","关闭"]
   ];
   var tb="";
-  for(var i=0;i<rows.length;i++){ tb+='<tr><td style="padding:6px 0">'+rows[i][0]+'</td><td style="color:#999">'+rows[i][1]+'</td></tr>'; }
-  d.innerHTML='<div style="background:#1a1d21;border:1px solid #333;border-radius:12px;padding:24px 28px;max-width:380px;width:90%;color:#e8e8e8">'+
+  for(var i=0;i<rows.length;i++){ tb+='<tr><td style="padding:6px 0">'+rows[i][0]+'</td><td style="color:var(--ink2)">'+rows[i][1]+'</td></tr>'; }
+  d.innerHTML='<div style="background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:24px 28px;max-width:380px;width:90%;color:var(--ink)">'+
     '<h3 style="margin:0 0 16px;font-size:16px">键盘快捷键</h3>'+
     '<table style="width:100%;font-size:13px;border-collapse:collapse">'+tb+'</table>'+
-    '<p style="margin:16px 0 0;font-size:12px;color:#666">点击背景或按 Esc 关闭</p></div>';
+    '<p style="margin:16px 0 0;font-size:12px;color:var(--ink3)">点击背景或按 Esc 关闭</p></div>';
   d.addEventListener("click",function(e){ if(e.target===d) d.remove(); });
+  d.addEventListener("keydown",function(e){   /* 2026-10-24:Tab 焦点陷阱，与其他弹层一致 */
+    if(e.key!=="Tab")return;
+    var f=d.querySelectorAll('button,a[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');
+    if(!f.length){ e.preventDefault(); d.focus(); return; }
+    var first=f[0],last=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){last.focus();e.preventDefault();}
+    else if(!e.shiftKey&&document.activeElement===last){first.focus();e.preventDefault();}
+  });
   document.body.appendChild(d);
+  d.setAttribute("tabindex","-1"); d.focus();   /* 2026-10-23:打开移焦 */
 }
 
 document.addEventListener("keydown",function(e){
   if(/input|select|textarea/i.test((e.target.tagName||""))) return;
   if(e.metaKey||e.ctrlKey||e.altKey) return;   /* v16.5 B6:修饰键组合留给浏览器（后退/标签页等） */
   if(document.querySelector(".drawer.on,.pal.on,.v18-modal.open,.stat-modal.on")) return;   /* 2026-10-04 P2-7:模态框打开时不劫持方向键 */
+  if(document.getElementById("kbdHelp")&&e.key!=="Escape") return;   /* 2026-10-23:帮助打开时不翻章（Esc 留给下方关闭分支） */
   if(e.target.closest&&e.target.closest("#mchart,#heat,.tblwrap,.ch-toc,.palbox")) return;   /* v16.16:A4 图表容器内方向键留给 roving，不翻章 */
   /* V18:Esc 优先关闭帮助模态框 */
   if(e.key==="Escape"){ var _h=document.getElementById("kbdHelp"); if(_h){ _h.remove(); _gClear(); e.preventDefault(); return; } }
@@ -7046,16 +7106,17 @@ $("#mPrev").addEventListener("click",function(){ go(cur<=0?-1:cur-1); });
   document.addEventListener("touchstart",function(e){
     if(e.touches.length!==1) return;
     /* V18:图表内触摸不干扰 */
-    if(e.target.closest&&e.target.closest("#mchart,#heat,.tblwrap,.ch-toc,.palbox")) return;
+    if(e.target.closest&&e.target.closest("#mchart,#heat,.tblwrap,.ch-toc,.palbox,.tl-scroll,.quick-chips")) return;   /* 2026-10-24:补封面时间线与第19章快捷条（横滚区不翻章） */
+    if(document.querySelector("#v18modal.open")||document.querySelector("#v18tools.open")||document.querySelector(".stat-modal.on")||document.getElementById("kbdHelp")) return;   /* 2026-10-24:模态框/工具菜单/统计面板/快捷键帮助打开时不 arm 翻章手势 */
     _tx=e.touches[0].clientX; _ty=e.touches[0].clientY; _tActive=true;
   },{passive:true});
   document.addEventListener("touchend",function(e){
     if(!_tActive) return;
     _tActive=false;
     if(e.changedTouches.length!==1) return;
-    if(e.target.closest&&e.target.closest("#mchart,#heat,.tblwrap,.ch-toc,.palbox")) return;   /* V18:图表内不触发 */
+    if(e.target.closest&&e.target.closest("#mchart,#heat,.tblwrap,.ch-toc,.palbox,.tl-scroll,.quick-chips")) return;   /* V18:图表/横滚区内不触发 */
     /* V18:面板打开时不触发翻章 */
-    if(document.querySelector(".drawer.on")||document.querySelector(".pal.on")) return;
+    if(document.querySelector(".drawer.on")||document.querySelector(".pal.on")||document.querySelector("#v18modal.open")||document.querySelector("#v18tools.open")||document.querySelector(".stat-modal.on")||document.getElementById("kbdHelp")) return;   /* 2026-10-24:补模态框/工具菜单/统计面板/快捷键帮助 */
     var dx=e.changedTouches[0].clientX-_tx;
     var dy=e.changedTouches[0].clientY-_ty;
     var adx=Math.abs(dx), ady=Math.abs(dy);
@@ -7085,8 +7146,8 @@ if(!('ontouchstart' in window))document.addEventListener("mousemove",function(e)
 },{passive:true});
 
 var dw=$("#drawer"), mb=$("#railbtn");
-function dwClose(){ dw.classList.remove("on"); document.body.style.overflow=""; }
-mb.addEventListener("click",function(){ var on=dw.classList.toggle("on"); document.body.style.overflow=on?"hidden":"";
+function dwClose(){ var _was=dw.classList.contains("on"); dw.classList.remove("on"); document.body.style.overflow=""; mb.setAttribute("aria-expanded","false"); if(_was) mb.focus(); }   /* 2026-10-23:关闭归还焦点 */
+mb.addEventListener("click",function(){ var on=dw.classList.toggle("on"); document.body.style.overflow=on?"hidden":""; mb.setAttribute("aria-expanded",on?"true":"false");
   /* v16.9:打开时焦点移到第一个链接 */
   if(on){ var a=dw.querySelector("a[href]"); if(a) setTimeout(function(){a.focus();},60); }
 });
@@ -7137,17 +7198,18 @@ function palRender(q){
         var idx=CH.indexOf(c);
         var sn = q ? makeSnippet(c.s||"", q) : (c.s||"").slice(0,110);
         var snH = q ? markQ(sn, raw) : esc(sn);
-        return '<a href="#" class="'+(i===0?"on":"")+'" data-go="'+idx+'"><i>LAP '+c.n+'</i><span><b>'+esc(c.t)+'</b><em>'+snH+'</em></span></a>';}).join("")
+        return '<a href="#" id="palopt-'+i+'" role="option" aria-selected="'+(i===0?"true":"false")+'" class="'+(i===0?"on":"")+'" data-go="'+idx+'"><i>LAP '+c.n+'</i><span><b>'+esc(c.t)+'</b><em>'+snH+'</em></span></a>';}).join("")
     : '<div class="none"><b>NO MATCH</b><br>没有找到与“'+esc(raw)+'”相关的内容。<br>试试更短的关键词，如「配速」「跟腱」「市赛」。'+'</div>';
+  pin.setAttribute("aria-activedescendant", pool.length?("palopt-"+sel):""); pin.setAttribute("aria-expanded", pool.length?"true":"false");
 }
-function palHi(){ [].forEach.call(pres.querySelectorAll("a"),function(a,i){a.classList.toggle("on",i===sel);}); }
+function palHi(){ [].forEach.call(pres.querySelectorAll("a"),function(a,i){a.classList.toggle("on",i===sel); a.setAttribute("aria-selected",i===sel?"true":"false");}); pin.setAttribute("aria-activedescendant",pool.length?("palopt-"+sel):""); pin.setAttribute("aria-expanded",pool.length?"true":"false"); }   /* 2026-10-23:combobox 选中态同步 */
 var palOpener=null;
-function palOpen(){ if(pal.classList.contains("on"))return;   /* v16.10 A4:幂等守卫 */ ensureIndex(); palOpener=document.activeElement; pal.classList.add("on");
+function palOpen(){ if(pal.classList.contains("on"))return;   /* v16.10 A4:幂等守卫 */ ensureIndex(); palOpener=document.activeElement; pal.classList.add("on"); var _sb=document.getElementById("sBtn"); if(_sb)_sb.setAttribute("aria-expanded","true");
   /* 2026-10-04 P0-3:CSP 合规——用 CSS 类代替全部内联 style；关闭时 scrollTo 恢复位置 */
   pal._sy=window.scrollY; document.body.classList.add("pal-open");
   document.body.style.setProperty("--pal-top",(-pal._sy)+"px"); /* 2026-10-04 P0-1:CSP合规传top */
   pin.value=""; palRender(""); setTimeout(function(){pin.focus();},60); }
-function palClose(){ pal.classList.remove("on");
+function palClose(){ pal.classList.remove("on"); var _sb=document.getElementById("sBtn"); if(_sb)_sb.setAttribute("aria-expanded","false");
   /* 2026-10-04 P0-3:移除类、清变量并 scrollTo 恢复位置 */
   document.body.classList.remove("pal-open"); document.body.style.removeProperty("--pal-top"); if(pal._sy!=null) window.scrollTo({top:pal._sy,behavior:"auto"}); /* 2026-10-13:P1-2，防smooth跳动 */
   pin.blur();   /* v16.10 A4:palOpener 若在 pal 内（隐藏子树）则不回焦 */ if(palOpener&&palOpener.focus&&!pal.contains(palOpener))palOpener.focus(); palOpener=null; }
@@ -7234,6 +7296,17 @@ var saved=loadPos();
 /* v16.13:首屏恢复直接 render，不走 go() 的 320ms 过渡动画 */
 if(saved && saved.c>=0){ cur=saved.c; render(saved.c, saved.y||0); sync(); }
 else { cur=-1; render(-1); sync(); }
+/* 2026-10-24:主题切换后重绘当前视图——跑道/热力等内联色在构建时用 _mixRgba 算死，不重绘不跟随新主题。
+   用 MutationObserver 监听 data-theme/data-scheme：仅当生效主题键真变化时才 render（auto 定时 apply 不变值不触发），并保留滚动位置 */
+try{
+  var _themeKey=document.documentElement.getAttribute('data-theme')+'|'+document.documentElement.getAttribute('data-scheme');
+  new MutationObserver(function(){
+    var k=document.documentElement.getAttribute('data-theme')+'|'+document.documentElement.getAttribute('data-scheme');
+    if(k===_themeKey) return; _themeKey=k;
+    if(typeof cur!=='number') return;
+    var _ty=window.scrollY; render(cur); window.scrollTo({top:_ty,behavior:'auto'});
+  }).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme','data-scheme']});
+}catch(e){}
 /* 滚动时记录位置（节流） */
 var saveT=null;
 window.addEventListener("scroll",function(){
@@ -7429,7 +7502,7 @@ function v18renderFab(){
     '<button data-v18tool="ics">📅 导出日历</button>'+
     '<button data-v18tool="backup">💾 备份数据</button>';
   tools.addEventListener('click', function(e){
-    var b = e.target.closest('[data-v18tool]');
+    var b = e.target.closest ? e.target.closest('[data-v18tool]') : null;   /* 2026-10-24:旧内核无 closest 时降级为不处理（与 F5 同型守卫） */
     if(!b) return;
     tools.classList.remove('open');
     var t = b.getAttribute('data-v18tool');
@@ -7460,6 +7533,15 @@ function v18renderFab(){
       var _sy=window.scrollY; /* 2026-10-04:防跳顶部 */
       if(typeof render==='function'){ render(cur); }
       window.scrollTo({top:_sy,behavior:"auto"});
+      return;
+    }
+    if(e.target&&e.target.id==='v18bknow'){ v18doBackup(); return; }   /* 2026-10-24:封面备份提醒横幅的立即备份 */
+    if(e.target&&e.target.closest&&e.target.closest('[data-prt]')){   /* 2026-10-24:只打印本章 */
+      var _pi=parseInt(e.target.closest('[data-prt]').getAttribute('data-prt'),10);
+      if(!isNaN(_pi)){ window.__printOnlyCh=_pi;
+        if(!window.__prtClrBound){ window.__prtClrBound=true; window.addEventListener('afterprint',function(){ window.__printOnlyCh=null; }); }
+        try{ window.print(); }catch(_pe){}
+      }
       return;
     }
     if(e.target&&e.target.id==='v18paceno'){
@@ -7494,6 +7576,7 @@ function v18openModal(tab){
     m.className = 'v18-modal';
     m.setAttribute('role','dialog');
     m.setAttribute('aria-modal','true');
+    m.setAttribute('aria-label','工具箱');
     m.innerHTML = '<div class="v18-box" id="v18box"></div>';
     m.addEventListener('click', function(e){
       if(e.target===m) v18closeModal();
@@ -7516,12 +7599,13 @@ function v18openModal(tab){
   try{ m._prevFocus=document.activeElement; }catch(e){} /* 2026-10-13:先捕获焦点，再渲染（P1-4） */
   v18renderModal(tab||'checkin');
   m.classList.add('open');
+  document.body.style.overflow='hidden';   /* 2026-10-23:锁背景滚动 */
   try{ var _f=m.querySelector('button, input, [tabindex]'); if(_f) _f.focus(); }catch(e){}
   /* 2026-10-05:焦点进入 */
 }
 function v18closeModal(){
   var m = document.getElementById('v18modal');
-  if(m){ m.classList.remove('open'); try{ if(m._prevFocus&&m._prevFocus.focus) m._prevFocus.focus(); }catch(e){} /* 2026-10-05:焦点返回 */ }
+  if(m){ m.classList.remove('open'); document.body.style.overflow=''; try{ if(m._prevFocus&&m._prevFocus.focus) m._prevFocus.focus(); }catch(e){} /* 2026-10-05:焦点返回 */ }
 }
 function v18renderModal(tab){
   var box = document.getElementById('v18box');
@@ -7548,11 +7632,11 @@ function v18renderModal(tab){
     }
   }catch(e){}
   var tabs =
-    '<div class="v18-tabs">'+
-    '<button data-v18tab="checkin"'+(tab==='checkin'?' class="on"':'')+'>📝 打卡</button>'+
-    '<button data-v18tab="pace"'+(tab==='pace'?' class="on"':'')+'>⏱ 配速计算器</button>'+
-    '<button data-v18tab="pr"'+(tab==='pr'?' class="on"':'')+'>🏅 我的PB</button>'+
-    '<button data-v18tab="backup"'+(tab==='backup'?' class="on"':'')+'>💾 备份</button>'+
+    '<div class="v18-tabs" role="tablist" aria-label="工具箱页签">'+
+    '<button role="tab" aria-selected="'+(tab==='checkin'?'true':'false')+'" data-v18tab="checkin"'+(tab==='checkin'?' class="on"':'')+'>📝 打卡</button>'+
+    '<button role="tab" aria-selected="'+(tab==='pace'?'true':'false')+'" data-v18tab="pace"'+(tab==='pace'?' class="on"':'')+'>⏱ 配速计算器</button>'+
+    '<button role="tab" aria-selected="'+(tab==='pr'?'true':'false')+'" data-v18tab="pr"'+(tab==='pr'?' class="on"':'')+'>🏅 我的PB</button>'+
+    '<button role="tab" aria-selected="'+(tab==='backup'?'true':'false')+'" data-v18tab="backup"'+(tab==='backup'?' class="on"':'')+'>💾 备份</button>'+
     '</div>';
   var body = '';
   if(tab==='checkin') body = v18checkinHTML();
@@ -7561,7 +7645,7 @@ function v18renderModal(tab){
   else if(tab==='backup') body = v18backupHTML();
   box.innerHTML = '<h3>V18 工具箱</h3><p class="sub">数据保存在本机浏览器（localStorage）</p>'+tabs+body+
     '<div style="margin-top:14px"><button class="v18-btn ghost" id="v18close">关闭</button></div>';
-  box.querySelectorAll('[data-v18tab]').forEach(function(b){
+  [].forEach.call(box.querySelectorAll('[data-v18tab]'), function(b){   /* 2026-10-24:与全文件惯例统一，避 NodeList.forEach 旧内核缺失 */
     b.addEventListener('click', function(){ v18renderModal(b.getAttribute('data-v18tab')); });
   });
   /* 2026-10-13:恢复打卡表单（移出forEach，P3-2） */
@@ -7613,26 +7697,26 @@ function v18checkinHTML(){
   }
   function _sel(v){ return v===_ttype?' selected':''; }
   function _escq(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-  return '<div class="v18-field"><label>日期</label>'+
+  return '<div class="v18-field"><label for="v18date">日期</label>'+
     '<input type="date" id="v18date" value="'+t+'" max="'+t+'"></div>'+
-    '<div class="v18-field"><label>训练类型</label>'+
+    '<div class="v18-field"><label for="v18type">训练类型</label>'+
     '<select id="v18type"><option value="E"'+_sel('E')+'>E 轻松跑</option><option value="M"'+_sel('M')+'>M 马拉松配速</option>'+
     '<option value="T"'+_sel('T')+'>T 阈值跑</option><option value="I"'+_sel('I')+'>I 间歇</option><option value="R"'+_sel('R')+'>R 重复跑</option>'+
     '<option value="L"'+_sel('L')+'>L 长距离</option><option value="力量"'+_sel('力量')+'>力量训练</option><option value="休息"'+_sel('休息')+'>休息</option></select></div>'+
-    '<div class="v18-row"><div class="v18-field"><label>跑量 (km)</label>'+
+    '<div class="v18-row"><div class="v18-field"><label for="v18km">跑量 (km)</label>'+
     '<input type="number" id="v18km" min="0" max="100" step="0.1" placeholder="例：8.5"'+(_isPlan?' data-plan="1"':'')+' value="'+_escq(_tkm)+'"></div>'+
-    '<div class="v18-field"><label>体感 (1–10)</label>'+
+    '<div class="v18-field"><label for="v18feel">体感 (1–10)</label>'+
     '<input type="number" id="v18feel" min="1" max="10" step="1" placeholder="例：7" value="'+_escq(_tfeel)+'"></div>'+
-    '<div class="v18-field"><label>睡眠 (小时)</label>'+
+    '<div class="v18-field"><label for="v18sleep">睡眠 (小时)</label>'+
     '<input type="number" id="v18sleep" min="0" max="16" step="0.5" placeholder="例：7.5" value="'+_escq(_tsleep)+'"></div></div>'+
-    '<div class="v18-field"><label>备注</label>'+
-    '<textarea id="v18note" rows="2" placeholder="例：操场，左脚无不适">'+_escq(_tnote).replace(/"/g,'&quot;')+'</textarea></div>'+
+    '<div class="v18-field"><label for="v18note">备注</label>'+
+    '<textarea id="v18note" rows="2" placeholder="例：操场，左脚无不适">'+_escq(_tnote)+'</textarea></div>'+   /* 2026-10-24:删外层 replace——_escq 内部已转义引号，外层找不到裸引号属无操作 */
     '<div class="v18-field"><label>旧伤信号（第15节）</label><div style="display:flex;gap:12px;flex-wrap:wrap">'+
     '<label><input type="checkbox" id="v18inj_foot" style="width:auto"'+_injF+'> 左脚/踝</label>'+
     '<label><input type="checkbox" id="v18inj_ach" style="width:auto"'+_injA+'> 跟腱</label>'+
     '<label><input type="checkbox" id="v18inj_arch" style="width:auto"'+_injR+'> 足弓</label></div></div>'+
     '<div class="v18-field"><label><input type="checkbox" id="v18pain" style="width:auto;margin-right:6px">⚠️ 今日有疼痛/异常</label>'+
-    '<input id="v18paindesc" placeholder="部位+描述，如：左脚踝外侧刺痛" style="margin-top:6px;display:none"></div>'+
+    '<input id="v18paindesc" aria-label="疼痛部位与描述" placeholder="部位+描述，如：左脚踝外侧刺痛" style="margin-top:6px;display:none"></div>'+
     '<div class="v18-err" id="v18err" role="alert"></div>'+
     '<button class="v18-btn" id="v18save">'+(done?'更新打卡':'保存打卡')+'</button>'+
     '<button class="v18-btn ghost" id="v18import">📥 导入手表文件</button>'+
@@ -7677,6 +7761,7 @@ function v18analyzeWorkout(d){
       for(var _ci=0;_ci<d.chart.length;_ci+=_step){ var _cp=d.chart[_ci]; if(_cp&&typeof _cp.spk==='number'&&_cp.spk>0) spks.push({spk:_cp.spk, hr:_cp.hr||0, idx:_ci, src:'chart'}); }
     }
     }
+  var _full=[];   /* 2026-10-23:提顶初始化——分段表在 spks<3 时不依赖 else 分支才赋值 */
   if(spks.length<3){
     /* 基础信息 —— hasLaps=false 或 spks<3 都走这里 */
     lines.push('📊 本次分析');
@@ -7684,7 +7769,7 @@ function v18analyzeWorkout(d){
     if(d.km) lines.push('├─ 距离：'+d.km.toFixed(2)+'km');
     var _hasChartSrc=spks.some(function(s){return s.src==='chart';}); lines.push('└─ 💡 '+( _hasChartSrc?'按曲线采样估算（非真实分圈）':'分段数据不足，仅显示曲线图'));
   } else {
-    var _full=spks.filter(function(s){return !s.partial;}); if(_full.length===0) _full=spks; /* 2026-10-05:统计排除尾段 */
+    _full=spks.filter(function(s){return !s.partial;}); if(_full.length===0) _full=spks; /* 2026-10-05:统计排除尾段；2026-10-24:删重复 var（外层已声明，var 为函数级作用域，语义恒等） */
     var _hasChart2=_full.some(function(s){return s.src==='chart';}); /* 2026-10-05:混入曲线采样则标注 */
     var mean=_full.reduce(function(a,b){return a+b.spk;},0)/_full.length;
     var sd=Math.sqrt(_full.reduce(function(a,b){return a+(b.spk-mean)*(b.spk-mean);},0)/_full.length);
@@ -7854,7 +7939,7 @@ function v18importFile(e){
             var _newKm=Math.round((parseFloat(_ex.km||0)+r.km)*10)/10;
             var _newNote=((_ex.note||'')+' +'+r.km.toFixed(1)+'km(批量)').slice(0,200);
             var _oldKm=_ex.km, _oldNote=_ex.note;
-            _ex.km=_newKm; _ex.note=_newNote;
+            _ex.km=_newKm; _ex.note=_newNote; if(_ex.src==='coros') _ex.u=1;   /* 2026-10-23:导入累加改过同步记录后，同步不再覆盖 */
             if(v18set('v18_checkin',arr)){ _done++; try{ if(r.anaData&&r.dateStr){ var _ba2=v18analyzeWorkout(r.anaData); if(_ba2){ v18pruneAnalysis(); var _exAna=v18get('v18_analysis_'+r.dateStr,''); var _toSave=_exAna?(_exAna+'<hr style="margin:8px 0;border:none;border-top:1px dashed var(--line)">'+_ba2):_ba2; v18set('v18_analysis_'+r.dateStr, v18sanitizeHtml(_toSave)); } } }catch(_ae2){} /* 2026-10-15:累加分支也存分析，有旧则追加 */ } else { _ex.km=_oldKm; _ex.note=_oldNote; _skip++; } /* 2026-10-04:失败回滚 */
           }
           else{
@@ -7961,14 +8046,14 @@ function v18parseWorkoutFile(f){
         var parser = new DOMParser();
         var doc = parser.parseFromString(txt, 'text/xml');
         if(doc.querySelector('parsererror')) throw new Error('XML解析失败');
-        if(fname.endsWith('.gpx')){
+        if(/\.gpx$/.test(fname)){   /* 2026-10-24:正则替代 ES6 的 endsWith，大小写敏感语义不变 */
         /* GPX: <trkpt> 有时间，距离需累加算；用 getElementsByTagName 避开命名空间 */
         var pts = doc.getElementsByTagName('trkpt');
         if(pts.length<2) throw new Error('GPX无轨迹点');
         var total=0; /* 2026-10-04 P3:删未用变量 */
         function hav(a,b,c,d){
           var R=6371, dLa=(c-a)*Math.PI/180, dLo=(d-b)*Math.PI/180;
-          var h=Math.sin(dLa/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dLo/2)**2;
+          var h=Math.pow(Math.sin(dLa/2),2)+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.pow(Math.sin(dLo/2),2);   /* 2026-10-24:Math.pow 替代 ES2016 的 ** 运算符（旧内核语法级兼容） */
           return 2*R*Math.asin(Math.sqrt(h));
         }
         function _gtag(el,tag){ var n=el.getElementsByTagName(tag); return n.length?n[0]:null; }
@@ -8051,12 +8136,13 @@ function v18parseWorkoutFile(f){
             if(_gHrN>0) _importNote+=' · 平均心率'+Math.round(_gHrSum/_gHrN);
           }
         }catch(_ge){ try{ console.debug('[v18gpx]', _ge.message); }catch(e){ try{ console.debug("[v18parseWorkoutFile]", e&&e.message||e); }catch(_e){} } }
-      } else if(fname.endsWith('.tcx')){
+      } else if(/\.tcx$/.test(fname)){   /* 2026-10-24:同上，正则替代 endsWith */
         /* TCX: 多个 <Lap> 求和；用 getElementsByTagName 避开命名空间问题 */
         var laps = doc.getElementsByTagName('Lap');
         if(laps.length===0) throw new Error('TCX无Lap数据');
         var totalM=0, totalS=0, hrSum=0, hrMax=0;
         var _splits=[];
+        var _val=function(el){ var v=el&&el.getElementsByTagName('Value')[0]; return v?(parseFloat(v.textContent)||0):0; }; /* 2026-10-13:P0-2，Value缺失不抛错；2026-10-24:移出 Lap 循环只定义一次（函数只用参数 el，不捕获循环变量） */
         for(var li=0; li<laps.length; li++){
           var dm2=laps[li].getElementsByTagName('DistanceMeters')[0];
           var tt2=laps[li].getElementsByTagName('TotalTimeSeconds')[0];
@@ -8065,7 +8151,6 @@ function v18parseWorkoutFile(f){
           /* 心率：按时间加权平均 */
           var ah=laps[li].getElementsByTagName('AverageHeartRateBpm')[0];
           var mh=laps[li].getElementsByTagName('MaximumHeartRateBpm')[0];
-          var _val=function(el){ var v=el&&el.getElementsByTagName('Value')[0]; return v?(parseFloat(v.textContent)||0):0; }; /* 2026-10-13:P0-2，Value缺失不抛错 */
           var _ahv=_val(ah);
           var _mhv=_val(mh);
           if(_ahv>0&&_lt>0) hrSum+=_ahv*_lt;
@@ -8169,6 +8254,7 @@ function v18saveCheckin(){
   /* V18: 输入验证 */
   if(!date){ fail('请选择日期'); return; }
   try{ var _today=new Date(); _today.setHours(0,0,0,0); var _d=new Date(String(date).replace(/-/g,'/')); if(_d>_today){ fail('不能记录未来日期'); return; } }catch(_de){ try{ console.debug("[v18saveCheckin]", _de&&_de.message||_de); }catch(_e){} } /* 2026-10-05:未来日期 */
+  if(isNaN(km)&&type==='休息') km=0;   /* 2026-10-24:休息日跑量留空按 0 处理，不再被 km 校验拦住 */
   if(isNaN(km)||km<0||km>100){ fail('跑量请输入 0–100 之间的数字'); return; }
   var _isRest=(type==='休息'||km===0); if(!_isRest&&(isNaN(feel)||feel<1||feel>10)){ fail('体感请输入 1–10 的整数'); return; } if(_isRest&&isNaN(feel)) feel=0;
   if(!isNaN(sleep)&&(sleep<0||sleep>16)){ fail('睡眠请输入 0–16 小时'); return; }
@@ -8181,7 +8267,8 @@ function v18saveCheckin(){
   var _inj={foot:_ck('v18inj_foot'), ach:_ck('v18inj_ach'), arch:_ck('v18inj_arch')};
   var rec = {date:date, km:Math.round(km*10)/10, feel:feel, type:type, note:note.slice(0,200), inj:_inj};
   if(!isNaN(sleep)) rec.sleep=Math.round(sleep*2)/2; /* 2026-10-04:睡眠，有填才存 */
-  var idx = arr.findIndex(function(r){ return r&&r.date===date; });
+  var idx = -1; for(var _fi=0;_fi<arr.length;_fi++){ if(arr[_fi]&&arr[_fi].date===date){ idx=_fi; break; } }   /* 2026-10-24:手动循环替代 findIndex（旧内核兼容） */
+  if(idx>=0 && arr[idx] && arr[idx].src==='coros'){ rec.src='coros'; rec.u=1; }   /* 2026-10-23:保留同步来源并标记已被用户编辑，同步从此不覆盖这条 */
   if(idx>=0) arr[idx] = rec; else arr.push(rec);
   arr.sort(function(a,b){ return a.date<b.date?-1:1; });
   if(!v18set('v18_checkin', arr)){ fail('保存失败：浏览器可能禁用了本地存储'); return; }
@@ -8216,15 +8303,15 @@ function v18renderHist(){
   var recent = arr.slice(-5).reverse();
   var _st = v18streak();
   var _stHtml = _st>0 ? '<p class="sub" style="margin:8px 0 4px">🔥 已连续打卡 <b>'+_st+'</b> 天</p>' : '';
-  el.innerHTML = '<div class="v18-out">'+_stHtml+'<table>'+
+  el.innerHTML = '<div class="v18-out">'+_stHtml+'<table><caption class="sr-only">打卡记录</caption><thead><tr><th scope="col" style="text-align:left;font-size:11px;color:var(--ink3);font-weight:400">日期</th><th scope="col" style="text-align:left;font-size:11px;color:var(--ink3);font-weight:400">记录</th></tr></thead><tbody>'+
     recent.map(function(r){
       var _inj=r&&r.inj?((r.inj.foot?'🦶':'')+(r.inj.ach?'⚡':'')+(r.inj.arch?'🦿':'')):'';
       var _hkm=(typeof r.km==='number')?r.km:0, _hfeel=(typeof r.feel==='number'&&r.feel>0)?r.feel:'-'; /* 2026-10-04:防undefined */
       var _ana=''; /* 2026-10-04:有存档分析显示📊 */
-      try{ if(v18get('v18_analysis_'+r.date,'')) _ana=' <a href="javascript:void(0)" data-ana-date="'+esc(r.date)+'" title="查看分析">📊</a>'; }catch(e){}
+      try{ if(v18get('v18_analysis_'+r.date,'')) _ana=' <button type="button" class="v18-link" data-ana-date="'+esc(r.date)+'" title="查看分析" aria-label="查看分析">📊</button>'; }catch(e){}
       var _note=r.note?(' · '+esc(String(r.note).slice(0,30))):'';
-      return '<tr><td class="k">'+esc(r.date)+'</td><td class="v">'+esc(r.type||'E')+' · '+_hkm+'km · '+_hfeel+'分'+(_inj?' '+_inj:'')+_ana+'<br><span style="font-size:11px;color:var(--ink3)">'+_note+'</span> <a href="javascript:void(0)" data-del-date="'+esc(r.date)+'" title="删除这条记录" style="color:var(--warn,#e8a020);font-size:11px">🗑</a></td></tr>';te+'</span></td></tr>'; /* 2026-10-04:显示备注 */
-    }).join('') /* 2026-10-04 P0-2:XSS防护；2026-10-04:显示旧伤信号 */+'</table><p class="sub">共 '+arr.length+' 条'+(arr.length>5?' · 最近 5 条':'')+'</p><div id="v18anashow"></div></div>'; /* 2026-10-04:文案准确 */
+      return '<tr><td class="k">'+esc(r.date)+'</td><td class="v">'+esc(r.type||'E')+' · '+_hkm+'km · '+_hfeel+'分'+(_inj?' '+_inj:'')+_ana+'<br><span style="font-size:11px;color:var(--ink3)">'+_note+'</span> <button type="button" class="v18-link" data-del-date="'+esc(r.date)+'" title="删除这条记录" aria-label="删除这条记录" style="color:var(--warn,#e8a020);font-size:11px">🗑</button></td></tr>'; /* 2026-10-04:显示备注 */
+    }).join('') /* 2026-10-04 P0-2:XSS防护；2026-10-04:显示旧伤信号 */+'</tbody></table><p class="sub">共 '+arr.length+' 条'+(arr.length>5?' · 最近 5 条':'')+'</p><div id="v18anashow"></div></div>'; /* 2026-10-04:文案准确 */
 }
 /* 2026-10-15:删除打卡记录（含分析存档） */
 function v18delCheckin(date){
@@ -8236,7 +8323,7 @@ function v18delCheckin(date){
       var n0=arr.length;
       arr=arr.filter(function(r){ return !(r&&r.date===date); });
       if(arr.length!==n0&&v18set('v18_checkin',arr)){
-        try{ localStorage.removeItem('v18_analysis_'+date); }catch(e){}
+        try{ localStorage.removeItem('v18_analysis_'+date); }catch(e){ try{ console.warn('[v18delCheckin] analysis remove failed', e&&e.message||e); }catch(_e){} }   /* 2026-10-24:删除分析缓存失败留痕，不再静默 */
         try{ window._v18pendingAna=null; }catch(e){}
         v18renderHist(); v18renderFab();
       }
@@ -8257,20 +8344,88 @@ function v18pruneAnalysis(){
     }
   }catch(e){}
 }
+/* 2026-10-23:COROS自动同步。打开手册时拉取同步源，把跑步记录合并进打卡。
+   规则：同步只写自己创建的记录（src==='coros'）；用户手填/手改的记录不碰；
+   用户删掉的同步记录不复活（除非当天公里数变了）；任何失败静默，不影响其他功能。 */
+(function(){
+  var FEED_URL='https://sync.muse8306.de5.net/f/0b8bf5b36f5460c246b0d69002b8cae59d10c404';
+  function noteFor(d){
+    var s='COROS同步';
+    if(d.pace) s+=' · 配速'+d.pace;
+    if(d.hr) s+=' · 均心率'+d.hr;
+    if(d.n&&d.n>1) s+=' · '+d.n+'次';
+    return (s+' [待补体感]').slice(0,200);
+  }
+  function applyFeed(feed){
+    if(!feed||!Array.isArray(feed.days)) return;
+    var arr=v18get('v18_checkin',[]);
+    if(!Array.isArray(arr)) arr=[];
+    var st=v18get('v18_coros_sync',null);
+    if(!st||typeof st!=='object'||Array.isArray(st)) st={seen:{}};
+    if(!st.seen||typeof st.seen!=='object') st.seen={};
+    var changed=false;
+    feed.days.forEach(function(d){
+      if(!d||typeof d.date!=='string'||typeof d.km!=='number'||!(d.km>0)) return;
+      var ex=null;
+      for(var i=0;i<arr.length;i++){ if(arr[i]&&arr[i].date===d.date){ ex=arr[i]; break; } }
+      if(ex){
+        if(ex.src==='coros'&&!ex.u&&ex.km!==d.km){ ex.km=d.km; if(!ex.note||ex.note.indexOf('[待补体感]')>=0) ex.note=noteFor(d); changed=true; }   /* 2026-10-23:用户编辑过的（u）不碰；备注已被改写时只更新 km */
+        st.seen[d.date]=d.km;
+      }else if(st.seen[d.date]===d.km){
+        /* 用户删过这条，尊重删除 */
+      }else{
+        arr.push({date:d.date, km:d.km, type:'E', note:noteFor(d), inj:{foot:0,ach:0,arch:0}, src:'coros'});
+        st.seen[d.date]=d.km;
+        changed=true;
+      }
+    });
+    /* 清理40天前的同步记账 */
+    try{
+      var cut=new Date(); cut.setDate(cut.getDate()-40);
+      var cs=cut.getFullYear()+'-'+('0'+(cut.getMonth()+1)).slice(-2)+'-'+('0'+cut.getDate()).slice(-2);
+      Object.keys(st.seen).forEach(function(k){ if(k<cs) delete st.seen[k]; });
+    }catch(e){}
+    v18set('v18_coros_sync',st);
+    if(changed){
+      arr.sort(function(a,b){ return a.date<b.date?-1:1; });
+      if(v18set('v18_checkin',arr)){
+        try{ v18renderHist(); v18renderFab(); }catch(e){}
+        try{ if(typeof render==='function'){ var _sy=window.scrollY; render(cur); window.scrollTo({top:_sy,behavior:'auto'}); } }catch(e){}
+      }
+    }
+  }
+  function go(){
+    try{
+      var _ctl=(typeof AbortController!=='undefined')?new AbortController():null;
+      var _tm=_ctl?setTimeout(function(){ try{ _ctl.abort(); }catch(e){} },8000):null;   /* 2026-10-23:8 秒超时，弱网不挂死 */
+      fetch(FEED_URL,{cache:'no-store',signal:_ctl?_ctl.signal:undefined}).then(function(r){
+        if(_tm) clearTimeout(_tm);
+        if(!r.ok) return null;
+        return r.json();
+      }).then(function(feed){
+        if(feed) applyFeed(feed);
+      }).catch(function(e){ if(_tm) clearTimeout(_tm); try{ console.warn('[coros sync] failed:', e&&e.message||e); }catch(_e){} });   /* 2026-10-24:同步失败不再静默吞掉，控制台留痕便于排查 */
+    }catch(e){}
+  }
+  if(typeof window!=='undefined'&&window.fetch){
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(go,1200); });
+    else setTimeout(go,1200);
+  }
+})();
 /* 2026-10-04:显示存档分析 */
 function v18showAna(date){
   var el=document.getElementById('v18anashow');
   if(!el) return;
   var h=v18get('v18_analysis_'+date,'');
-  el.innerHTML=h?'<div style="margin-top:8px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card)">'+h+'<div style="text-align:right"><a href="javascript:void(0)" data-anaclose="1" style="font-size:12px">收起</a></div></div>':'';
+  el.innerHTML=h?'<div style="margin-top:8px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card)">'+h+'<div style="text-align:right"><button type="button" class="v18-link" data-anaclose="1" style="font-size:12px">收起</button></div></div>':'';
 }
 
 /* ---------- V18 项目16：配速计算器 ---------- */
 function v18paceHTML(){
-  return '<div class="v18-field"><label>正算：输入 5km 成绩（mm:ss）</label>'+
+  return '<div class="v18-field"><label for="v185k">正算：输入 5km 成绩（mm:ss）</label>'+
     '<div class="v18-row"><input id="v185k" placeholder="例：21:00 / 2100 / 1260秒" style="flex:1">'+
     '<button class="v18-btn" id="v18calc1" style="margin-top:0">计算</button></div></div>'+
-    '<div class="v18-field"><label>反算：输入 1500m 目标（mm:ss）</label>'+
+    '<div class="v18-field"><label for="v181500">反算：输入 1500m 目标（mm:ss）</label>'+
     '<div class="v18-row"><input id="v181500" placeholder="例：4:30 / 0430 / 270秒" style="flex:1">'+
     '<button class="v18-btn" id="v18calc2" style="margin-top:0">反算</button></div></div>'+
     '<div class="v18-err" id="v18perr"></div><div id="v18pout"></div>';
@@ -8310,7 +8465,7 @@ function v18calcForward(){
   if(bestDiff > 90){
     warnHtml = '<p style="color:var(--warn,#e8a020);font-size:12.5px;margin:0 0 8px">⚠️ 你的成绩超出配速表范围，以下为最接近的 '+best[0]+' 档，仅供参考</p>';
   }
-  out.innerHTML = '<div class="v18-out">'+warnHtml+'<p style="margin:0 0 8px;color:var(--mut,#888);font-size:12px">输入已按 '+v18fmtTime(sec)+' 理解</p><p style="margin:0 0 8px">匹配档位：<b>'+best[0]+'</b>（VDOT '+best[1]+'）</p>'+
+  out.innerHTML = '<div class="v18-out">'+warnHtml+'<p style="margin:0 0 8px;color:var(--ink3);font-size:12px">输入已按 '+v18fmtTime(sec)+' 理解</p><p style="margin:0 0 8px">匹配档位：<b>'+best[0]+'</b>（VDOT '+best[1]+'）</p>'+
     '<table>'+rows+'</table></div>';
 }
 function v18fmtTime(sec){ try{ sec=Math.round(sec); var m=Math.floor(sec/60), s=sec%60; return m+':'+('0'+s).slice(-2); }catch(e){ return sec; } } /* 2026-10-15:秒数转mm:ss显示 */
@@ -8364,9 +8519,9 @@ function v18pbEditHTML(){
     html += '<div class="v18-pr"><div class="pk">'+it.label+'</div>'+
       '<div class="pv">'+esc(r.time||'—')+'</div>'+
       '<div class="pm">'+esc(r.date||'未记录')+(r.scene?' · '+esc(r.scene):'')+'</div>'+ /* 2026-10-13:补esc，防备份恢复带入的存储型XSS */
-      '<div style="margin-top:8px"><input data-prk="'+it.k+'" data-prf="time" placeholder="成绩 mm:ss" value="'+esc(r.time||'')+'" style="margin-bottom:6px">'+
-      '<div class="v18-row"><input type="date" data-prk="'+it.k+'" data-prf="date" value="'+esc(r.date||'')+'">'+ /* 2026-10-04:补esc防属性注入 */
-      '<select data-prk="'+it.k+'" data-prf="scene">'+
+      '<div style="margin-top:8px"><input data-prk="'+it.k+'" data-prf="time" aria-label="'+it.label+' 成绩" placeholder="成绩 mm:ss" value="'+esc(r.time||'')+'" style="margin-bottom:6px">'+
+      '<div class="v18-row"><input type="date" data-prk="'+it.k+'" data-prf="date" aria-label="'+it.label+' 日期" value="'+esc(r.date||'')+'">'+ /* 2026-10-04:补esc防属性注入 */
+      '<select data-prk="'+it.k+'" data-prf="scene" aria-label="'+it.label+' 场景">'+
       '<option value="">场景</option>'+
       '<option value="训练"'+(r.scene==='训练'?' selected':'')+'>训练</option>'+
       '<option value="比赛"'+(r.scene==='比赛'?' selected':'')+'>比赛</option>'+
@@ -8437,6 +8592,7 @@ function v18bindPB(){
     err.style.display='block'; err.style.color='var(--ac,#2bd9be)';
     err.textContent='✓ PB 已保存';
     v18refreshCoverPB();
+    try{ if(typeof render==='function'){ var _sy=window.scrollY; render(cur); window.scrollTo({top:_sy,behavior:"auto"}); } }catch(e){}   /* 2026-10-24:保存后重渲染当前视图，让 TODAY 的换表建议横幅立即出现（与打卡保存同款模式） */
   });
 }
 /* V18: 封面 PB 展示 HTML（供 coverHTML 调用） */
@@ -8467,9 +8623,10 @@ function v18toggleBm(n){
   if(i>=0) a.splice(i,1); else a.push(n);
   v18set('v18_bookmarks', a);
   /* V18: 更新所有同章按钮状态 */
-  document.querySelectorAll('[data-bmk="'+n+'"]').forEach(function(b){
+  [].forEach.call(document.querySelectorAll('[data-bmk="'+n+'"]'), function(b){   /* 2026-10-24:同上，[].forEach.call 替代 NodeList.forEach */
     var on = a.indexOf(n)>=0;
     b.classList.toggle('on', on);
+    b.setAttribute('aria-pressed', on?'true':'false');   /* 2026-10-23:收藏态同步 */
     b.textContent = on?'★':'☆';
   });
   v18refreshCoverBm();
@@ -8515,7 +8672,7 @@ function v18dl(name, text){
     setTimeout(function(){
       URL.revokeObjectURL(a.href);
       a.remove();
-    }, 500);
+    }, 4000);   /* 2026-10-24:与 v18dlRaw 统一 4000ms，防慢设备上 blob 已撤销导致导出空文件 */
   }catch(e){
     alert('导出失败：'+e.message);
   }
@@ -8559,7 +8716,10 @@ function v18exportICS(){
     function fold(line){ /* 2026-10-05:RFC5545折行，TextEncoder精确 */
       try{
         var enc=new TextEncoder(), out='', bytes=0;
-        for(var ch of line){
+        for(var _ci=0;_ci<line.length;_ci++){
+          var ch=line.charAt(_ci);
+          var _cc=line.charCodeAt(_ci);
+          if(_cc>=0xD800&&_cc<=0xDBFF&&_ci+1<line.length){ ch+=line.charAt(_ci+1); _ci++; }   /* 2026-10-24:ES5 循环替代 for...of；代理对按一个字符计，语义与原来一致 */
           var blen=enc.encode(ch).length;
           if(bytes+blen>75){ out+='\r\n '; bytes=0; } /* 2026-10-15:续行前导空格不计入75字节 */
           out+=ch; bytes+=blen;
@@ -8597,21 +8757,35 @@ function v18backup(){
 function v18backupHTML(){
   return '<div class="v18-field"><label>导出备份</label>'+
     '<button class="v18-btn" id="v18bkexp">📥 下载备份 JSON</button></div>'+
-    '<div class="v18-field"><label>导入备份</label>'+
+    '<div class="v18-field"><label for="v18bkfile">导入备份</label>'+
     '<input type="file" id="v18bkfile" accept=".json" style="margin-bottom:8px">'+
     '<button class="v18-btn" id="v18bkimp">📤 从文件恢复</button></div>'+
     '<div class="v18-err" id="v18bkerr" role="alert"></div>';
 }
+function v18doBackup(){ /* 2026-10-24:导出逻辑自 v18bindBackup 抽出，工具箱按钮与封面备份提醒横幅共用；导出后记时间戳与打卡条数，供 v18backupWarn 判断 */
+  var keys=['v18_checkin','v18_coros_sync','v18_pb','v18_bookmarks','v18_pace_suggest','runbook_theme_v18','runbook_mchart_type','runbook_read','runbook_pos_v16','runbook_planver','runbook_v18_visited']; /* 2026-10-13:补v18_pace_suggest */ /* 2026-10-04:补2键 */ /* 2026-10-04:补3键 */ /* 2026-10-04:修正主题键名 */
+  /* 2026-10-04 P2-7:备份包含分析存档 */
+  try{ for(var i=0;i<localStorage.length;i++){ var _k=localStorage.key(i); if(_k&&_k.indexOf('v18_analysis_')===0&&keys.indexOf(_k)<0) keys.push(_k); } }catch(e){}
+  var data={}; keys.forEach(function(k){ try{ data[k]=localStorage.getItem(k); }catch(e){ data[k]=null; } }); /* 2026-10-04:拿原值 */
+  data._meta={ver:'v18', date:v18today()};
+  v18dlRaw('v18-备份-'+v18today()+'.json', JSON.stringify(data,null,2), 'application/json'); /* 2026-10-04 P0:JSON不用BOM */
+  try{ var _cn=0; try{ _cn=(JSON.parse(localStorage.getItem('v18_checkin')||'[]')||[]).length; }catch(e){}
+    localStorage.setItem('v18_last_backup', String(Date.now())); localStorage.setItem('v18_last_backup_n', String(_cn)); }catch(e){}
+  try{ var _bb=document.getElementById('v18bknow'); if(_bb){ var _bp=(_bb.closest&&_bb.closest('.tm-banner'))||_bb; if(_bp.parentNode) _bp.parentNode.removeChild(_bp); } }catch(e){}   /* 2026-10-24:备份完成横幅立即消失（横幅按钮与工具箱导出共用此函数，两处导出都生效），不必等下次渲染 */
+}
+function v18backupWarn(){ /* 2026-10-24:备份提醒——打卡≥10条且（从未备份 / 距上次>30天 / 新增≥30条）时返回横幅 HTML，否则空串 */
+  try{
+    var arr=[]; try{ arr=JSON.parse(localStorage.getItem('v18_checkin')||'[]')||[]; }catch(e){}
+    if(arr.length<10) return '';
+    var last=parseInt(localStorage.getItem('v18_last_backup')||'0',10)||0;
+    var lastN=parseInt(localStorage.getItem('v18_last_backup_n')||'0',10)||0;
+    if(last&&(Date.now()-last<=30*24*3600*1000)&&(arr.length-lastN<30)) return '';
+    return '<div class="tm-banner tm-warn" style="margin:8px 0">💾 打卡等数据只存本机浏览器，清数据/换手机即丢失。已有 '+arr.length+' 条打卡，'+(last?'备份已过期':'尚未备份过')+'。<button type="button" id="v18bknow" class="v18-btn" style="margin-left:8px;padding:4px 12px">立即备份</button></div>';
+  }catch(e){ return ''; }
+}
 function v18bindBackup(){
   var e=document.getElementById('v18bkexp');
-  if(e) e.addEventListener('click', function(){
-    var keys=['v18_checkin','v18_pb','v18_bookmarks','v18_pace_suggest','runbook_theme_v18','runbook_mchart_type','runbook_read','runbook_pos_v16','runbook_planver','runbook_v18_visited']; /* 2026-10-13:补v18_pace_suggest */ /* 2026-10-04:补2键 */ /* 2026-10-04:补3键 */ /* 2026-10-04:修正主题键名 */
-    /* 2026-10-04 P2-7:备份包含分析存档 */
-    try{ for(var i=0;i<localStorage.length;i++){ var _k=localStorage.key(i); if(_k&&_k.indexOf('v18_analysis_')===0&&keys.indexOf(_k)<0) keys.push(_k); } }catch(e){}
-    var data={}; keys.forEach(function(k){ try{ data[k]=localStorage.getItem(k); }catch(e){ data[k]=null; } }); /* 2026-10-04:拿原值 */
-    data._meta={ver:'v18', date:v18today()};
-    v18dlRaw('v18-备份-'+v18today()+'.json', JSON.stringify(data,null,2), 'application/json'); /* 2026-10-04 P0:JSON不用BOM */
-  });
+  if(e) e.addEventListener('click', v18doBackup);
   var im=document.getElementById('v18bkimp');
   if(im) im.addEventListener('click', function(){
     var f=document.getElementById('v18bkfile'), err=document.getElementById('v18bkerr');
@@ -8626,7 +8800,7 @@ function v18bindBackup(){
 }
 function v18restore(json){
   try{
-    var data=JSON.parse(json), keys=['v18_checkin','v18_pb','v18_bookmarks','v18_pace_suggest','runbook_theme_v18','runbook_mchart_type','runbook_read','runbook_pos_v16','runbook_planver','runbook_v18_visited'];
+    var data=JSON.parse(json), keys=['v18_checkin','v18_coros_sync','v18_pb','v18_bookmarks','v18_pace_suggest','runbook_theme_v18','runbook_mchart_type','runbook_read','runbook_pos_v16','runbook_planver','runbook_v18_visited'];
     /* 2026-10-04:版本闸门 */
     var _ver=data._meta&&data._meta.ver;
     if(_ver&&_ver!=='v18'&&_ver!=='v17'){ try{ window._v18restoreErr='备份版本不兼容：'+_ver; }catch(e){ try{ console.debug("[v18restore]", e&&e.message||e); }catch(_e){ try{ console.debug("[v18restore]", _e&&_e.message||_e); }catch(_e){} } } return false; }
@@ -8665,6 +8839,17 @@ function v18restore(json){
     });
     if(_failed.length>0){ try{ console.warn('[restore] 校验失败:', _failed.join('; ')); }catch(e){ try{ console.debug("[v18restore]", e&&e.message||e); }catch(_e){} } try{ window._v18restoreErr=_failed.join('; '); }catch(e2){ try{ console.debug("[v18restore]", e2&&e2.message||e2); }catch(_e){} } return false; }
     if(Object.keys(_staged).length===0){ try{ window._v18restoreErr='文件中没有备份数据'; }catch(e){} return false; } /* 2026-10-05:空文件 */
+    /* 2026-10-24:恢复前大覆盖确认——备份打卡明显少于当前时先确认，防旧备份冲掉近期数据（v6.0 F8） */
+    try{
+      var _curN=(JSON.parse(localStorage.getItem('v18_checkin')||'[]')||[]).length;
+      var _bakN=(JSON.parse(data.v18_checkin||'[]')||[]).length;
+      if(_bakN<_curN){
+        if(!confirm('备份只有 '+_bakN+' 条打卡，当前有 '+_curN+' 条。导入会覆盖当前数据，继续？')){
+          try{ window._v18restoreErr='已取消导入（数据未变）'; }catch(_ce){}
+          return false;
+        }
+      }
+    }catch(e){}
     /* 阶段2：备份旧值 */
     var _backup={};
     Object.keys(_staged).forEach(function(k){
@@ -8695,14 +8880,14 @@ function v18restore(json){
 
 /* V18: 事件委托 —— 书签按钮点击 */
 document.addEventListener('click', function(e){
-  var b = e.target.closest('[data-bmk]');
+  var b = e.target.closest ? e.target.closest('[data-bmk]') : null;   /* 2026-10-24:同 F4 守卫 */
   if(b){
     e.preventDefault(); e.stopPropagation();
     v18toggleBm(b.getAttribute('data-bmk'));
     return;
   }
   /* V18: 封面书签跳转 */
-  var g = e.target.closest('[data-goto]');
+  var g = e.target.closest ? e.target.closest('[data-goto]') : null;   /* 2026-10-24:同 F4 守卫 */
   if(g){
     e.preventDefault();
     var n = g.getAttribute('data-goto');
@@ -8719,6 +8904,38 @@ if(document.readyState==='loading'){
 }
 
 /* 主脚本完整跑完：告诉 head 兜底「别摘 .js」 */
+/* 2026-10-24:启动自检——数据层不变量，仅 console.warn 不影响启动 */
+(function __v18selfTest(){
+  var errs=[];
+  function chk(cond,msg){ if(!cond) errs.push(msg); }
+  chk(KM.length===48,'KM.length='+KM.length);
+  chk(KM_ORIG.length===48,'KM_ORIG.length='+KM_ORIG.length);
+  KM.forEach(function(v,i){ chk(!!SPLIT[v],'KM W'+(i+1)+' km='+v+' 无 SPLIT 档'); });
+  KM_ORIG.forEach(function(v,i){ chk(!!SPLIT[v],'KM_ORIG W'+(i+1)+' km='+v+' 无 SPLIT 档'); });
+  Object.keys(SPLIT).forEach(function(k){
+    chk(SPLIT[k].length===7,'SPLIT['+k+'].length='+SPLIT[k].length);
+    var s=0; SPLIT[k].forEach(function(x){ s+=x; });
+    chk(s===+k,'SPLIT['+k+'] 合计='+s+' ≠ 档位 '+k);
+  });
+  chk(PACE.length===15,'PACE.length='+PACE.length);
+  PACE.forEach(function(p,i){
+    chk(p.length===7,'PACE['+i+'].length='+p.length);
+    chk(!isNaN(v18toSec(String(p[0]))),'PACE['+i+'][0] "'+p[0]+'" 无法解析');
+    for(var j=3;j<7;j++) chk(!isNaN(v18toSec(String(p[j]))),'PACE['+i+']['+j+'] "'+p[j]+'" 无法解析');
+    String(p[2]).split('–').forEach(function(seg){ chk(!isNaN(t2s(seg)),'PACE['+i+'][2] 段 "'+seg+'" 无法解析'); });
+  });
+  Object.keys(LV).forEach(function(k){ LV_SEC[k].forEach(function(s,i){ chk(!isNaN(s),'LV '+k+'['+i+'] 无法解析'); }); });
+  chk(CH.length===25,'CH.length='+CH.length);
+  var nums={};
+  CH.forEach(function(c){ nums[c.n]=1; chk((CHEN[c.n]||'').length>0,'CHEN 缺 '+c.n); chk((CH_POINTS[c.n]||[]).length===3,'CH_POINTS['+c.n+'] 应为 3 条'); });
+  Object.keys(CHEN).forEach(function(k){ chk(!!nums[k],'CHEN 多出未知章节 '+k); });
+  Object.keys(CH_POINTS).forEach(function(k){ chk(!!nums[k],'CH_POINTS 多出未知章节 '+k); });
+  var inP={};
+  PARTS.forEach(function(p){ p.ch.forEach(function(n){ chk(!inP[n],'PARTS 重复包含 '+n); inP[n]=1; chk(!!nums[n],'PARTS 含未知章节 '+n); }); });
+  Object.keys(nums).forEach(function(n){ chk(!!inP[n],'PARTS 遗漏章节 '+n); });
+  Object.keys(TOOLS).concat(Object.keys(VIZ)).forEach(function(n){ chk(!!nums[n],'TOOLS/VIZ 引用未知章节 '+n); });
+  if(errs.length){ try{ console.warn('[runbook self-test] '+errs.length+' 项异常:', errs); }catch(e){} }
+})();
 window.__APP_OK = true;
 })();
 </script>
